@@ -11,7 +11,8 @@
 # **************************************************************************** #
 
 NAME		=	minishell
-SRCS		=	test_functions.c
+SRCS		=	test_functions.c lexer.c
+HEADERS		=	minishell.h lexer.h
 OBJS_DIR	=	objs/
 OBJS		=	$(addprefix $(OBJS_DIR), $(SRCS:.c=.o))
 CFLAGS		=	-g
