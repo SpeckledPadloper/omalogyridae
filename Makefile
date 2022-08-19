@@ -6,12 +6,12 @@
 #    By: lwiedijk <marvin@codam.nl>                   +#+                      #
 #                                                    +#+                       #
 #    Created: 2022/05/04 10:58:28 by lwiedijk      #+#    #+#                  #
-#    Updated: 2022/05/12 11:52:03 by lwiedijk      ########   odam.nl          #
+#    Updated: 2022/08/19 14:24:53 by mteerlin      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
 NAME		=	minishell
-SRCS		=	test_functions.c
+SRCS		=	lexer.c
 OBJS_DIR	=	objs/
 OBJS		=	$(addprefix $(OBJS_DIR), $(SRCS:.c=.o))
 CFLAGS		=	-g
