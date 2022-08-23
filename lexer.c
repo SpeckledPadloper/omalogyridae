@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/04/18 11:03:49 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/08/23 12:14:50 by lwiedijk      ########   odam.nl         */
+/*   Updated: 2022/08/23 13:21:50 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,24 @@ void	add_token_to_list(t_token **head, char *token_value, int *token_label)
 		tokenlst_last(*head)->next = node;
 }
 
+int	add_token_label(char current, char next_char)
+{
+	int token_label;
+
+	token_label = 0;
+	if (current == '>' && next_char == '>')
+		token_label = GREATGREAT;
+	else if (current == '<' && next_char == '<')
+		token_label = LESSLESS;
+	else if (current == '<' && next_char != '<')
+		token_label = LESS;
+	else if (current == '>' && next_char != '>')
+		token_label = GREAT;
+	else if (current == '|')
+		token_label = PIPE;
+	return (token_label);
+}
+
 //________________________________________________________________________________
 
 
@@ -125,7 +143,7 @@ bool	is_closing_char(char current, int token_label)
 
 
 
-char	*do_special_char(char *ret, int *i_ref)
+char	*do_special_char(char *ret, int *i_ref, int *token_label)
 {
 	int i;
 	char *token;
@@ -141,6 +159,7 @@ char	*do_special_char(char *ret, int *i_ref)
 	}
 	if (is_special_char(ret[i]))
 	{
+		*token_label = add_token_label(ret[i], ret[i + 1]);
 		if ((ret[i] == '>' && ret[i + 1] == '>')
 		|| (ret[i] == '<' && ret[i + 1] == '<'))
 		{
@@ -193,7 +212,7 @@ void lex(char *ret)
 		{
 			token_value = allocate_token_value(ret, count, (i - count));
 			add_token_to_list(&head, token_value, &token_label);
-			token_value = do_special_char(ret, &i);
+			token_value = do_special_char(ret, &i, &token_label);
 			add_token_to_list(&head, token_value, &token_label);
 			count = -1;
 		}
