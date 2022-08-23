@@ -6,11 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-<<<<<<< HEAD
-/*   Updated: 2022/08/23 14:43:51 by mteerlin      ########   odam.nl         */
-=======
-/*   Updated: 2022/08/23 12:07:23 by lwiedijk      ########   odam.nl         */
->>>>>>> 44cec2f9ee905b0b22e9c8369a5173da428565aa
+/*   Updated: 2022/08/23 16:01:29 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
