@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   test_functions.c                                   :+:    :+:            */
+/*   lexer.c                                            :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/04/18 11:03:49 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/08/19 12:31:56 by lwiedijk      ########   odam.nl         */
+/*   Updated: 2022/08/23 12:14:50 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@
 #include <string.h>
 #include <stdbool.h>
 #include "libft.h"
-#include "minishell.h"
+#include "lexer.h"
 
 #define KNRM  "\e[0m"
 #define KRED  "\e[1;31m"
