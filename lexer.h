@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   minishell.h                                        :+:    :+:            */
+/*   lexer.h                                            :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/08/17 15:26:23 by lwiedijk      ########   odam.nl         */
+/*   Updated: 2022/08/23 14:43:51 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,5 +49,12 @@ typedef struct s_label_flag
 	bool	double_quote;
 }				t_label_flag;
 
+typedef struct s_simple_command
+{
+	int		index;
+	char	**cmd;
+	char	*redir_in;
+	char	*redir_out;
+}	t_simple_command;
 
 #endif
