@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   lexer.c                                            :+:    :+:            */
+/*   test_functions.c                                   :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/04/18 11:03:49 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/08/19 15:08:11 by lwiedijk      ########   odam.nl         */
+/*   Updated: 2022/08/19 12:31:56 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,10 @@
 #include <string.h>
 #include <stdbool.h>
 #include "libft.h"
-#include "lexer.h"
+#include "minishell.h"
+
+#define KNRM  "\e[0m"
+#define KRED  "\e[1;31m"
 
 t_token *new_node(int index, int label, char *value)
 {
@@ -47,6 +50,17 @@ t_token	*tokenlst_last(t_token *lst)
 	return (lst);
 }
 
+char	*allocate_token_value(char *ret, int count, int i)
+{
+	char *token;
+
+	if (count == 0)
+		return (NULL);
+	token = malloc(sizeof(char) * count + 1);
+	ft_strlcpy(token, &ret[i], count + 1);
+	return (token);
+}
+
 void	add_token_to_list(t_token **head, char *token_value, int *token_label)
 {
 	static int count;
@@ -62,6 +76,11 @@ void	add_token_to_list(t_token **head, char *token_value, int *token_label)
 	else
 		tokenlst_last(*head)->next = node;
 }
+
+//________________________________________________________________________________
+
+
+
 
 bool	is_special_char(char current)
 {
@@ -86,25 +105,25 @@ bool	is_token_separator(char current)
 
 bool	is_literal(char current)
 {
-	if (current == '"' || current == 39)// dit moet wel passen, dus niet als " en dan ' 
+	if (current == '"' || current == 39) 
 		return (true);
 	return (false);
 }
 
-
-
-
-
-char	*allocate_token_value(char *ret, int count, int i)
+bool	is_closing_char(char current, int token_label)
 {
-	char *token;
-
-	if (count == 0)
-		return (NULL);
-	token = malloc(sizeof(char) * count + 1);
-	ft_strlcpy(token, &ret[i], count + 1);
-	return (token);
+	if (token_label == DOUBLE_QUOTE && current == '"')
+		return (true);
+	if (token_label == SINGLE_QUOTE && current == 39)
+		return (true);
+	else
+		return (false);
 }
+
+//__________________________________________________________________________________________
+
+
+
 
 char	*do_special_char(char *ret, int *i_ref)
 {
@@ -133,7 +152,6 @@ char	*do_special_char(char *ret, int *i_ref)
 	return (token);
 }
 
-
 void	do_quotes(char *ret, int *i_ref, int *count_ref, int *token_label)
 {
 	//parser gaat handelen, zorg voor label, behoud quotes
@@ -141,12 +159,17 @@ void	do_quotes(char *ret, int *i_ref, int *count_ref, int *token_label)
 		*token_label = DOUBLE_QUOTE;
 	else
 		*token_label = SINGLE_QUOTE;
- 	*i_ref = *i_ref + 1; //duw voorbij signal single quote
-	*count_ref = *count_ref + 1;
-	while(!is_literal(ret[*i_ref]))
+ 	(*i_ref)++; //duw voorbij signal single quote
+	(*count_ref)++;
+	while(!is_closing_char(ret[*i_ref], *token_label))
 	{
-		*i_ref = *i_ref + 1;
-		*count_ref = *count_ref + 1;
+		if (ret[*i_ref] == '\0') // error of specialcase
+		{
+			printf("\e[1;31m%s\e[0m\n", "missing closing char, lets implemet error or special_case here");
+			break;
+		}
+		(*i_ref)++;
+		(*count_ref)++;
 	}
 }
 
@@ -155,18 +178,15 @@ void lex(char *ret)
 {
 	t_token	*head;
 	t_token *itter;
-	t_label_flag	label_flag;
 	int		i;
 	int		count;
 	int		token_label;
 	char	*token_value;
 
 	i = 0;
+	count = 0;
 	head = NULL;
 	token_label = NO_LABEL;
-	count = 0;
-
-	head = NULL;
 	while (ret[i])
 	{
 		if (is_token_separator(ret[i]))
@@ -177,13 +197,13 @@ void lex(char *ret)
 			add_token_to_list(&head, token_value, &token_label);
 			count = -1;
 		}
+		if (is_literal(ret[i]))
+			do_quotes(ret, &i, &count, &token_label);
 		if (is_end_of_input(ret[i + 1]))
 		{
 			token_value = allocate_token_value(ret, (count + 1), (i - count));
 			add_token_to_list(&head, token_value, &token_label);
 		}
-		if (is_literal(ret[i]))
-			do_quotes(ret, &i, &count, &token_label);
 		i++;
 		count++;
 	}
