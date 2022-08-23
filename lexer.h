@@ -6,7 +6,11 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
+<<<<<<< HEAD
 /*   Updated: 2022/08/23 14:43:51 by mteerlin      ########   odam.nl         */
+=======
+/*   Updated: 2022/08/23 12:07:23 by lwiedijk      ########   odam.nl         */
+>>>>>>> 44cec2f9ee905b0b22e9c8369a5173da428565aa
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,19 +24,9 @@ typedef enum e_token_label
 	DOUBLE_QUOTE,
 	LESS,
 	LESSLESS,
-	HEREDOC_LIM,
 	GREAT,
 	GREATGREAT,
 	PIPE,
-	FILENAME_IN,
-	FILENAME_OUT,
-	COMMAND,
-	CMD_ARG,
-	//CMD_FLAG,
-	//LITERAL,
-	//LITERAL_EXPAND,
-	//verschil tussen flag en cmd_arg word dus door programma gehandeld, en 
-	//literal is deel van een token, niet perce 1 op zich
 }		t_token_label;
 
 typedef struct s_token
