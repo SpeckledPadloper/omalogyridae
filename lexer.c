@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   test_functions.c                                   :+:    :+:            */
+/*   lexer.c                                            :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/04/18 11:03:49 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/08/17 15:27:33 by lwiedijk      ########   odam.nl         */
+/*   Updated: 2022/08/19 15:05:36 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@
 #include <string.h>
 #include <stdbool.h>
 #include "libft.h"
-#include "minishell.h"
+#include "lexer.h"
 
 t_token *new_node(int index, int label, char *value)
 {
@@ -166,7 +166,6 @@ void lex(char *ret)
 	token_label = NO_LABEL;
 	count = 0;
 
-	head = NULL;
 	while (ret[i])
 	{
 		if (is_token_separator(ret[i]))
