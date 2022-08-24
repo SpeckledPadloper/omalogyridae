@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/04/18 11:03:49 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/08/23 15:22:59 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/08/24 17:42:30 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,11 @@
 
 #include <string.h>
 #include <stdbool.h>
-#include "../libft/libft.h"
-#include "../lexer.h"
+#include "libft.h"
+#include "lexer.h"
+
+#define KNRM  "\e[0m"
+#define KRED  "\e[1;31m"
 
 t_token *new_node(int index, int label, char *value)
 {
@@ -47,10 +50,21 @@ t_token	*tokenlst_last(t_token *lst)
 	return (lst);
 }
 
+char	*allocate_token_value(char *ret, int count, int i)
+{
+	char	*token;
+
+	if (count == 0)
+		return (NULL);
+	token = malloc(sizeof(char) * count + 1);
+	ft_strlcpy(token, &ret[i], count + 1);
+	return (token);
+}
+
 void	add_token_to_list(t_token **head, char *token_value, int *token_label)
 {
-	static int count;
-	t_token *node;
+	static int	count;
+	t_token		*node;
 
 	if (!token_value || !head)
 		return ;
@@ -62,6 +76,40 @@ void	add_token_to_list(t_token **head, char *token_value, int *token_label)
 	else
 		tokenlst_last(*head)->next = node;
 }
+
+void	stitch_token(t_token **token, char *stitch_value, int *stitch_label)
+{
+	t_token	*node;
+
+	if (!stitch_value || !token)
+		return ;
+	node = new_node(0, *stitch_label, stitch_value);
+	*stitch_label = NO_LABEL;
+	if (!*token)
+		*token = node;
+	else
+		tokenlst_last(*token)->next = node;
+}
+
+int	add_token_label(char current, char next_char)
+{
+	int token_label;
+
+	token_label = 0;
+	if (current == '>' && next_char == '>')
+		token_label = GREATGREAT;
+	else if (current == '<' && next_char == '<')
+		token_label = LESSLESS;
+	else if (current == '<' && next_char != '<')
+		token_label = LESS;
+	else if (current == '>' && next_char != '>')
+		token_label = GREAT;
+	else if (current == '|')
+		token_label = PIPE;
+	return (token_label);
+}
+
+//________________________________________________________________________________
 
 bool	is_special_char(char current)
 {
@@ -79,38 +127,36 @@ bool	is_end_of_input(char current_plus_one)
 
 bool	is_token_separator(char current)
 {
-	if (current == ' ' || current == '<' || current == '>' || current == '|')
+	if (current == ' ' || current == '<' || current == '>' || \
+		current == '|')
 		return (true);
 	return (false);
 }
 
 bool	is_literal(char current)
 {
-	if (current == '"' || current == 39)// dit moet wel passen, dus niet als " en dan ' 
+	if (current == '"' || current == 39) 
 		return (true);
 	return (false);
 }
 
-
-
-
-
-char	*allocate_token_value(char *ret, int count, int i)
+bool	is_closing_char(char current, int token_label)
 {
-	char *token;
-
-	if (count == 0)
-		return (NULL);
-	token = malloc(sizeof(char) * count + 1);
-	ft_strlcpy(token, &ret[i], count + 1);
-	return (token);
+	if (token_label == DOUBLE_QUOTE && current == '"')
+		return (true);
+	if (token_label == SINGLE_QUOTE && current == 39)
+		return (true);
+	else
+		return (false);
 }
 
-char	*do_special_char(char *ret, int *i_ref)
+//__________________________________________________________________________________________
+
+char	*do_special_char(char *ret, int *i_ref, int *token_label)
 {
-	int i;
-	char *token;
-	int	count;
+	int		i;
+	char	*token;
+	int		count;
 
 	i = *i_ref;
 	count = 1;
@@ -122,8 +168,9 @@ char	*do_special_char(char *ret, int *i_ref)
 	}
 	if (is_special_char(ret[i]))
 	{
+		*token_label = add_token_label(ret[i], ret[i + 1]);
 		if ((ret[i] == '>' && ret[i + 1] == '>')
-		|| (ret[i] == '<' && ret[i + 1] == '<'))
+			|| (ret[i] == '<' && ret[i + 1] == '<'))
 		{
 			count++;
 			*i_ref = *i_ref + 1;
@@ -133,63 +180,94 @@ char	*do_special_char(char *ret, int *i_ref)
 	return (token);
 }
 
-
 void	do_quotes(char *ret, int *i_ref, int *count_ref, int *token_label)
 {
 	//parser gaat handelen, zorg voor label, behoud quotes
-	if (ret[*i_ref] == '"')
-		*token_label = DOUBLE_QUOTE;
-	else
-		*token_label = SINGLE_QUOTE;
- 	*i_ref = *i_ref + 1; //duw voorbij signal single quote
-	*count_ref = *count_ref + 1;
-	while(!is_literal(ret[*i_ref]))
+	*token_label = SINGLE_QUOTE;
+ 	(*i_ref)++; //duw voorbij signal single quote
+	(*count_ref)++;
+	while(!(ret[*i_ref] == '\''))
 	{
-		*i_ref = *i_ref + 1;
-		*count_ref = *count_ref + 1;
+		if (ret[*i_ref] == '\0') // error of specialcase
+		{
+			printf("\e[1;31m%s\e[0m\n", "missing closing char, lets implemet error or special_case here");
+			break;
+		}		
+		(*i_ref)++;
+		(*count_ref)++;
 	}
 }
 
+void	single_quotes(char *ret, int *i_ref, int *count_ref, int *token_label)
+{
+	*token_label = SINGLE_QUOTE;
+ 	(*i_ref)++;
+	(*count_ref)++;
+	while(!is_closing_char(ret[*i_ref], *token_label))
+	{
+		if (ret[*i_ref] == '\0') // error of specialcase
+		{
+			printf("\e[1;31m%s\e[0m\n", "missing closing char, lets implemet error or special_case here");
+			break;
+		}		
+		(*i_ref)++;
+		(*count_ref)++;
+	}
+}
 
 void lex(char *ret)
 {
 	t_token	*head;
 	t_token *itter;
-	t_label_flag	label_flag;
 	int		i;
 	int		count;
 	int		token_label;
 	char	*token_value;
 
 	i = 0;
+	count = 0;
 	head = NULL;
 	token_label = NO_LABEL;
-	count = 0;
-
 	while (ret[i])
 	{
-		if (is_token_separator(ret[i]))
+		if (ret[i] == '\'')
+		{
+			if (!is_token_separator(ret[i - 1]))
+			{
+				token_value = allocate_token_value(ret, count, (i - count));
+				add_token_to_list(&head, token_value, &token_label);
+				count = -1;
+			}
+			else
+				i++;
+			do_quotes(ret, &i, &count, &token_label);
+			if (!is_token_separator(ret[i]))
+			{
+				token_value = allocate_token_value(ret, count, (i - count));
+				add_token_to_list(&head, token_value, &token_label);
+				count = -1;
+			}
+		}
+		else if (is_token_separator(ret[i]))
 		{
 			token_value = allocate_token_value(ret, count, (i - count));
 			add_token_to_list(&head, token_value, &token_label);
-			token_value = do_special_char(ret, &i);
+			token_value = do_special_char(ret, &i, &token_label);
 			add_token_to_list(&head, token_value, &token_label);
 			count = -1;
 		}
-		if (is_end_of_input(ret[i + 1]))
+		else if (is_end_of_input(ret[i + 1]))
 		{
 			token_value = allocate_token_value(ret, (count + 1), (i - count));
 			add_token_to_list(&head, token_value, &token_label);
 		}
-		if (is_literal(ret[i]))
-			do_quotes(ret, &i, &count, &token_label);
 		i++;
 		count++;
 	}
 	itter = head;
 	while (itter)
 	{
-		printf("token = %s | token_label = %d\n", itter->token_value, itter->token_label);
+		printf("token = %s | token_label = %d | token_index = %d\n", itter->token_value, itter->token_label, itter->i);
 		itter = itter->next;
 	} 
 }
@@ -202,7 +280,7 @@ int main()
 	getcwd(path_buffer, sizeof(path_buffer));
 	printf("%s\n", path_buffer);
 	//ret = readline("minishell> ");
-	ret = "<<hier dit\"probeer\"ik  is >test";
+	ret = "<<hier dit'probeer'ik  is >test";
 	lex(ret);
 	while (ret != NULL)
 	{
