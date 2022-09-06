@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/04/18 11:03:49 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/08/24 17:42:30 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/09/06 19:54:03 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,14 +27,16 @@
 #define KNRM  "\e[0m"
 #define KRED  "\e[1;31m"
 
-t_token *new_node(int index, int label, char *value)
+t_token	*new_node(int index, char *value, int end_pos, int len)
 {
-	t_token *new;
+	t_token	*new;
 
 	new = (t_token *)malloc(sizeof(t_token));
 	new->i = index;
-	new->token_label = label;
+	new->token_label = add_token_label(value[0], value[1]);
 	new->token_value = value;
+	new->start_pos = end_pos - len;
+	new->end_pos = end_pos;
 	new->next = NULL;
 	return (new);
 }
@@ -61,51 +63,58 @@ char	*allocate_token_value(char *ret, int count, int i)
 	return (token);
 }
 
-void	add_token_to_list(t_token **head, char *token_value, int *token_label)
+void	add_token_to_list(t_token **head, char *token_value, int i, int count)
 {
-	static int	count;
+	static int	token_index = 0;
 	t_token		*node;
 
 	if (!token_value || !head)
 		return ;
-	count = count + 1;
-	node = new_node(count, *token_label, token_value);
-	*token_label = NO_LABEL;
+	token_index = token_index + 1;
+	node = new_node(token_index, token_value, i, count);
 	if (!*head)
 		*head = node;
 	else
 		tokenlst_last(*head)->next = node;
 }
 
-void	stitch_token(t_token **token, char *stitch_value, int *stitch_label)
-{
-	t_token	*node;
+// void	stitch_token(t_token **token, char *stitch_value, int *stitch_label)
+// {
+// 	t_token	*node;
 
-	if (!stitch_value || !token)
-		return ;
-	node = new_node(0, *stitch_label, stitch_value);
-	*stitch_label = NO_LABEL;
-	if (!*token)
-		*token = node;
-	else
-		tokenlst_last(*token)->next = node;
-}
+// 	if (!stitch_value || !token)
+// 		return ;
+// 	node = new_node(0, stitch_value);
+// 	*stitch_label = NO_LABEL;
+// 	if (!*token)
+// 		*token = node;
+// 	else
+// 		tokenlst_last(*token)->next = node;
+// }
 
 int	add_token_label(char current, char next_char)
 {
-	int token_label;
+	int	token_label;
 
 	token_label = 0;
-	if (current == '>' && next_char == '>')
-		token_label = GREATGREAT;
+	if (current == '<' && next_char != '<')
+		token_label = LESS;
 	else if (current == '<' && next_char == '<')
 		token_label = LESSLESS;
-	else if (current == '<' && next_char != '<')
-		token_label = LESS;
 	else if (current == '>' && next_char != '>')
 		token_label = GREAT;
+	else if (current == '>' && next_char == '>')
+		token_label = GREATGREAT;
 	else if (current == '|')
 		token_label = PIPE;
+	else if (current == '\'')
+		token_label = SINGLE_QUOTE;	
+	else if (current == '"')
+		token_label = DOUBLE_QUOTE;
+	else if (current == '$')
+		token_label = EXPAND;
+	else
+		token_label = NO_LABEL;
 	return (token_label);
 }
 
@@ -113,7 +122,8 @@ int	add_token_label(char current, char next_char)
 
 bool	is_special_char(char current)
 {
-	if (current == '<' || current == '>' || current == '|')
+	if (current == '<' || current == '>' || current == '|' \
+		|| current == '"' || current == '\'')
 		return (true);
 	return (false);
 }
@@ -128,7 +138,7 @@ bool	is_end_of_input(char current_plus_one)
 bool	is_token_separator(char current)
 {
 	if (current == ' ' || current == '<' || current == '>' || \
-		current == '|')
+		current == '|' || current == '"' || current == '\'' || current == '$')
 		return (true);
 	return (false);
 }
@@ -152,7 +162,7 @@ bool	is_closing_char(char current, int token_label)
 
 //__________________________________________________________________________________________
 
-char	*do_special_char(char *ret, int *i_ref, int *token_label)
+char	*do_special_char(char *ret, int *i_ref)
 {
 	int		i;
 	char	*token;
@@ -168,7 +178,6 @@ char	*do_special_char(char *ret, int *i_ref, int *token_label)
 	}
 	if (is_special_char(ret[i]))
 	{
-		*token_label = add_token_label(ret[i], ret[i + 1]);
 		if ((ret[i] == '>' && ret[i + 1] == '>')
 			|| (ret[i] == '<' && ret[i + 1] == '<'))
 		{
@@ -221,45 +230,28 @@ void lex(char *ret)
 	t_token *itter;
 	int		i;
 	int		count;
-	int		token_label;
 	char	*token_value;
 
 	i = 0;
 	count = 0;
 	head = NULL;
-	token_label = NO_LABEL;
 	while (ret[i])
 	{
-		if (ret[i] == '\'')
-		{
-			if (!is_token_separator(ret[i - 1]))
-			{
-				token_value = allocate_token_value(ret, count, (i - count));
-				add_token_to_list(&head, token_value, &token_label);
-				count = -1;
-			}
-			else
-				i++;
-			do_quotes(ret, &i, &count, &token_label);
-			if (!is_token_separator(ret[i]))
-			{
-				token_value = allocate_token_value(ret, count, (i - count));
-				add_token_to_list(&head, token_value, &token_label);
-				count = -1;
-			}
-		}
-		else if (is_token_separator(ret[i]))
+		if (is_token_separator(ret[i]))
 		{
 			token_value = allocate_token_value(ret, count, (i - count));
-			add_token_to_list(&head, token_value, &token_label);
-			token_value = do_special_char(ret, &i, &token_label);
-			add_token_to_list(&head, token_value, &token_label);
-			count = -1;
+			add_token_to_list(&head, token_value, i, count);
+			token_value = do_special_char(ret, &i);
+			add_token_to_list(&head, token_value, i, count);
+			if (ret[i] == '$')
+				count = 0;
+			else
+				count = -1;
 		}
 		else if (is_end_of_input(ret[i + 1]))
 		{
 			token_value = allocate_token_value(ret, (count + 1), (i - count));
-			add_token_to_list(&head, token_value, &token_label);
+			add_token_to_list(&head, token_value, i, count);
 		}
 		i++;
 		count++;
@@ -267,28 +259,57 @@ void lex(char *ret)
 	itter = head;
 	while (itter)
 	{
-		printf("token = %s | token_label = %d | token_index = %d\n", itter->token_value, itter->token_label, itter->i);
+		printf("token = %s\t| token_label = %d\t| token_index = %d\t| spos = [%d]\t| epos = [%d]\n", itter->token_value, itter->token_label, itter->i, itter->start_pos, itter->end_pos);
 		itter = itter->next;
-	} 
-}
-
-int main()
-{
-	char *ret;
-	char path_buffer[PATH_MAX];
-
-	getcwd(path_buffer, sizeof(path_buffer));
-	printf("%s\n", path_buffer);
-	//ret = readline("minishell> ");
-	ret = "<<hier dit'probeer'ik  is >test";
-	lex(ret);
-	while (ret != NULL)
-	{
-		ret = readline("SpeckledPadloper> ");
-		lex(ret);
-		add_history(ret);
-		free(ret);
 	}
-	free(ret);
-	exit (0);
 }
+
+t_base_args	*set_base_args(int argc, char **argv, char **env)
+{
+	t_base_args	*b_args;
+
+	b_args = malloc(sizeof(t_base_args));
+	b_args->argc = argc;
+	b_args->argv = argv;
+	b_args->env = env;
+	return (b_args);
+}
+
+int	main(int argc, char **argv, char **env)
+{
+	char		*input;
+	t_base_args	*b_args;
+	char		ctrl_d;
+
+	b_args = set_base_args(argc, argv, env);
+	input = " ";
+	ctrl_d = '\0';
+	while (input != NULL)
+	{
+		input = readline("SpeckledPadloper> ");
+		lex(input);
+		add_history(input);
+		free(input);
+	}
+}
+
+// int main()
+// {
+// 	char *ret;
+// 	char path_buffer[PATH_MAX];
+
+// 	getcwd(path_buffer, sizeof(path_buffer));
+// 	printf("%s\n", path_buffer);
+// 	//ret = readline("minishell> ");
+// 	ret = "<<hier dit'probeer'ik  is >test";
+// 	lex(ret);
+// 	while (ret != NULL)
+// 	{
+// 		ret = readline("SpeckledPadloper> ");
+// 		lex(ret);
+// 		add_history(ret);
+// 		free(ret);
+// 	}
+// 	free(ret);
+// 	exit (0);
+// }

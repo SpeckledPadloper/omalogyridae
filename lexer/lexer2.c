@@ -6,7 +6,7 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/23 14:49:01 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/08/24 17:26:14 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/09/06 19:28:53 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,21 @@ t_base_args	*set_base_args(int argc, char **argv, char **env)
 	return (b_args);
 }
 
+bool	is_token_separator(char current)
+{
+	if (current == ' ' || current == '<' || current == '>' || \
+		current == '|' || current == '"' || current == '\'' || current == '$')
+		return (true);
+	return (false);
+}
+
+bool	is_whitespace(char current)
+{
+	if (current == ' ' || (current >= 9 && current <= 13))
+		return (true);
+	return (false);
+}
+
 void	lex(char *input)
 {
 	t_token		*head;
@@ -52,8 +67,6 @@ void	lex(char *input)
 	int			i;
 	int			cnt;
 	int			token_label;
-	char		*token_value;
-	t_open_qe	open_qe;
 
 	i = 0;
 	cnt = 0;
@@ -86,20 +99,4 @@ void	lex(char *input)
 	return ;
 }
 
-int	main(int argc, char **argv, char **env)
-{
-	char		*input;
-	t_base_args	*b_args;
-	char		ctrl_d;
 
-	b_args = set_base_args(argc, argv, env);
-	input = " ";
-	ctrl_d = '\0';
-	while (input != NULL)
-	{
-		input = readline("SpeckledPadloper> ");
-		lex(input);
-		add_history(input);
-		free(input);
-	}
-}

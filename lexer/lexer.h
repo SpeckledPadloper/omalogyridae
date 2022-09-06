@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/08/24 17:01:35 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/09/06 19:48:15 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,23 +16,25 @@
 
 typedef enum e_token_label
 {
-	NO_LABEL,
-	SINGLE_QUOTE,
-	DOUBLE_QUOTE,
 	LESS,
 	LESSLESS,
 	GREAT,
 	GREATGREAT,
 	PIPE,
+	SINGLE_QUOTE,
+	DOUBLE_QUOTE,
+	EXPAND,
+	NO_LABEL,
 }		t_token_label;
 
 typedef struct s_token
 {
 	int				i;
 	int				token_label;
+	int				start_pos;
+	int				end_pos;
 	char			*token_value;
 	struct s_token	*next;
-	struct s_token	*stitch;
 }					t_token;
 
 typedef struct s_label_flag
@@ -40,6 +42,13 @@ typedef struct s_label_flag
 	bool	single_quote;
 	bool	double_quote;
 }				t_label_flag;
+
+typedef struct s_base_args
+{
+	int		argc;
+	char	**argv;
+	char	**env;
+}	t_base_args;
 
 typedef struct s_simple_command
 {
@@ -49,10 +58,11 @@ typedef struct s_simple_command
 	char	*redir_out;
 }	t_simple_command;
 
-t_token	*new_node(int index, int label, char *value);
+
+t_token	*new_node(int index, char *value, int end_pos, int len);
 t_token	*tokenlst_last(t_token *lst);
 char	*allocate_token_value(char *ret, int count, int i);
-void	add_token_to_list(t_token **head, char *token_value, int *token_label);
+void	add_token_to_list(t_token **head, char *token_value, int i, int count);
 int		add_token_label(char current, char next_char);
 
 bool	is_special_char(char current);
