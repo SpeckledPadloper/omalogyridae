@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/09/06 19:48:15 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/09/07 15:00:03 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,12 +52,12 @@ typedef struct s_base_args
 
 typedef struct s_simple_command
 {
-	int		index;
-	char	**cmd;
-	char	*redir_in;
-	char	*redir_out;
+	int						index;
+	char					**cmd;
+	char					*redir_in;
+	char					*redir_out;
+	struct s_simple_command	*next;
 }	t_simple_command;
-
 
 t_token	*new_node(int index, char *value, int end_pos, int len);
 t_token	*tokenlst_last(t_token *lst);

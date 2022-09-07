@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/04/18 11:03:49 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/09/06 19:54:03 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/09/07 19:35:02 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,9 +56,10 @@ char	*allocate_token_value(char *ret, int count, int i)
 {
 	char	*token;
 
-	if (count == 0)
+	if (i < 0)
 		return (NULL);
-	token = malloc(sizeof(char) * count + 1);
+	printf("all_tok_val\ti = %d\n", i);
+	token = malloc(sizeof(char) * (count + 1));
 	ft_strlcpy(token, &ret[i], count + 1);
 	return (token);
 }
@@ -108,7 +109,7 @@ int	add_token_label(char current, char next_char)
 	else if (current == '|')
 		token_label = PIPE;
 	else if (current == '\'')
-		token_label = SINGLE_QUOTE;	
+		token_label = SINGLE_QUOTE;
 	else if (current == '"')
 		token_label = DOUBLE_QUOTE;
 	else if (current == '$')
@@ -119,6 +120,13 @@ int	add_token_label(char current, char next_char)
 }
 
 //________________________________________________________________________________
+
+bool	is_whitespace(char current)
+{
+	if (current == ' ' || (current > 8 && current < 14))
+		return (true);
+	return (false);
+}
 
 bool	is_special_char(char current)
 {
@@ -162,33 +170,6 @@ bool	is_closing_char(char current, int token_label)
 
 //__________________________________________________________________________________________
 
-char	*do_special_char(char *ret, int *i_ref)
-{
-	int		i;
-	char	*token;
-	int		count;
-
-	i = *i_ref;
-	count = 1;
-	token = NULL;
-	while (ret[i] == ' ' && ret[i + 1] == ' ')
-	{
-		i++;
-		*i_ref = *i_ref + 1;
-	}
-	if (is_special_char(ret[i]))
-	{
-		if ((ret[i] == '>' && ret[i + 1] == '>')
-			|| (ret[i] == '<' && ret[i + 1] == '<'))
-		{
-			count++;
-			*i_ref = *i_ref + 1;
-		}
-		token = allocate_token_value(ret, count, i);
-	}
-	return (token);
-}
-
 void	do_quotes(char *ret, int *i_ref, int *count_ref, int *token_label)
 {
 	//parser gaat handelen, zorg voor label, behoud quotes
@@ -224,35 +205,59 @@ void	single_quotes(char *ret, int *i_ref, int *count_ref, int *token_label)
 	}
 }
 
+char	*do_special_char(char *ret, int *i_ref, int *count)
+{
+	int		i;
+	char	*token;
+
+	i = *i_ref;
+	*count = 1;
+	token = NULL;
+	if ((ret[i] == '>' && ret[i + 1] == '>')
+		|| (ret[i] == '<' && ret[i + 1] == '<'))
+	{
+		(*count)++;
+		*i_ref = *i_ref + 1;
+	}
+	token = allocate_token_value(ret, *count, i);
+	return (token);
+}
+
 void lex(char *ret)
 {
 	t_token	*head;
-	t_token *itter;
+	t_token	*itter;
 	int		i;
 	int		count;
 	char	*token_value;
 
 	i = 0;
-	count = 0;
+	count = 1;
 	head = NULL;
 	while (ret[i])
 	{
 		if (is_token_separator(ret[i]))
 		{
-			token_value = allocate_token_value(ret, count, (i - count));
-			add_token_to_list(&head, token_value, i, count);
-			token_value = do_special_char(ret, &i);
-			add_token_to_list(&head, token_value, i, count);
+			printf("lex\t\ti = %d\n", i);
+			token_value = allocate_token_value(ret, count, (i - (count - 1)));
+			add_token_to_list(&head, token_value, i, (count - 1));
+			if (i != 0 && !is_whitespace(ret[i - 1]) && is_special_char(ret[i]))
+			{
+				token_value = do_special_char(ret, &i, &count);
+				add_token_to_list(&head, token_value, i, (count - 1));
+			}
 			if (ret[i] == '$')
-				count = 0;
+				count = 1;
 			else
-				count = -1;
+				count = 0;
 		}
 		else if (is_end_of_input(ret[i + 1]))
 		{
 			token_value = allocate_token_value(ret, (count + 1), (i - count));
 			add_token_to_list(&head, token_value, i, count);
 		}
+		while (is_whitespace(ret[i]) && is_whitespace(ret[i + 1]))
+			i++;
 		i++;
 		count++;
 	}
