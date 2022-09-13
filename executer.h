@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/09/13 15:16:08 by lwiedijk      ########   odam.nl         */
+/*   Updated: 2022/09/13 16:38:57 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 
 # include <stdbool.h>
 # include <unistd.h>
+
+# define MODE_RW_R_R 0644
 
 typedef struct s_fd_list
 {

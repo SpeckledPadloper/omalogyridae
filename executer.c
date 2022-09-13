@@ -4,6 +4,7 @@
 #include <stdbool.h>
 #include <stdlib.h>
 #include <strings.h>
+#include <fcntl.h>
 
 /*------------------------- utils ---------------------------*/
 
@@ -48,14 +49,61 @@ void	close_and_check(int fd)
 
 /*------------------------- basic executer ---------------------------*/
 
+void	open_necessary_fd(t_exec_list_sim *cmd_list)
+{
+	if (cmd_list->path_fd_in)
+		cmd_list->fd_list.fd_in = open(cmd_list->path_fd_in, O_RDONLY);
+	if (cmd_list->fd_list.fd_in < 0)
+		exit(EXIT_FAILURE);
+	if (cmd_list->path_fd_out)
+		cmd_list->fd_list.fd_out = open(cmd_list->path_fd_out, O_CREAT | O_WRONLY | O_TRUNC, MODE_RW_R_R);
+	if (cmd_list->fd_list.fd_out < 0)
+		exit(EXIT_FAILURE);
+}
+
+static void	redirect_input(t_metadata *data, t_exec_list_sim *cmd_list)
+{
+	if (data->cmd_count <= 1 && !cmd_list->path_fd_in)
+		return ;
+	else if (cmd_list->path_fd_in)
+	{
+		if (dup2(cmd_list->fd_list.fd_in, STDIN_FILENO) == -1)
+			error_message_and_exit();
+	}
+	else if (data->cmd_count > 1 && data->child_count > 1)
+	{
+		if (dup2(cmd_list->fd_list.pipe_to_read, STDIN_FILENO) == -1) // dubben kan nu dus niet standaard, kan ook stdin zijn. 
+			error_message_and_exit();
+	}
+}
+
+//output redirection not done yet! 
+
+static void	redirect_ouput(t_metadata *data, t_exec_list_sim *cmd_list)
+{
+	if ((data->child_count + 1) == data->cmd_count)
+	{
+		if (cmd_list->fd_list.fd_out == -1)
+			exit(EXIT_FAILURE);
+		if (dup2(cmd_list->fd_list.fd_out, STDOUT_FILENO) == -1)
+			error_message_and_exit();
+	}
+	else
+	{
+		if (dup2(cmd_list->fd_list.pipe[1], STDOUT_FILENO) == -1)
+			error_message_and_exit();
+	}
+}
+
 void	execute_cmd(t_metadata *data, t_exec_list_sim *cmd_list)
 {
 	char	*path;
 
 	path = NULL;
 	path = cmd_list->cmd[0];
-	//open_nessesary_fd();
-	//redirect_fd(cmd_list->fd_list, data);
+	open_nessesary_fd(cmd_list);
+	redirect_input(data, cmd_list);
+	redirect_output(data, cmd_list);
 	//close_unused_fd(cmd_list->fd_list, data);
 	//path = path_parser(cmd_vectors[data->child_count][0], envp); // will be path checker, is handy in child
 	execve(path, cmd_list->cmd, data->envp);
