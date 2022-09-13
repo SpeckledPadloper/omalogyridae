@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/09/13 13:55:45 by lwiedijk      ########   odam.nl         */
+/*   Updated: 2022/09/13 15:16:08 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ typedef struct s_fd_list
 
 typedef struct s_exec_list_sim
 {
-	char		**path;
+	char		**cmd;
 	int			index;
 	char		*path_fd_in;
 	char		*path_fd_out;
@@ -36,6 +36,7 @@ typedef struct s_exec_list_sim
 
 typedef struct s_metadata
 {
+	char	**envp;
 	int		child_count;
 	int		cmd_count;
 	char	*limiter;
