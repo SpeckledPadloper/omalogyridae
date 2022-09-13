@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/04/18 11:03:49 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/09/07 19:35:02 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/09/13 19:57:52 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,13 +21,13 @@
 
 #include <string.h>
 #include <stdbool.h>
-#include "libft.h"
+#include "../libft/libft.h"
 #include "lexer.h"
 
 #define KNRM  "\e[0m"
 #define KRED  "\e[1;31m"
 
-t_token	*new_node(int index, char *value, int end_pos, int len)
+t_token	*new_node(int index, char *value)
 {
 	t_token	*new;
 
@@ -35,8 +35,6 @@ t_token	*new_node(int index, char *value, int end_pos, int len)
 	new->i = index;
 	new->token_label = add_token_label(value[0], value[1]);
 	new->token_value = value;
-	new->start_pos = end_pos - len;
-	new->end_pos = end_pos;
 	new->next = NULL;
 	return (new);
 }
@@ -58,13 +56,12 @@ char	*allocate_token_value(char *ret, int count, int i)
 
 	if (i < 0)
 		return (NULL);
-	printf("all_tok_val\ti = %d\n", i);
 	token = malloc(sizeof(char) * (count + 1));
 	ft_strlcpy(token, &ret[i], count + 1);
 	return (token);
 }
 
-void	add_token_to_list(t_token **head, char *token_value, int i, int count)
+void	add_token_to_list(t_token **head, char *token_value)
 {
 	static int	token_index = 0;
 	t_token		*node;
@@ -72,7 +69,7 @@ void	add_token_to_list(t_token **head, char *token_value, int i, int count)
 	if (!token_value || !head)
 		return ;
 	token_index = token_index + 1;
-	node = new_node(token_index, token_value, i, count);
+	node = new_node(token_index, token_value);
 	if (!*head)
 		*head = node;
 	else
@@ -130,8 +127,7 @@ bool	is_whitespace(char current)
 
 bool	is_special_char(char current)
 {
-	if (current == '<' || current == '>' || current == '|' \
-		|| current == '"' || current == '\'')
+	if (current == '<' || current == '>' || current == '|')
 		return (true);
 	return (false);
 }
@@ -145,7 +141,7 @@ bool	is_end_of_input(char current_plus_one)
 
 bool	is_token_separator(char current)
 {
-	if (current == ' ' || current == '<' || current == '>' || \
+	if (is_whitespace(current) || current == '<' || current == '>' || \
 		current == '|' || current == '"' || current == '\'' || current == '$')
 		return (true);
 	return (false);
@@ -170,101 +166,202 @@ bool	is_closing_char(char current, int token_label)
 
 //__________________________________________________________________________________________
 
-void	do_quotes(char *ret, int *i_ref, int *count_ref, int *token_label)
-{
-	//parser gaat handelen, zorg voor label, behoud quotes
-	*token_label = SINGLE_QUOTE;
- 	(*i_ref)++; //duw voorbij signal single quote
-	(*count_ref)++;
-	while(!(ret[*i_ref] == '\''))
-	{
-		if (ret[*i_ref] == '\0') // error of specialcase
-		{
-			printf("\e[1;31m%s\e[0m\n", "missing closing char, lets implemet error or special_case here");
-			break;
-		}		
-		(*i_ref)++;
-		(*count_ref)++;
-	}
-}
+// void	do_quotes(char *ret, int *i_ref, int *count_ref, int *token_label)
+// {
+// 	//parser gaat handelen, zorg voor label, behoud quotes
+// 	*token_label = SINGLE_QUOTE;
+//  	(*i_ref)++; //duw voorbij signal single quote
+// 	(*count_ref)++;
+// 	while(!(ret[*i_ref] == '\''))
+// 	{
+// 		if (ret[*i_ref] == '\0') // error of specialcase
+// 		{
+// 			printf("\e[1;31m%s\e[0m\n", "missing closing char, lets implemet error or special_case here");
+// 			break;
+// 		}		
+// 		(*i_ref)++;
+// 		(*count_ref)++;
+// 	}
+// }
 
-void	single_quotes(char *ret, int *i_ref, int *count_ref, int *token_label)
-{
-	*token_label = SINGLE_QUOTE;
- 	(*i_ref)++;
-	(*count_ref)++;
-	while(!is_closing_char(ret[*i_ref], *token_label))
-	{
-		if (ret[*i_ref] == '\0') // error of specialcase
-		{
-			printf("\e[1;31m%s\e[0m\n", "missing closing char, lets implemet error or special_case here");
-			break;
-		}		
-		(*i_ref)++;
-		(*count_ref)++;
-	}
-}
+// void	single_quotes(char *ret, int *i_ref, int *count_ref, int *token_label)
+// {
+// 	*token_label = SINGLE_QUOTE;
+//  	(*i_ref)++;
+// 	(*count_ref)++;
+// 	while(!is_closing_char(ret[*i_ref], *token_label))
+// 	{
+// 		if (ret[*i_ref] == '\0') // error of specialcase
+// 		{
+// 			printf("\e[1;31m%s\e[0m\n", "missing closing char, lets implemet error or special_case here");
+// 			break;
+// 		}		
+// 		(*i_ref)++;
+// 		(*count_ref)++;
+// 	}
+// }
 
-char	*do_special_char(char *ret, int *i_ref, int *count)
+char	*do_special_char(char *ret, int *i_ref)
 {
-	int		i;
 	char	*token;
+	int		i;
+	int		count;
 
 	i = *i_ref;
-	*count = 1;
+	count = 1;
 	token = NULL;
-	if ((ret[i] == '>' && ret[i + 1] == '>')
-		|| (ret[i] == '<' && ret[i + 1] == '<'))
+	if ((ret[*i_ref] == '>' && ret[*i_ref + 1] == '>')
+		|| (ret[*i_ref] == '<' && ret[*i_ref + 1] == '<'))
 	{
-		(*count)++;
-		*i_ref = *i_ref + 1;
+		count++;
+		(*i_ref)++;
 	}
-	token = allocate_token_value(ret, *count, i);
+	token = allocate_token_value(ret, count, i);
 	return (token);
 }
 
-void lex(char *ret)
+void	lex(char *ret)
 {
 	t_token	*head;
 	t_token	*itter;
 	int		i;
 	int		count;
-	char	*token_value;
+	int		state;
+	int		prev_state;
 
 	i = 0;
-	count = 1;
+	count = 0;
 	head = NULL;
+	state = STATE_START;
 	while (ret[i])
 	{
+		printf("current character: %c\nstring pos: %d\n", ret[i], i);
+		printf("token_len: %d\n", count);
+		printf("state = %d\n", state);
 		if (is_token_separator(ret[i]))
 		{
-			printf("lex\t\ti = %d\n", i);
-			token_value = allocate_token_value(ret, count, (i - (count - 1)));
-			add_token_to_list(&head, token_value, i, (count - 1));
-			if (i != 0 && !is_whitespace(ret[i - 1]) && is_special_char(ret[i]))
+			if (state == STATE_START)
 			{
-				token_value = do_special_char(ret, &i, &count);
-				add_token_to_list(&head, token_value, i, (count - 1));
+				if (is_whitespace(ret[i]))
+					state = STATE_WS;
+				else if (is_special_char(ret[i]))
+				{
+					add_token_to_list(&head, do_special_char(ret, &i));
+					state = STATE_WS;
+					count = -1;
+				}
+				else if (ret[i] == '\'')
+					state = STATE_SQUOTE;
+				else if (ret[i] == '"')
+					state = STATE_DQUOTE;
+				else if (ret[i] == '$')
+					state = STATE_EXPAND;
+				else
+					state = STATE_COMMON;
 			}
-			if (ret[i] == '$')
-				count = 1;
-			else
-				count = 0;
+			else if (state == STATE_COMMON)
+			{
+				add_token_to_list(&head, allocate_token_value(ret, count, (i - count)));
+				count = -1;
+				if (is_whitespace(ret[i]))
+					state = STATE_WS;
+				else if (is_special_char(ret[i]))
+				{
+					add_token_to_list(&head, do_special_char(ret, &i));
+					state = STATE_WS;
+				}
+				else if (ret[i] == '\'')
+					state = STATE_SQUOTE;
+				else if (ret[i] == '"')
+					state = STATE_DQUOTE;
+				if (ret[i] == '$')
+					state = STATE_EXPAND;
+			}
+			else if (state == STATE_WS)
+			{
+				while (is_whitespace(ret[i]))
+					i++;
+				if (is_special_char(ret[i]))
+				{
+					add_token_to_list(&head, do_special_char(ret, &i));
+					state = STATE_WS;
+					count = -1;
+				}
+				else if (ret[i] == '\'')
+					state = STATE_SQUOTE;
+				else if (ret[i] == '"')
+					state = STATE_DQUOTE;
+				else if (ret[i] == '$')
+					state = STATE_EXPAND;
+				if (!is_special_char(ret[i]))
+					count = 0;
+			}
+			else if (state == STATE_SQUOTE)
+			{
+				if (ret[i] == '\'')
+				{
+					add_token_to_list(&head, allocate_token_value(ret, count, (i - count)));
+					state = STATE_WS;
+					count = -1;
+				}
+			}
+			else if (state == STATE_DQUOTE)
+			{
+				if (ret[i] == '"')
+				{
+					add_token_to_list(&head, allocate_token_value(ret, count, (i - count)));
+					state = STATE_WS;
+					count = -1;
+				}
+				else if (ret[i] == '$')
+				{
+					count--;
+					add_token_to_list(&head, allocate_token_value(ret, count, (i - count)));
+					state = STATE_EXPAND;
+					prev_state = STATE_DQUOTE;
+					count = 0;
+				}
+			}
+			else if (state == STATE_EXPAND)
+			{
+				add_token_to_list(&head, allocate_token_value(ret, count, (i - count)));
+				if (prev_state == STATE_DQUOTE)
+				{
+					if (ret[i] == '"')
+					{
+						state = STATE_WS;
+						count = -1;
+					}
+					else
+					{
+						state = STATE_DQUOTE;
+						count = 0;
+					}
+				}
+				else if (is_special_char(ret[i]))
+				{
+					add_token_to_list(&head, do_special_char(ret, &i));
+					state = STATE_WS;
+					count = -1;
+				}
+				else
+				{
+					state = STATE_WS;
+					count = 0;
+				}
+			}
 		}
-		else if (is_end_of_input(ret[i + 1]))
-		{
-			token_value = allocate_token_value(ret, (count + 1), (i - count));
-			add_token_to_list(&head, token_value, i, count);
-		}
-		while (is_whitespace(ret[i]) && is_whitespace(ret[i + 1]))
-			i++;
+		else if (!(state == STATE_SQUOTE || state == STATE_DQUOTE || state == STATE_EXPAND))
+			state = STATE_COMMON;
+		if (is_end_of_input(ret[i + 1]) && state == STATE_COMMON)
+			add_token_to_list(&head, allocate_token_value(ret, (count + 1), (i - count)));
 		i++;
 		count++;
 	}
 	itter = head;
 	while (itter)
 	{
-		printf("token = %s\t| token_label = %d\t| token_index = %d\t| spos = [%d]\t| epos = [%d]\n", itter->token_value, itter->token_label, itter->i, itter->start_pos, itter->end_pos);
+		printf("token = %s\t| token_label = %d\t| token_index = %d\t| token_len = %zu\n", itter->token_value, itter->token_label, itter->i, ft_strlen(itter->token_value));
 		itter = itter->next;
 	}
 }
@@ -289,6 +386,7 @@ int	main(int argc, char **argv, char **env)
 	b_args = set_base_args(argc, argv, env);
 	input = " ";
 	ctrl_d = '\0';
+	printf("states: %d, %d, %d, %d, %d, %d, %d\n", STATE_START, STATE_WS, STATE_SPECIAL, STATE_SQUOTE, STATE_DQUOTE, STATE_EXPAND, STATE_COMMON);
 	while (input != NULL)
 	{
 		input = readline("SpeckledPadloper> ");

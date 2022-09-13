@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/09/07 15:00:03 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/09/13 15:10:06 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,19 @@ typedef enum e_token_label
 	SINGLE_QUOTE,
 	DOUBLE_QUOTE,
 	EXPAND,
-	NO_LABEL,
+	NO_LABEL
 }		t_token_label;
+
+typedef enum e_fin_states
+{
+	STATE_START,
+	STATE_WS,
+	STATE_SPECIAL,
+	STATE_SQUOTE,
+	STATE_DQUOTE,
+	STATE_EXPAND,
+	STATE_COMMON
+}	t_fin_state;
 
 typedef struct s_token
 {
@@ -59,10 +70,10 @@ typedef struct s_simple_command
 	struct s_simple_command	*next;
 }	t_simple_command;
 
-t_token	*new_node(int index, char *value, int end_pos, int len);
+t_token	*new_node(int index, char *value);
 t_token	*tokenlst_last(t_token *lst);
 char	*allocate_token_value(char *ret, int count, int i);
-void	add_token_to_list(t_token **head, char *token_value, int i, int count);
+void	add_token_to_list(t_token **head, char *token_value);
 int		add_token_label(char current, char next_char);
 
 bool	is_special_char(char current);
