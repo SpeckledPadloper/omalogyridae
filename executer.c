@@ -4,7 +4,10 @@
 #include <stdbool.h>
 #include <stdlib.h>
 #include <strings.h>
+#include <string.h>
 #include <fcntl.h>
+
+#include <errno.h>
 
 /*------------------------- utils ---------------------------*/
 
@@ -108,6 +111,34 @@ void	command_not_found(char *error_object)
 	exit(127);
 }
 
+//new error handling
+/*
+void	fatal_memory_error(void)
+{
+	printf("minishell: fatal memory error occured\n");
+	exit(EXIT_FAILURE);
+}
+
+void	set_error_message(t_metadata *data, char *child_errstr, int exitcode)
+{
+	fprintf(stderr, "strerror in set_error_massage is : [ %s ]\n", child_errstr);
+	write(data->err_pipe[1], child_errstr, ft_strlen(child_errstr));
+	//close(data->err_pipe[1]);
+	exit(exitcode);
+}
+
+void	print_error_message(t_metadata *data)
+{
+	int buf_size = 4096;
+	int bytes_read = 0;
+	char buff[buf_size];
+
+
+	bytes_read = read(data->err_pipe[0], buff, buf_size);
+	printf("bytes_read = [%d]\n", bytes_read);
+	write(STDERR_FILENO, buff, bytes_read);
+}
+*/
 /*-------------------------path builder--------------------------------*/
 
 
@@ -141,7 +172,7 @@ static char	*check_path(char *cmd, char **env_path, int count)
 	return (path);
 }
 
-static char	*check_absolute_path(char *path)
+static char	*check_absolute_path(t_metadata *data, char *path)
 {
 	int	is_not_executable;
 	int	file_does_not_exist;
@@ -156,6 +187,12 @@ static char	*check_absolute_path(char *path)
 		{
 			error_message_and_continue(path); // send error enum, catch in parrent if not 0, print there
 			exit(127);
+			//int errnocopy;
+			//errnocopy = errno;
+//
+			//fprintf(stderr, "errno itself is : [ %d ]\n", errnocopy);
+			//fprintf(stderr, "strerror in child is : [ %s ]\n", strerror(errno));
+			//set_error_message(data, strerror(errno), 127);
 		}
 		else
 		{
@@ -193,7 +230,7 @@ static char	**get_env_path_array(char **envp, int *count)
 	return (env_path);
 }
 
-char	*path_parser(char *cmd, char **envp)
+char	*path_builder(t_metadata *data, char *cmd)//char **envp)
 {
 	char	*path;
 	char	**env_path;
@@ -201,10 +238,10 @@ char	*path_parser(char *cmd, char **envp)
 
 	count = 0;
 	path = NULL;
-	env_path = get_env_path_array(envp, &count);
+	env_path = get_env_path_array(data->envp, &count);
 	path = check_path(cmd, env_path, count);
 	if (!path)
-		path = check_absolute_path(cmd);
+		path = check_absolute_path(data, cmd);
 	return (path);
 }
 
@@ -220,11 +257,17 @@ void	open_necessary_fd(t_metadata *data, t_exec_list_sim *cmd_list)
 	if (cmd_list->path_fd_in)
 		data->fd_list->fd_in = open(cmd_list->path_fd_in, O_RDONLY);
 	if (data->fd_list->fd_in < 0)
+	{
+		error_message_and_continue(cmd_list->path_fd_in);
 		exit(EXIT_FAILURE);
+	}
 	if (cmd_list->path_fd_out)
 		data->fd_list->fd_out = open(cmd_list->path_fd_out, O_CREAT | O_WRONLY | O_TRUNC, MODE_RW_R_R);
 	if (data->fd_list->fd_out < 0)
+	{
+		error_message_and_continue(cmd_list->path_fd_out);
 		exit(EXIT_FAILURE);
+	}
 }
 
 static void	redirect_input(t_metadata *data, t_exec_list_sim *cmd_list)
@@ -233,13 +276,11 @@ static void	redirect_input(t_metadata *data, t_exec_list_sim *cmd_list)
 	//	return ;
 	if (data->cmd_count > 1 && data->child_count > 0)
 	{
-		printf("child [ %d ] is hier, input\n", cmd_list->index);
 		if (dup2(data->fd_list->pipe_to_read, STDIN_FILENO) == -1)
 			error_message_and_exit();
 	}
 	if (cmd_list->path_fd_in)
 	{
-		printf("child [ %d ] is hier, file_input\n", cmd_list->index);
 		if (dup2(data->fd_list->fd_in, STDIN_FILENO) == -1)
 			error_message_and_exit();
 	}
@@ -249,13 +290,11 @@ static void	redirect_output(t_metadata *data, t_exec_list_sim *cmd_list)
 {
 	if (data->cmd_count > 1 && (data->child_count + 1) != data->cmd_count)
 	{
-		printf("child [ %d ] is hier, output\n", cmd_list->index);
 		if (dup2(data->fd_list->pipe[1], STDOUT_FILENO) == -1)
 			error_message_and_exit();
 	}
 	if (cmd_list->path_fd_out)
 	{
-		printf("child [ %d ] is hier, file_ouput\n", cmd_list->index);
 		if (dup2(data->fd_list->fd_out, STDOUT_FILENO) == -1)
 			error_message_and_exit();
 	}
@@ -278,6 +317,7 @@ static void	close_unused_fd(t_metadata *data, t_exec_list_sim *cmd_list)
 		close_and_check(data->fd_list->fd_in);
 	if (cmd_list->path_fd_out && data->fd_list->fd_out != -1)
 		close_and_check(data->fd_list->fd_out);
+	close_and_check(data->err_pipe[0]);
 }
 
 void	execute_cmd(t_metadata *data, t_exec_list_sim *cmd_list)
@@ -285,12 +325,11 @@ void	execute_cmd(t_metadata *data, t_exec_list_sim *cmd_list)
 	char	*path;
 
 	path = NULL;
-	//path = cmd_list->cmd[0]; //hardcoded!!!remove!!
 	open_necessary_fd(data, cmd_list);
 	redirect_input(data, cmd_list);
 	redirect_output(data, cmd_list);
+	path = path_builder(data, cmd_list->cmd[0]);
 	close_unused_fd(data, cmd_list);
-	path = path_parser(cmd_list->cmd[0], data->envp);
 	execve(path, cmd_list->cmd, data->envp);
 	printf("cmd with endex [ %d ] failed\n", cmd_list->index);
 	error_message_and_exit();
@@ -300,6 +339,7 @@ static void	fork_processes(t_metadata *data, t_exec_list_sim *cmd_list)
 {
 	while (data->child_count < data->cmd_count)
 	{
+		pipe(data->err_pipe);
 		data->fd_list->pipe_to_read = data->fd_list->pipe[0];
 		if ((data->child_count + 1) != data->cmd_count) //&& cmd count is more than 1
 		{
@@ -315,6 +355,7 @@ static void	fork_processes(t_metadata *data, t_exec_list_sim *cmd_list)
 			close_and_check(data->fd_list->pipe[1]);
 		if (data->fd_list->pipe_to_read != 0)
 			close_and_check(data->fd_list->pipe_to_read);
+		close_and_check(data->err_pipe[1]);
 		data->child_count++;
 		if (cmd_list)
 			cmd_list = cmd_list->next;
@@ -329,9 +370,13 @@ void	executer(t_metadata *meta_data, t_exec_list_sim *cmd_list)
 	fork_processes(meta_data, cmd_list);
 	while (1)
 	{
+		//system("lsof -c minishell");
 		wp = waitpid(-1, &status, 0);
 		if (WEXITSTATUS(status) != 0)
-			printf("!!!error code: [%d] print error message functie call vanuit hier\n", WEXITSTATUS(status));
+		{
+			//printf("!!!error code: [%d] print error message functie call vanuit hier\n", WEXITSTATUS(status));
+			//print_error_message(meta_data);
+		}
 		if (wp == meta_data->lastpid)
 			meta_data->exitstatus = WEXITSTATUS(status);
 		else if (wp == -1)
@@ -390,14 +435,20 @@ int main(int ac, char **av, char **env)
 	char **test_paths[5];
 
 	char *test_path1[] = {"ls", "-la", NULL};
-	char *test_path2[] = {"/bin/cat", "-e", NULL};
-	char *test_path3[] = {"wc", NULL};
+	char *test_path2[] = {"kaas", "-e", NULL};
+	char *test_path3[] = {"kaas", NULL};
+	char *test_path4[] = {"kaas", NULL};
+	char *test_path5[] = {"wc", "-l", NULL};
 	test_paths[0] = test_path1;
 	test_paths[1] = test_path2;
 	test_paths[2] = test_path3;
-	make_execlist_sim(&head, test_paths[0], NULL, NULL);
+	test_paths[3] = test_path4;
+	test_paths[4] = test_path5;
+	make_execlist_sim(&head, test_paths[0], "bestaanniet", NULL);
 	make_execlist_sim(&head, test_paths[1], NULL, NULL);
-	make_execlist_sim(&head, test_paths[2], NULL, "outfile.txt");
+	make_execlist_sim(&head, test_paths[2], NULL, NULL);
+	make_execlist_sim(&head, test_paths[3], NULL, NULL);
+	make_execlist_sim(&head, test_paths[4], NULL, "out_noright");
 
 	/* init mata data struct */
 	t_fd_list	fd_list;
@@ -408,12 +459,12 @@ int main(int ac, char **av, char **env)
 	meta_data.fd_list = &fd_list;
 	meta_data.cmd_count = ft_sim_lstsize(head);
 
-	itter = head;
-	while (itter)
-	{
-		printf("nodes are: index: %d, path: %s flag: %s infile: %s outfile: %s\n", itter->index, itter->cmd[0], itter->cmd[1], itter->path_fd_in, itter->path_fd_out);
-		itter = itter->next;
-	}
+	//itter = head;
+	//while (itter)
+	//{
+	//	printf("nodes are: index: %d, path: %s flag: %s infile: %s outfile: %s\n", itter->index, itter->cmd[0], itter->cmd[1], itter->path_fd_in, itter->path_fd_out);
+	//	itter = itter->next;
+	//}
 
 	executer(&meta_data, head);
 

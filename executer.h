@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/09/14 10:27:25 by lwiedijk      ########   odam.nl         */
+/*   Updated: 2022/09/14 13:52:04 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ typedef struct s_metadata
 	int			cmd_count;
 	char		*limiter;
 	pid_t		lastpid;
+	int			err_pipe[2];
 	int			exitstatus;
 }					t_metadata;
 
