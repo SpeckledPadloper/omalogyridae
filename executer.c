@@ -8,6 +8,42 @@
 
 /*------------------------- utils ---------------------------*/
 
+
+void	free_2d_array(char **array)
+{
+	int	i;
+
+	i = 0;
+	while (array[i])
+	{
+		free(array[i]);
+		i++;
+	}
+	free(array);
+}
+
+void	free_3d_array(char ***cmd_array)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	while (cmd_array[i])
+	{
+		j = 0;
+		while (cmd_array[i][j])
+		{
+			free(cmd_array[i][j]);
+			j++;
+		}
+		free(cmd_array[i]);
+		i++;
+	}
+	free(cmd_array);
+}
+
+
+
 int	ft_sim_lstsize(t_exec_list_sim *lst)
 {
 	t_exec_list_sim	*temp;
@@ -21,6 +57,20 @@ int	ft_sim_lstsize(t_exec_list_sim *lst)
 		count++;
 	}
 	return (count);
+}
+
+bool	is_path(char *cmd)
+{
+	int	i;
+
+	i = 0;
+	while (cmd[i])
+	{
+		if (cmd[i] == '/')
+			return (true);
+		i++;
+	}
+	return (false);
 }
 
 /*------------------------- basic errors need fix ---------------------------*/
@@ -46,6 +96,122 @@ void	close_and_check(int fd)
 	if (fail_check == -1)
 		error_message_and_continue("fd");
 }
+
+void	command_not_found(char *error_object)
+{
+	if (write(STDERR_FILENO, "pipex: ", 7) == -1)
+		error_message_and_exit();
+	if (write(STDERR_FILENO, error_object, ft_strlen(error_object)) == -1)
+		error_message_and_exit();
+	if (write(STDERR_FILENO, ": command not found\n", 20) == -1)
+		error_message_and_exit();
+	exit(127);
+}
+
+/*-------------------------path builder--------------------------------*/
+
+
+
+static char	*check_path(char *cmd, char **env_path, int count)
+{
+	char	*path;
+	int		i;
+	int		is_not_executable;
+
+	path = NULL;
+	i = 0;
+	while (i < count)
+	{
+		path = ft_strjoin("/", cmd);
+		if (!path)
+			error_message_and_exit();
+		path = ft_strjoin_free(env_path[i], path);
+		if (!path)
+			error_message_and_exit();
+		is_not_executable = access(path, F_OK | X_OK);
+		if (is_not_executable)
+		{
+			free(path);
+			path = NULL;
+		}
+		else
+			break ;
+		i++;
+	}
+	return (path);
+}
+
+static char	*check_absolute_path(char *path)
+{
+	int	is_not_executable;
+	int	file_does_not_exist;
+
+	if (!is_path(path))
+		command_not_found(path);
+	is_not_executable = access(path, F_OK | X_OK);
+	if (is_not_executable)
+	{
+		file_does_not_exist = access(path, F_OK);
+		if (file_does_not_exist)
+		{
+			error_message_and_continue(path); // send error enum, catch in parrent if not 0, print there
+			exit(127);
+		}
+		else
+		{
+			error_message_and_continue(path);
+			exit(126);
+		}
+	}
+	return (path);
+}
+
+static char	**get_env_path_array(char **envp, int *count)
+{
+	char	**env_path;
+	char	**temp;
+	int		i;
+
+	i = 0;
+	temp = NULL;
+	env_path = NULL;
+	while (envp[i])
+	{
+		if (!ft_strncmp(envp[i], "PATH=", 5))
+		{
+			temp = ft_split(envp[i], '=');
+			if (!temp)
+				error_message_and_exit();
+			env_path = ft_split_and_count(temp[1], ':', count);
+			if (!env_path)
+				error_message_and_exit();
+			free_2d_array(temp);
+			break ;
+		}
+		i++;
+	}
+	return (env_path);
+}
+
+char	*path_parser(char *cmd, char **envp)
+{
+	char	*path;
+	char	**env_path;
+	int		count;
+
+	count = 0;
+	path = NULL;
+	env_path = get_env_path_array(envp, &count);
+	path = check_path(cmd, env_path, count);
+	if (!path)
+		path = check_absolute_path(cmd);
+	return (path);
+}
+
+
+
+
+
 
 /*------------------------- basic executer ---------------------------*/
 
@@ -119,12 +285,12 @@ void	execute_cmd(t_metadata *data, t_exec_list_sim *cmd_list)
 	char	*path;
 
 	path = NULL;
-	path = cmd_list->cmd[0]; //hardcoded!!!remove!!
+	//path = cmd_list->cmd[0]; //hardcoded!!!remove!!
 	open_necessary_fd(data, cmd_list);
 	redirect_input(data, cmd_list);
 	redirect_output(data, cmd_list);
 	close_unused_fd(data, cmd_list);
-	//path = path_parser(cmd_vectors[data->child_count][0], envp); // will be path checker, is handy in child
+	path = path_parser(cmd_list->cmd[0], data->envp);
 	execve(path, cmd_list->cmd, data->envp);
 	printf("cmd with endex [ %d ] failed\n", cmd_list->index);
 	error_message_and_exit();
@@ -223,9 +389,9 @@ int main(int ac, char **av, char **env)
 	t_exec_list_sim *itter = NULL;
 	char **test_paths[5];
 
-	char *test_path1[] = {"/bin/ls", "-la", NULL};
+	char *test_path1[] = {"ls", "-la", NULL};
 	char *test_path2[] = {"/bin/cat", "-e", NULL};
-	char *test_path3[] = {"/bin/cat", "-e", NULL};
+	char *test_path3[] = {"wc", NULL};
 	test_paths[0] = test_path1;
 	test_paths[1] = test_path2;
 	test_paths[2] = test_path3;
@@ -252,16 +418,5 @@ int main(int ac, char **av, char **env)
 	executer(&meta_data, head);
 
 	return(meta_data.exitstatus);
-
-	
-
-
-	//for (int i = 0; i < 3; i++)
-	//{
-	//	make_execlist_sim(&head, test_paths[i], NULL, NULL);
-	//}
-	
-
-
 
 }
