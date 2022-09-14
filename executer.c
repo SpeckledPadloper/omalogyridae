@@ -49,50 +49,69 @@ void	close_and_check(int fd)
 
 /*------------------------- basic executer ---------------------------*/
 
-void	open_necessary_fd(t_exec_list_sim *cmd_list)
+void	open_necessary_fd(t_metadata *data, t_exec_list_sim *cmd_list)
 {
 	if (cmd_list->path_fd_in)
-		cmd_list->fd_list.fd_in = open(cmd_list->path_fd_in, O_RDONLY);
-	if (cmd_list->fd_list.fd_in < 0)
+		data->fd_list->fd_in = open(cmd_list->path_fd_in, O_RDONLY);
+	if (data->fd_list->fd_in < 0)
 		exit(EXIT_FAILURE);
 	if (cmd_list->path_fd_out)
-		cmd_list->fd_list.fd_out = open(cmd_list->path_fd_out, O_CREAT | O_WRONLY | O_TRUNC, MODE_RW_R_R);
-	if (cmd_list->fd_list.fd_out < 0)
+		data->fd_list->fd_out = open(cmd_list->path_fd_out, O_CREAT | O_WRONLY | O_TRUNC, MODE_RW_R_R);
+	if (data->fd_list->fd_out < 0)
 		exit(EXIT_FAILURE);
 }
 
 static void	redirect_input(t_metadata *data, t_exec_list_sim *cmd_list)
 {
-	if (data->cmd_count <= 1 && !cmd_list->path_fd_in)
-		return ;
-	else if (cmd_list->path_fd_in)
+	//if (data->cmd_count <= 1 && !cmd_list->path_fd_in)
+	//	return ;
+	if (data->cmd_count > 1 && data->child_count > 0)
 	{
-		if (dup2(cmd_list->fd_list.fd_in, STDIN_FILENO) == -1)
+		printf("child [ %d ] is hier, input\n", cmd_list->index);
+		if (dup2(data->fd_list->pipe_to_read, STDIN_FILENO) == -1)
 			error_message_and_exit();
 	}
-	else if (data->cmd_count > 1 && data->child_count > 1)
+	if (cmd_list->path_fd_in)
 	{
-		if (dup2(cmd_list->fd_list.pipe_to_read, STDIN_FILENO) == -1) // dubben kan nu dus niet standaard, kan ook stdin zijn. 
+		printf("child [ %d ] is hier, file_input\n", cmd_list->index);
+		if (dup2(data->fd_list->fd_in, STDIN_FILENO) == -1)
 			error_message_and_exit();
 	}
 }
 
-//output redirection not done yet! 
-
-static void	redirect_ouput(t_metadata *data, t_exec_list_sim *cmd_list)
+static void	redirect_output(t_metadata *data, t_exec_list_sim *cmd_list)
 {
-	if ((data->child_count + 1) == data->cmd_count)
+	if (data->cmd_count > 1 && (data->child_count + 1) != data->cmd_count)
 	{
-		if (cmd_list->fd_list.fd_out == -1)
-			exit(EXIT_FAILURE);
-		if (dup2(cmd_list->fd_list.fd_out, STDOUT_FILENO) == -1)
+		printf("child [ %d ] is hier, output\n", cmd_list->index);
+		if (dup2(data->fd_list->pipe[1], STDOUT_FILENO) == -1)
 			error_message_and_exit();
 	}
-	else
+	if (cmd_list->path_fd_out)
 	{
-		if (dup2(cmd_list->fd_list.pipe[1], STDOUT_FILENO) == -1)
+		printf("child [ %d ] is hier, file_ouput\n", cmd_list->index);
+		if (dup2(data->fd_list->fd_out, STDOUT_FILENO) == -1)
 			error_message_and_exit();
 	}
+}
+
+static void	close_unused_fd(t_metadata *data, t_exec_list_sim *cmd_list)
+{
+	//fprintf(stderr, "fd_list->fd_in = [ %d ]\n", data->fd_list->fd_in);
+	//system("lsof -c minishell");
+
+	if (data->fd_list->pipe[1] && (data->child_count + 1) != data->cmd_count)
+		close_and_check(data->fd_list->pipe[1]);
+	if (data->fd_list->pipe[0] && (data->child_count + 1) != data->cmd_count)
+		close_and_check(data->fd_list->pipe[0]);
+
+	if (data->fd_list->pipe_to_read)
+		close_and_check(data->fd_list->pipe_to_read);
+
+	if (cmd_list->path_fd_in && data->fd_list->fd_in != -1)
+		close_and_check(data->fd_list->fd_in);
+	if (cmd_list->path_fd_out && data->fd_list->fd_out != -1)
+		close_and_check(data->fd_list->fd_out);
 }
 
 void	execute_cmd(t_metadata *data, t_exec_list_sim *cmd_list)
@@ -100,13 +119,14 @@ void	execute_cmd(t_metadata *data, t_exec_list_sim *cmd_list)
 	char	*path;
 
 	path = NULL;
-	path = cmd_list->cmd[0];
-	open_nessesary_fd(cmd_list);
+	path = cmd_list->cmd[0]; //hardcoded!!!remove!!
+	open_necessary_fd(data, cmd_list);
 	redirect_input(data, cmd_list);
 	redirect_output(data, cmd_list);
-	//close_unused_fd(cmd_list->fd_list, data);
+	close_unused_fd(data, cmd_list);
 	//path = path_parser(cmd_vectors[data->child_count][0], envp); // will be path checker, is handy in child
 	execve(path, cmd_list->cmd, data->envp);
+	printf("cmd with endex [ %d ] failed\n", cmd_list->index);
 	error_message_and_exit();
 }
 
@@ -114,10 +134,10 @@ static void	fork_processes(t_metadata *data, t_exec_list_sim *cmd_list)
 {
 	while (data->child_count < data->cmd_count)
 	{
-		cmd_list->fd_list.pipe_to_read = cmd_list->fd_list.pipe[0];
-		if ((data->child_count + 1) != data->cmd_count)
+		data->fd_list->pipe_to_read = data->fd_list->pipe[0];
+		if ((data->child_count + 1) != data->cmd_count) //&& cmd count is more than 1
 		{
-			if (pipe(cmd_list->fd_list.pipe) == -1)
+			if (pipe(data->fd_list->pipe) == -1)
 				error_message_and_exit();
 		}
 		data->lastpid = fork();
@@ -126,9 +146,9 @@ static void	fork_processes(t_metadata *data, t_exec_list_sim *cmd_list)
 		else if (data->lastpid == 0)
 			execute_cmd(data, cmd_list);
 		if ((data->child_count + 1) != data->cmd_count)
-			close_and_check(cmd_list->fd_list.pipe[1]);
-		if (cmd_list->fd_list.pipe_to_read != 0)
-			close_and_check(cmd_list->fd_list.pipe_to_read);
+			close_and_check(data->fd_list->pipe[1]);
+		if (data->fd_list->pipe_to_read != 0)
+			close_and_check(data->fd_list->pipe_to_read);
 		data->child_count++;
 		if (cmd_list)
 			cmd_list = cmd_list->next;
@@ -145,7 +165,7 @@ void	executer(t_metadata *meta_data, t_exec_list_sim *cmd_list)
 	{
 		wp = waitpid(-1, &status, 0);
 		if (WEXITSTATUS(status) != 0)
-			printf("!!!error nr [%d] print error message functie call vanuit hier\n", WEXITSTATUS(status));
+			printf("!!!error code: [%d] print error message functie call vanuit hier\n", WEXITSTATUS(status));
 		if (wp == meta_data->lastpid)
 			meta_data->exitstatus = WEXITSTATUS(status);
 		else if (wp == -1)
@@ -176,7 +196,6 @@ t_exec_list_sim *new_sim_node(char **path, int index, char *in, char *out)
 	new->path_fd_in = in;
     new->path_fd_out = out;
 	new->next = NULL;
-	ft_bzero(&new->fd_list, sizeof(t_fd_list));
 	return (new);
 }
 
@@ -205,26 +224,28 @@ int main(int ac, char **av, char **env)
 	char **test_paths[5];
 
 	char *test_path1[] = {"/bin/ls", "-la", NULL};
-	char *test_path2[] = {"cat", "-e", NULL};
-	char *test_path3[] = {"cat", "-e", NULL};
+	char *test_path2[] = {"/bin/cat", "-e", NULL};
+	char *test_path3[] = {"/bin/cat", "-e", NULL};
 	test_paths[0] = test_path1;
 	test_paths[1] = test_path2;
 	test_paths[2] = test_path3;
 	make_execlist_sim(&head, test_paths[0], NULL, NULL);
-	make_execlist_sim(&head, test_paths[1], "infile.txt", NULL);
-	make_execlist_sim(&head, test_paths[2], NULL, NULL);
+	make_execlist_sim(&head, test_paths[1], NULL, NULL);
+	make_execlist_sim(&head, test_paths[2], NULL, "outfile.txt");
 
 	/* init mata data struct */
-
+	t_fd_list	fd_list;
+	ft_bzero(&fd_list, sizeof(t_fd_list));
 	t_metadata meta_data;
 	ft_bzero(&meta_data, sizeof(t_metadata));
 	meta_data.envp = env;
+	meta_data.fd_list = &fd_list;
 	meta_data.cmd_count = ft_sim_lstsize(head);
 
 	itter = head;
 	while (itter)
 	{
-		printf("nodes are: index: %d, path: %s flag: %s\n", itter->index, itter->cmd[0], itter->cmd[1]);
+		printf("nodes are: index: %d, path: %s flag: %s infile: %s outfile: %s\n", itter->index, itter->cmd[0], itter->cmd[1], itter->path_fd_in, itter->path_fd_out);
 		itter = itter->next;
 	}
 
