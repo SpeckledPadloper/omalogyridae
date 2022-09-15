@@ -76,19 +76,33 @@ bool	is_path(char *cmd)
 	return (false);
 }
 
+
 /*------------------------- basic errors need fix ---------------------------*/
 
-void	error_message_and_exit(void)
+void	print_error_exit(char *errorobject, int errnocopy, int exitcode)
 {
-	perror("minishell");
-	exit(EXIT_FAILURE);
-}
+	char *print;
+	char *errno_string;
+	char buffer[18];
 
-void	error_message_and_continue(char *error_object)
-{
-	if (write(STDERR_FILENO, "minishell: ", 11) == -1)
-		error_message_and_exit();
-	perror(error_object);
+	if (errnocopy == 0)
+	{
+		ft_strlcpy(buffer, "command not found", 18);
+		errno_string = buffer;
+	}
+	else
+		errno_string = strerror(errnocopy);
+	if (errorobject)
+	{
+		print = ft_strjoin("minishell: ", errorobject);
+		print = ft_strjoin_free(print, ": ");
+	}
+	print = ft_strjoin_free(print, errno_string);
+	print = ft_strjoin_free(print, "\n");
+	write(STDERR_FILENO, print, ft_strlen(print));
+	free(print);
+	if (exitcode)
+		exit(exitcode);
 }
 
 void	close_and_check(int fd)
@@ -97,48 +111,10 @@ void	close_and_check(int fd)
 
 	fail_check = close(fd);
 	if (fail_check == -1)
-		error_message_and_continue("fd");
+		print_error_exit("close", errno, EMPTY);
 }
 
-void	command_not_found(char *error_object)
-{
-	if (write(STDERR_FILENO, "pipex: ", 7) == -1)
-		error_message_and_exit();
-	if (write(STDERR_FILENO, error_object, ft_strlen(error_object)) == -1)
-		error_message_and_exit();
-	if (write(STDERR_FILENO, ": command not found\n", 20) == -1)
-		error_message_and_exit();
-	exit(127);
-}
 
-//new error handling
-/*
-void	fatal_memory_error(void)
-{
-	printf("minishell: fatal memory error occured\n");
-	exit(EXIT_FAILURE);
-}
-
-void	set_error_message(t_metadata *data, char *child_errstr, int exitcode)
-{
-	fprintf(stderr, "strerror in set_error_massage is : [ %s ]\n", child_errstr);
-	write(data->err_pipe[1], child_errstr, ft_strlen(child_errstr));
-	//close(data->err_pipe[1]);
-	exit(exitcode);
-}
-
-void	print_error_message(t_metadata *data)
-{
-	int buf_size = 4096;
-	int bytes_read = 0;
-	char buff[buf_size];
-
-
-	bytes_read = read(data->err_pipe[0], buff, buf_size);
-	printf("bytes_read = [%d]\n", bytes_read);
-	write(STDERR_FILENO, buff, bytes_read);
-}
-*/
 /*-------------------------path builder--------------------------------*/
 
 
@@ -178,27 +154,15 @@ static char	*check_absolute_path(t_metadata *data, char *path)
 	int	file_does_not_exist;
 
 	if (!is_path(path))
-		command_not_found(path);
+		print_error_exit(path, EMPTY, CMD_NOT_FOUND);
 	is_not_executable = access(path, F_OK | X_OK);
 	if (is_not_executable)
 	{
 		file_does_not_exist = access(path, F_OK);
 		if (file_does_not_exist)
-		{
-			error_message_and_continue(path); // send error enum, catch in parrent if not 0, print there
-			exit(127);
-			//int errnocopy;
-			//errnocopy = errno;
-//
-			//fprintf(stderr, "errno itself is : [ %d ]\n", errnocopy);
-			//fprintf(stderr, "strerror in child is : [ %s ]\n", strerror(errno));
-			//set_error_message(data, strerror(errno), 127);
-		}
+			print_error_exit(path, errno, CMD_NOT_FOUND);
 		else
-		{
-			error_message_and_continue(path);
-			exit(126);
-		}
+			print_error_exit(path, errno, CMD_CANT_EXE);
 	}
 	return (path);
 }
@@ -328,8 +292,8 @@ void	execute_cmd(t_metadata *data, t_exec_list_sim *cmd_list)
 	open_necessary_fd(data, cmd_list);
 	redirect_input(data, cmd_list);
 	redirect_output(data, cmd_list);
-	path = path_builder(data, cmd_list->cmd[0]);
 	close_unused_fd(data, cmd_list);
+	path = path_builder(data, cmd_list->cmd[0]);
 	execve(path, cmd_list->cmd, data->envp);
 	printf("cmd with endex [ %d ] failed\n", cmd_list->index);
 	error_message_and_exit();
@@ -370,13 +334,7 @@ void	executer(t_metadata *meta_data, t_exec_list_sim *cmd_list)
 	fork_processes(meta_data, cmd_list);
 	while (1)
 	{
-		//system("lsof -c minishell");
 		wp = waitpid(-1, &status, 0);
-		if (WEXITSTATUS(status) != 0)
-		{
-			//printf("!!!error code: [%d] print error message functie call vanuit hier\n", WEXITSTATUS(status));
-			//print_error_message(meta_data);
-		}
 		if (wp == meta_data->lastpid)
 			meta_data->exitstatus = WEXITSTATUS(status);
 		else if (wp == -1)
@@ -435,7 +393,7 @@ int main(int ac, char **av, char **env)
 	char **test_paths[5];
 
 	char *test_path1[] = {"ls", "-la", NULL};
-	char *test_path2[] = {"kaas", "-e", NULL};
+	char *test_path2[] = {"kaas/", "-e", NULL};
 	char *test_path3[] = {"kaas", NULL};
 	char *test_path4[] = {"kaas", NULL};
 	char *test_path5[] = {"wc", "-l", NULL};
@@ -447,7 +405,7 @@ int main(int ac, char **av, char **env)
 	make_execlist_sim(&head, test_paths[0], "bestaanniet", NULL);
 	make_execlist_sim(&head, test_paths[1], NULL, NULL);
 	make_execlist_sim(&head, test_paths[2], NULL, NULL);
-	make_execlist_sim(&head, test_paths[3], NULL, NULL);
+	make_execlist_sim(&head, test_paths[3], "ookniet", NULL);
 	make_execlist_sim(&head, test_paths[4], NULL, "out_noright");
 
 	/* init mata data struct */

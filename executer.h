@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/09/14 13:52:04 by lwiedijk      ########   odam.nl         */
+/*   Updated: 2022/09/15 12:18:45 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,13 @@
 # include <unistd.h>
 
 # define MODE_RW_R_R 0644
+
+typedef enum	s_bash_exitcode
+{
+	EMPTY = 0,
+	CMD_CANT_EXE = 126,
+	CMD_NOT_FOUND = 127,
+}				t_bash_exitcode;
 
 typedef struct s_fd_list
 {
