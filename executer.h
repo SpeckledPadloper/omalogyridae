@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/09/15 15:14:31 by lwiedijk      ########   odam.nl         */
+/*   Updated: 2022/09/15 16:29:21 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,16 @@
 
 # define MODE_RW_R_R 0644
 
-typedef enum	s_bash_exitcode
+typedef enum 	e_open_modes
+{
+	NONE = -1,
+	LESS = 0,
+	LESSLESS = 1,
+	GREAT = 2,
+	GREATGREAT = 3,
+}				t_open_modes;
+
+typedef enum	e_bash_exitcode
 {
 	EMPTY = 0,
 	CMD_CANT_EXE = 126,
@@ -35,8 +44,8 @@ typedef struct s_fd_list
 
 typedef struct	s_file
 {
-	char 			*path_fd;
-	int				MODE;
+	char 			*filename;
+	t_open_modes	mode;
 	struct s_file	*next;
 }					t_file;
 

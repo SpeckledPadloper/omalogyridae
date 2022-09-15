@@ -42,23 +42,6 @@ void	free_3d_array(char ***cmd_array)
 	free(cmd_array);
 }
 
-
-
-int	ft_sim_lstsize(t_exec_list_sim *lst)
-{
-	t_exec_list_sim	*temp;
-	int		count;
-
-	temp = lst;
-	count = 0;
-	while (temp != NULL)
-	{
-		temp = temp->next;
-		count++;
-	}
-	return (count);
-}
-
 bool	is_path(char *cmd)
 {
 	int	i;

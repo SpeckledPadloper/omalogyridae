@@ -13,12 +13,12 @@
 
 void	open_necessary_fd(t_metadata *data, t_exec_list_sim *cmd_list)
 {
-	if (cmd_list->path_fd_in)
-		data->fd_list->fd_in = open(cmd_list->path_fd_in, O_RDONLY);
+	if (cmd_list->infile_list) // dit moet dat een list loop worden tot aan einde list? meteen vanuit hier close per stuk aanroepen?
+		data->fd_list->fd_in = open(cmd_list->infile_list->filename, O_RDONLY);
 	if (data->fd_list->fd_in < 0)
 		print_error_exit(cmd_list->path_fd_in, errno, EXIT_FAILURE);
-	if (cmd_list->path_fd_out)
-		data->fd_list->fd_out = open(cmd_list->path_fd_out, O_CREAT | O_WRONLY | O_TRUNC, MODE_RW_R_R);
+	if (cmd_list->outfile_list)
+		data->fd_list->fd_out = open(cmd_list->outfile_list->filename, O_CREAT | O_WRONLY | O_TRUNC, MODE_RW_R_R);
 	if (data->fd_list->fd_out < 0)
 		print_error_exit(cmd_list->path_fd_out, errno, EXIT_FAILURE);
 }
@@ -66,9 +66,9 @@ static void	close_unused_fd(t_metadata *data, t_exec_list_sim *cmd_list)
 	if (data->fd_list->pipe_to_read)
 		close_and_check(data->fd_list->pipe_to_read);
 
-	if (cmd_list->path_fd_in && data->fd_list->fd_in != -1)
+	if (cmd_list->infile_list && data->fd_list->fd_in != -1)
 		close_and_check(data->fd_list->fd_in);
-	if (cmd_list->path_fd_out && data->fd_list->fd_out != -1)
+	if (cmd_list->outfile_list && data->fd_list->fd_out != -1)
 		close_and_check(data->fd_list->fd_out);
 }
 
@@ -128,7 +128,25 @@ void	executer(t_metadata *meta_data, t_exec_list_sim *cmd_list)
 	}
 }
 
+
+
+
 /*------------------------- cmd list simultion ---------------------------*/
+
+int	ft_sim_lstsize(t_exec_list_sim *lst)
+{
+	t_exec_list_sim	*temp;
+	int		count;
+
+	temp = lst;
+	count = 0;
+	while (temp != NULL)
+	{
+		temp = temp->next;
+		count++;
+	}
+	return (count);
+}
 
 t_exec_list_sim	*list_sim_last(t_exec_list_sim *lst)
 {
@@ -141,20 +159,42 @@ t_exec_list_sim	*list_sim_last(t_exec_list_sim *lst)
 	return (lst);
 }
 
-t_exec_list_sim *new_sim_node(char **path, int index, char *in, char *out)
+t_file	*list_file_last(t_file *lst)
+{
+	if (lst == NULL)
+		return (NULL);
+	while (lst->next != NULL)
+	{
+		lst = lst->next;
+	}
+	return (lst);
+}
+
+t_exec_list_sim *new_sim_node(char **path, int index, t_file *in, t_file *out)
 {
 	t_exec_list_sim *new;
 
 	new = (t_exec_list_sim *)malloc(sizeof(t_exec_list_sim));
 	new->cmd = path;
 	new->index = index;
-	new->path_fd_in = in;
-    new->path_fd_out = out;
+	new->infile_list = in;
+	new->outfile_list = out;
 	new->next = NULL;
 	return (new);
 }
 
-void make_execlist_sim(t_exec_list_sim **head, char **path, char *in, char *out)
+t_file	*new_list_node(char *filename, t_open_modes mode)
+{
+	t_file *new;
+
+	new = (t_file *)malloc(sizeof(t_file));
+	new->filename = filename;
+	new->mode = mode;
+	new->next = NULL;
+	return (new);
+}
+
+void make_execlist_sim(t_exec_list_sim **head, char **path, t_file *in, t_file *out)
 {
     static int count = 0;
 	t_exec_list_sim *node;
@@ -169,6 +209,19 @@ void make_execlist_sim(t_exec_list_sim **head, char **path, char *in, char *out)
 		list_sim_last(*head)->next = node;
 }
 
+void make_file_list(t_file **head, char *filename, t_open_modes mode)
+{
+	t_file *node;
+
+	if (!head)
+		return ;
+	node = new_list_node(filename, mode);
+	if (!*head)
+		*head = node;
+	else
+		list_file_last(*head)->next = node;
+}
+
 int main(int ac, char **av, char **env)
 {
 
@@ -176,23 +229,28 @@ int main(int ac, char **av, char **env)
 
 	t_exec_list_sim *head = NULL;
 	t_exec_list_sim *itter = NULL;
-	char **test_paths[5];
 
-	char *test_path1[] = {"ls", "-la", NULL};
+	t_file *head_in = NULL;
+	t_file *head_out = NULL;
+	t_file *head_neutral = NULL;
+
+	char *test_path1[] = {"ls", NULL};
 	char *test_path2[] = {"kaas/", "-e", NULL};
 	char *test_path3[] = {"kaas", NULL};
 	char *test_path4[] = {"ls", NULL};
 	char *test_path5[] = {"wc", "-l", NULL};
-	test_paths[0] = test_path1;
-	test_paths[1] = test_path2;
-	test_paths[2] = test_path3;
-	test_paths[3] = test_path4;
-	test_paths[4] = test_path5;
-	make_execlist_sim(&head, test_paths[1], NULL, NULL);
-	make_execlist_sim(&head, test_paths[2], NULL, NULL);
-	make_execlist_sim(&head, test_paths[4], NULL, NULL);
-	make_execlist_sim(&head, test_paths[3], NULL, "out_noright");
-	make_execlist_sim(&head, test_paths[0], "bestaanniet", NULL);
+	make_execlist_sim(&head, test_path1, NULL, NULL);
+	make_execlist_sim(&head, test_path2, NULL, NULL);
+	make_execlist_sim(&head, test_path3, head_in, NULL);
+	make_execlist_sim(&head, test_path4, NULL, head_out);
+	make_execlist_sim(&head, test_path5, NULL, NULL);
+
+	make_file_list(&head_neutral, NULL, NONE);
+
+	make_file_list(&head_in, "a", LESS);
+	make_file_list(&head_in, "b", LESS);
+
+	make_file_list(&head_out, "out_noright", GREAT);
 
 	/* init mata data struct */
 	t_fd_list	fd_list;
