@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/09/15 12:18:45 by lwiedijk      ########   odam.nl         */
+/*   Updated: 2022/09/15 15:14:31 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,10 +33,19 @@ typedef struct s_fd_list
 	int	pipe_to_read;
 }					t_fd_list;
 
+typedef struct	s_file
+{
+	char 			*path_fd;
+	int				MODE;
+	struct s_file	*next;
+}					t_file;
+
 typedef struct s_exec_list_sim
 {
 	char		**cmd;
 	int			index;
+	t_file		*infile_list;
+	t_file		*outfile_list;
 	char		*path_fd_in;
 	char		*path_fd_out;
 	struct s_exec_list_sim *next;
@@ -53,5 +62,24 @@ typedef struct s_metadata
 	int			err_pipe[2];
 	int			exitstatus;
 }					t_metadata;
+
+
+/*-------------------------path builder-------------------------*/
+
+char	*path_builder(t_metadata *data, char *cmd);
+
+/*-------------------------utils-------------------------*/
+
+int	ft_sim_lstsize(t_exec_list_sim *lst);
+bool	is_path(char *cmd);
+void	close_and_check(int fd);
+
+void	free_2d_array(char **array);
+
+/*-------------------------error handling-------------------------*/
+
+void	print_error_exit(char *errorobject, int errnocopy, int exitcode);
+
+
 
 #endif
