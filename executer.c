@@ -77,7 +77,7 @@ bool	is_path(char *cmd)
 }
 
 
-/*------------------------- basic errors need fix ---------------------------*/
+/*------------------------- error handling ---------------------------*/
 
 void	print_error_exit(char *errorobject, int errnocopy, int exitcode)
 {
@@ -114,7 +114,6 @@ void	close_and_check(int fd)
 		print_error_exit("close", errno, EMPTY);
 }
 
-
 /*-------------------------path builder--------------------------------*/
 
 
@@ -131,10 +130,10 @@ static char	*check_path(char *cmd, char **env_path, int count)
 	{
 		path = ft_strjoin("/", cmd);
 		if (!path)
-			error_message_and_exit();
+			print_error_exit("malloc", errno, EXIT_FAILURE);
 		path = ft_strjoin_free(env_path[i], path);
 		if (!path)
-			error_message_and_exit();
+			print_error_exit("malloc", errno, EXIT_FAILURE);
 		is_not_executable = access(path, F_OK | X_OK);
 		if (is_not_executable)
 		{
@@ -182,10 +181,10 @@ static char	**get_env_path_array(char **envp, int *count)
 		{
 			temp = ft_split(envp[i], '=');
 			if (!temp)
-				error_message_and_exit();
+				print_error_exit("malloc", errno, EXIT_FAILURE);
 			env_path = ft_split_and_count(temp[1], ':', count);
 			if (!env_path)
-				error_message_and_exit();
+				print_error_exit("malloc", errno, EXIT_FAILURE);
 			free_2d_array(temp);
 			break ;
 		}
@@ -203,6 +202,8 @@ char	*path_builder(t_metadata *data, char *cmd)//char **envp)
 	count = 0;
 	path = NULL;
 	env_path = get_env_path_array(data->envp, &count);
+	if (env_path == NULL)
+		print_error_exit(cmd, 2, CMD_NOT_FOUND);
 	path = check_path(cmd, env_path, count);
 	if (!path)
 		path = check_absolute_path(data, cmd);
@@ -221,17 +222,11 @@ void	open_necessary_fd(t_metadata *data, t_exec_list_sim *cmd_list)
 	if (cmd_list->path_fd_in)
 		data->fd_list->fd_in = open(cmd_list->path_fd_in, O_RDONLY);
 	if (data->fd_list->fd_in < 0)
-	{
-		error_message_and_continue(cmd_list->path_fd_in);
-		exit(EXIT_FAILURE);
-	}
+		print_error_exit(cmd_list->path_fd_in, errno, EXIT_FAILURE);
 	if (cmd_list->path_fd_out)
 		data->fd_list->fd_out = open(cmd_list->path_fd_out, O_CREAT | O_WRONLY | O_TRUNC, MODE_RW_R_R);
 	if (data->fd_list->fd_out < 0)
-	{
-		error_message_and_continue(cmd_list->path_fd_out);
-		exit(EXIT_FAILURE);
-	}
+		print_error_exit(cmd_list->path_fd_out, errno, EXIT_FAILURE);
 }
 
 static void	redirect_input(t_metadata *data, t_exec_list_sim *cmd_list)
@@ -241,12 +236,12 @@ static void	redirect_input(t_metadata *data, t_exec_list_sim *cmd_list)
 	if (data->cmd_count > 1 && data->child_count > 0)
 	{
 		if (dup2(data->fd_list->pipe_to_read, STDIN_FILENO) == -1)
-			error_message_and_exit();
+			print_error_exit("dup2", errno, EXIT_FAILURE);
 	}
 	if (cmd_list->path_fd_in)
 	{
 		if (dup2(data->fd_list->fd_in, STDIN_FILENO) == -1)
-			error_message_and_exit();
+			print_error_exit("dup2", errno, EXIT_FAILURE);
 	}
 }
 
@@ -255,12 +250,12 @@ static void	redirect_output(t_metadata *data, t_exec_list_sim *cmd_list)
 	if (data->cmd_count > 1 && (data->child_count + 1) != data->cmd_count)
 	{
 		if (dup2(data->fd_list->pipe[1], STDOUT_FILENO) == -1)
-			error_message_and_exit();
+			print_error_exit("dup2", errno, EXIT_FAILURE);
 	}
 	if (cmd_list->path_fd_out)
 	{
 		if (dup2(data->fd_list->fd_out, STDOUT_FILENO) == -1)
-			error_message_and_exit();
+			print_error_exit("dup2", errno, EXIT_FAILURE);
 	}
 }
 
@@ -281,7 +276,6 @@ static void	close_unused_fd(t_metadata *data, t_exec_list_sim *cmd_list)
 		close_and_check(data->fd_list->fd_in);
 	if (cmd_list->path_fd_out && data->fd_list->fd_out != -1)
 		close_and_check(data->fd_list->fd_out);
-	close_and_check(data->err_pipe[0]);
 }
 
 void	execute_cmd(t_metadata *data, t_exec_list_sim *cmd_list)
@@ -295,31 +289,29 @@ void	execute_cmd(t_metadata *data, t_exec_list_sim *cmd_list)
 	close_unused_fd(data, cmd_list);
 	path = path_builder(data, cmd_list->cmd[0]);
 	execve(path, cmd_list->cmd, data->envp);
-	printf("cmd with endex [ %d ] failed\n", cmd_list->index);
-	error_message_and_exit();
+	//printf("cmd with endex [ %d ] failed\n", cmd_list->index);
+	print_error_exit("execve", errno, EXIT_FAILURE);
 }
 
 static void	fork_processes(t_metadata *data, t_exec_list_sim *cmd_list)
 {
 	while (data->child_count < data->cmd_count)
 	{
-		pipe(data->err_pipe);
 		data->fd_list->pipe_to_read = data->fd_list->pipe[0];
 		if ((data->child_count + 1) != data->cmd_count) //&& cmd count is more than 1
 		{
 			if (pipe(data->fd_list->pipe) == -1)
-				error_message_and_exit();
+				print_error_exit("pipe", errno, EXIT_FAILURE);
 		}
 		data->lastpid = fork();
 		if (data->lastpid == -1)
-			error_message_and_exit();
+			print_error_exit("fork", errno, EXIT_FAILURE);
 		else if (data->lastpid == 0)
 			execute_cmd(data, cmd_list);
 		if ((data->child_count + 1) != data->cmd_count)
 			close_and_check(data->fd_list->pipe[1]);
 		if (data->fd_list->pipe_to_read != 0)
 			close_and_check(data->fd_list->pipe_to_read);
-		close_and_check(data->err_pipe[1]);
 		data->child_count++;
 		if (cmd_list)
 			cmd_list = cmd_list->next;
@@ -395,18 +387,18 @@ int main(int ac, char **av, char **env)
 	char *test_path1[] = {"ls", "-la", NULL};
 	char *test_path2[] = {"kaas/", "-e", NULL};
 	char *test_path3[] = {"kaas", NULL};
-	char *test_path4[] = {"kaas", NULL};
+	char *test_path4[] = {"ls", NULL};
 	char *test_path5[] = {"wc", "-l", NULL};
 	test_paths[0] = test_path1;
 	test_paths[1] = test_path2;
 	test_paths[2] = test_path3;
 	test_paths[3] = test_path4;
 	test_paths[4] = test_path5;
-	make_execlist_sim(&head, test_paths[0], "bestaanniet", NULL);
 	make_execlist_sim(&head, test_paths[1], NULL, NULL);
 	make_execlist_sim(&head, test_paths[2], NULL, NULL);
-	make_execlist_sim(&head, test_paths[3], "ookniet", NULL);
-	make_execlist_sim(&head, test_paths[4], NULL, "out_noright");
+	make_execlist_sim(&head, test_paths[4], NULL, NULL);
+	make_execlist_sim(&head, test_paths[3], NULL, "out_noright");
+	make_execlist_sim(&head, test_paths[0], "bestaanniet", NULL);
 
 	/* init mata data struct */
 	t_fd_list	fd_list;
