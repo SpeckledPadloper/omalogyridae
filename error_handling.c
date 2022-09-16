@@ -13,11 +13,11 @@ void	print_error_exit(char *errorobject, int errnocopy, int exitcode)
 {
 	char *print;
 	char *errno_string;
-	char buffer[18];
+	char buffer[CNF_BUF_SIZE];
 
-	if (errnocopy == 0)
+	if (!errnocopy)
 	{
-		ft_strlcpy(buffer, "command not found", 18);
+		ft_strlcpy(buffer, "command not found", CNF_BUF_SIZE);
 		errno_string = buffer;
 	}
 	else
