@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/09/15 16:29:21 by lwiedijk      ########   odam.nl         */
+/*   Updated: 2022/09/16 09:51:59 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include <unistd.h>
 
 # define MODE_RW_R_R 0644
+# define CNF_BUF_SIZE 18
 
 typedef enum 	e_open_modes
 {
