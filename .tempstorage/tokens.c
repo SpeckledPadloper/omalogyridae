@@ -6,7 +6,7 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/24 14:12:48 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/08/24 17:17:46 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/09/14 15:57:16 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,8 @@
 
 #include <string.h>
 #include <stdbool.h>
-#include "libft.h"
-#include "lexer.h"
+#include "../../libft/libft.h"
+#include "hdr/lexer.h"
 
 #define KNRM  "\e[0m"
 #define KRED  "\e[1;31m"
@@ -36,7 +36,6 @@ t_token	*new_node(int index, int label, char *value)
 	new->token_label = label;
 	new->token_value = value;
 	new->next = NULL;
-	new->stitch = NULL;
 	return (new);
 }
 
