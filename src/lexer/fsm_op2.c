@@ -6,7 +6,7 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/16 20:28:42 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/09/16 20:29:02 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/09/18 17:54:32 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,9 @@
 #include "hdr/lexer.h"
 #include "hdr/charchecks.h"
 #include "hdr/token_utils.h"
+#include "../hdr/structs.h"
 
+/*fsm_expand still needs to be normed*/
 int	fsm_expand(t_line_nav *lnav, t_token **head, int *prev_state)
 {
 	add_token_to_list(head, allocate_token_value(lnav), STATE_EXPAND, lnav);
@@ -25,6 +27,7 @@ int	fsm_expand(t_line_nav *lnav, t_token **head, int *prev_state)
 		if (lnav->ret[lnav->i] == '"')
 		{
 			lnav->count = -1;
+			*prev_state = -1;
 			return (STATE_WS);
 		}
 		else
@@ -42,7 +45,7 @@ int	fsm_expand(t_line_nav *lnav, t_token **head, int *prev_state)
 		if (lnav->ret[lnav->i] == '"' || lnav->ret[lnav->i] == '\'')
 			lnav->i--;
 		else
-			lnav->count = 0;
+			lnav->count = -1;
 		return (STATE_WS);
 	}
 }

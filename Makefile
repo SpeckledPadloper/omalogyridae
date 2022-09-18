@@ -6,7 +6,7 @@
 #    By: mteerlin <mteerlin@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2021/07/21 12:25:06 by mteerlin      #+#    #+#                  #
-#    Updated: 2022/09/16 20:29:25 by mteerlin      ########   odam.nl          #
+#    Updated: 2022/09/18 19:54:03 by mteerlin      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,11 +17,10 @@ SRC		:= src/lexer/charchecks.c \
 src/lexer/fsm_op.c \
 src/lexer/fsm_op2.c \
 src/lexer/lexer.c \
-src/lexer/lexer2.c \
+src/lexer/stx_error.c \
 src/lexer/token_utils.c \
-
-HDR_DIR	:= 	src/lexer/hdr
-HDR		:= 	$(wildcard src/*.h) $(wildcard src/*/*.h) $(wildcard src/*/*/*.h)
+src/lexer/token_utils2.c \
+src/main.c \
 
 OBJ_DIR := 	obj/
 OBJ		= 	$(addprefix $(OBJ_DIR), $(SRC:src/%.c=%.o))
@@ -51,14 +50,14 @@ $(OBJ_DIR)%.o:		%.c $(HDR_DIR)$(HDR)
 			@mkdir -p $(dir $@)
 			@$(CC) $(CFLAGS) -c $< -o $@
 
-test:		
-			@echo $(VPATH)
-			@echo " "
-			@echo $(SRC)
-			@echo " "
-			@echo $(OBJ)
-			@echo " "
-			@echo $(HDR)
+# test:		
+# 			@echo $(VPATH)
+# 			@echo " "
+# 			@echo $(SRC)
+# 			@echo " "
+# 			@echo $(OBJ)
+# 			@echo " "
+# 			@echo $(HDR)
 
 clean:
 			@echo "Removing object files"

@@ -6,26 +6,12 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/24 15:12:42 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/09/16 15:09:41 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/09/18 19:58:03 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <limits.h> //path max
-#include <unistd.h> //getcwd 
-
-#include <stdio.h>
-#include <stdlib.h>
-
-#include <readline/readline.h>
-#include <readline/history.h>
-
-#include <string.h>
 #include <stdbool.h>
 #include "../../libft/libft.h"
-#include "hdr/lexer.h"
-
-#define KNRM  "\e[0m"
-#define KRED  "\e[1;31m"
 
 bool	is_whitespace(char current)
 {
@@ -54,5 +40,15 @@ bool	is_token_separator(char current)
 		current == '|' || current == '"' || current == '\'' || \
 		current == '$')
 		return (true);
+	return (false);
+}
+
+bool	is_redirect(char *token)
+{
+	if (ft_strncmp(token, "<", 2) || ft_strncmp(token, "<<", 3) || \
+		ft_strncmp(token, ">", 2) || ft_strncmp(token, ">>", 3))
+	{
+		return (true);
+	}
 	return (false);
 }

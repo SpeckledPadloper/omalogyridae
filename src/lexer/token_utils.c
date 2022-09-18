@@ -6,15 +6,19 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/14 12:29:38 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/09/16 20:14:39 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/09/18 20:07:37 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
+#include <unistd.h>
 
 #include "hdr/lexer.h"
 #include "hdr/token_utils.h"
 #include "../../libft/libft.h"
+#include "../hdr/structs.h"
+#include "hdr/errors.h"
+#include "hdr/charchecks.h"
 
 t_token	*new_node(int index, char *value, int state, t_line_nav *lnav)
 {
@@ -67,19 +71,31 @@ char	*allocate_token_value(t_line_nav *lnav)
 	return (token);
 }
 
-void	add_token_to_list(t_token **head, char *val, int s, t_line_nav *lnav)
+bool	add_token_to_list(t_token **head, char *val, int s, t_line_nav *lnav)
 {
 	static int	token_index = 0;
 	t_token		*node;
 
 	if (!val || !head)
-		return ;
+		return (true);
+	if (*head == NULL && !ft_strncmp(val, "|", 2))
+	{
+		syntax_error(val);
+		return (false);
+	}
 	token_index = token_index + 1;
 	node = new_node(token_index, val, s, lnav);
+	if (*head && tokenlst_last(*head)->token_label < PIPE && \
+		node->token_label <= PIPE)
+	{
+		syntax_error(val);
+		return (false);
+	}
 	if (!*head)
 		*head = node;
 	else
 		tokenlst_last(*head)->next = node;
+	return (true);
 }
 
 int	add_token_label(char current, char next_char)

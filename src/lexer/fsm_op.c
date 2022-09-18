@@ -6,7 +6,7 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/14 12:48:41 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/09/16 20:29:16 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/09/18 20:24:25 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,22 +15,29 @@
 #include "hdr/lexer.h"
 #include "hdr/charchecks.h"
 #include "hdr/token_utils.h"
+#include "../hdr/structs.h"
 
 int	fsm_start(t_line_nav *lnav, t_token **head)
 {
 	if (is_whitespace(lnav->ret[lnav->i]))
 		return (STATE_WS);
 	else if (is_special_char(lnav->ret[lnav->i]))
-	{
-		printf("is special char\n");
-		add_token_to_list(head, do_special_char(lnav), -1, lnav);
+	{	
+		if (!add_token_to_list(head, do_special_char(lnav), -1, lnav))
+			return (STATE_STXERROR);
 		lnav->count = -1;
 		return (STATE_WS);
 	}
 	else if (lnav->ret[lnav->i] == '\'')
+	{
+		lnav->count = 0;
 		return (STATE_SQUOTE);
+	}
 	else if (lnav->ret[lnav->i] == '"')
+	{
+		lnav->count = 0;
 		return (STATE_DQUOTE);
+	}
 	else if (lnav->ret[lnav->i] == '$')
 		return (STATE_EXPAND);
 	else
@@ -43,7 +50,8 @@ int	fsm_whitespace(t_line_nav *lnav, t_token **head)
 		(lnav->i)++;
 	if (is_special_char(lnav->ret[lnav->i]))
 	{
-		add_token_to_list(head, do_special_char(lnav), -1, lnav);
+		if (!add_token_to_list(head, do_special_char(lnav), -1, lnav))
+			return (STATE_STXERROR);
 		lnav->count = -1;
 		return (STATE_WS);
 	}
@@ -77,7 +85,6 @@ int	fsm_squote(t_line_nav *lnav, t_token **head)
 
 int	fsm_dquote(t_line_nav *lnav, t_token **head, int *prev_state)
 {
-	printf("previous state fsm_dquote = %d\n", *prev_state);
 	if (lnav->ret[lnav->i] == '"')
 	{
 		lnav->count--;
