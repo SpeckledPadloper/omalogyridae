@@ -6,12 +6,12 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/09/19 16:00:59 by lwiedijk      ########   odam.nl         */
+/*   Updated: 2022/09/19 16:24:20 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
+#ifndef EXECUTER_H
+# define EXECUTER_H
 
 # include <stdbool.h>
 # include <unistd.h>
@@ -19,7 +19,7 @@
 # define MODE_RW_R_R 0644
 # define CNF_BUF_SIZE 18
 
-typedef enum 	e_open_modes
+typedef enum e_open_modes
 {
 	NONE = -1,
 	LESS = 0,
@@ -28,7 +28,7 @@ typedef enum 	e_open_modes
 	GREATGREAT = 3,
 }				t_open_modes;
 
-typedef enum	e_bash_exitcode
+typedef enum e_bash_exitcode
 {
 	EMPTY = 0,
 	CMD_CANT_EXE = 126,
@@ -43,21 +43,21 @@ typedef struct s_fd_list
 	int	pipe_to_read;
 }					t_fd_list;
 
-typedef struct	s_file
+typedef struct s_file
 {
-	char 			*filename;
+	char			*filename;
 	t_open_modes	mode;
 	struct s_file	*next;
 }					t_file;
 
 typedef struct s_exec_list_sim
 {
-	char		**cmd;
-	int			index;
-	t_file		*infile_list;
-	t_file		*outfile_list;
-	int			heredoc_pipe[2];
-	struct s_exec_list_sim *next;
+	char					**cmd;
+	int						index;
+	t_file					*infile_list;
+	t_file					*outfile_list;
+	int						heredoc_pipe[2];
+	struct s_exec_list_sim	*next;
 }				t_exec_list_sim;
 
 typedef struct s_metadata
@@ -76,8 +76,8 @@ void	executer(t_metadata *meta_data, t_exec_list_sim *cmd_list);
 
 /*-------------------------file handling-------------------------*/
 
-void		open_necessary_infiles(t_metadata *data, t_exec_list_sim *cmd_list);
-void		open_necessary_outfiles(t_metadata *data, t_exec_list_sim *cmd_list);
+void	open_necessary_infiles(t_metadata *data, t_exec_list_sim *cmd_list);
+void	open_necessary_outfiles(t_metadata *data, t_exec_list_sim *cmd_list);
 void	redirect_input(t_metadata *data, t_exec_list_sim *cmd_list);
 void	redirect_output(t_metadata *data, t_exec_list_sim *cmd_list);
 void	close_unused_fd(t_metadata *data, t_exec_list_sim *cmd_list);
