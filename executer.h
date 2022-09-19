@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/09/19 11:37:07 by lwiedijk      ########   odam.nl         */
+/*   Updated: 2022/09/19 15:23:50 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,9 @@ typedef struct s_metadata
 	int			exitstatus;
 }					t_metadata;
 
+/*-------------------------executer-------------------------*/
+
+void	executer(t_metadata *meta_data, t_exec_list_sim *cmd_list);
 
 /*-------------------------path builder-------------------------*/
 
@@ -89,7 +92,7 @@ void	print_error_exit(char *errorobject, int errnocopy, int exitcode);
 
 /*-------------------------heredoc handling-------------------------*/
 
-void	heredoc_handling(int *pipe_end, char *limiter);
+void	get_all_heredoc(t_metadata *data, t_exec_list_sim *cmd_list);
 
 
 
