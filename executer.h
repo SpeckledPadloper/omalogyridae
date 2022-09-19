@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/09/16 09:51:59 by lwiedijk      ########   odam.nl         */
+/*   Updated: 2022/09/19 09:51:41 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,8 +56,6 @@ typedef struct s_exec_list_sim
 	int			index;
 	t_file		*infile_list;
 	t_file		*outfile_list;
-	char		*path_fd_in;
-	char		*path_fd_out;
 	struct s_exec_list_sim *next;
 }				t_exec_list_sim;
 
@@ -67,9 +65,7 @@ typedef struct s_metadata
 	char		**envp;
 	int			child_count;
 	int			cmd_count;
-	char		*limiter;
 	pid_t		lastpid;
-	int			err_pipe[2];
 	int			exitstatus;
 }					t_metadata;
 

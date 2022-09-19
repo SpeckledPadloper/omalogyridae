@@ -20,11 +20,11 @@ void	open_necessary_fd(t_metadata *data, t_exec_list_sim *cmd_list)
 	if (cmd_list->infile_list) // dit moet dat een list loop worden tot aan einde list? meteen vanuit hier close per stuk aanroepen?
 		data->fd_list->fd_in = open(cmd_list->infile_list->filename, O_RDONLY);
 	if (data->fd_list->fd_in < 0)
-		print_error_exit(cmd_list->path_fd_in, errno, EXIT_FAILURE);
+		print_error_exit(cmd_list->infile_list->filename, errno, EXIT_FAILURE);
 	if (cmd_list->outfile_list)
 		data->fd_list->fd_out = open(cmd_list->outfile_list->filename, O_CREAT | O_WRONLY | O_TRUNC, MODE_RW_R_R);
 	if (data->fd_list->fd_out < 0)
-		print_error_exit(cmd_list->path_fd_out, errno, EXIT_FAILURE);
+		print_error_exit(cmd_list->outfile_list->filename, errno, EXIT_FAILURE);
 }
 
 static void	redirect_input(t_metadata *data, t_exec_list_sim *cmd_list)
@@ -36,7 +36,7 @@ static void	redirect_input(t_metadata *data, t_exec_list_sim *cmd_list)
 		if (dup2(data->fd_list->pipe_to_read, STDIN_FILENO) == -1)
 			print_error_exit("dup2", errno, EXIT_FAILURE);
 	}
-	if (cmd_list->path_fd_in)
+	if (cmd_list->infile_list)
 	{
 		if (dup2(data->fd_list->fd_in, STDIN_FILENO) == -1)
 			print_error_exit("dup2", errno, EXIT_FAILURE);
@@ -50,7 +50,7 @@ static void	redirect_output(t_metadata *data, t_exec_list_sim *cmd_list)
 		if (dup2(data->fd_list->pipe[1], STDOUT_FILENO) == -1)
 			print_error_exit("dup2", errno, EXIT_FAILURE);
 	}
-	if (cmd_list->path_fd_out)
+	if (cmd_list->outfile_list)
 	{
 		if (dup2(data->fd_list->fd_out, STDOUT_FILENO) == -1)
 			print_error_exit("dup2", errno, EXIT_FAILURE);
@@ -104,6 +104,7 @@ static void	fork_processes(t_metadata *data, t_exec_list_sim *cmd_list)
 		data->lastpid = fork();
 		if (data->lastpid == -1)
 			print_error_exit("fork", errno, EXIT_FAILURE);
+		//execute_cmd(data, cmd_list);
 		else if (data->lastpid == 0)
 			execute_cmd(data, cmd_list);
 		if ((data->child_count + 1) != data->cmd_count)
@@ -238,23 +239,22 @@ int main(int ac, char **av, char **env)
 	t_file *head_out = NULL;
 	t_file *head_neutral = NULL;
 
-	char *test_path1[] = {"ls", NULL};
-	char *test_path2[] = {"kaas/", "-e", NULL};
-	char *test_path3[] = {"kaas", NULL};
-	char *test_path4[] = {"ls", NULL};
-	char *test_path5[] = {"wc", "-l", NULL};
-	make_execlist_sim(&head, test_path1, NULL, NULL);
-	make_execlist_sim(&head, test_path2, NULL, NULL);
-	make_execlist_sim(&head, test_path3, head_in, NULL);
-	make_execlist_sim(&head, test_path4, NULL, head_out);
-	make_execlist_sim(&head, test_path5, NULL, NULL);
-
-	make_file_list(&head_neutral, NULL, NONE);
-
 	make_file_list(&head_in, "a", LESS);
 	make_file_list(&head_in, "b", LESS);
 
 	make_file_list(&head_out, "out_noright", GREAT);
+
+	char *test_path1[] = {"ls", NULL};
+	char *test_path2[] = {"kaas/", "-e", NULL};
+	char *test_path3[] = {"cat", "-e", NULL};
+	char *test_path4[] = {"ls", NULL};
+	char *test_path5[] = {"cat", "-e", NULL};
+	make_execlist_sim(&head, test_path4, NULL, head_out);
+	make_execlist_sim(&head, test_path2, NULL, NULL);
+	make_execlist_sim(&head, test_path1, NULL, NULL);
+	make_execlist_sim(&head, test_path3, head_in, NULL);
+	make_execlist_sim(&head, test_path5, NULL, NULL);
+
 
 	/* init mata data struct */
 	t_fd_list	fd_list;
