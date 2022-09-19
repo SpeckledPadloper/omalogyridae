@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        ::::::::            */
+/*   error_handling.c                                   :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
+/*   Updated: 2022/09/19 15:14:57 by lwiedijk      ########   odam.nl         */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "executer.h"
 #include "libft/libft.h"
 #include <stdio.h>
@@ -6,14 +18,13 @@
 #include <strings.h>
 #include <string.h>
 #include <fcntl.h>
-
 #include <errno.h>
 
 void	print_error_exit(char *errorobject, int errnocopy, int exitcode)
 {
-	char *print;
-	char *errno_string;
-	char buffer[CNF_BUF_SIZE];
+	char	*print;
+	char	*errno_string;
+	char	buffer[CNF_BUF_SIZE];
 
 	if (!errnocopy)
 	{
