@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/09/19 15:41:15 by lwiedijk      ########   odam.nl         */
+/*   Updated: 2022/09/19 16:19:03 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,8 +48,8 @@ static void	heredoc_handling(int *pipe_end, char *limiter)
 
 void	get_all_heredoc(t_metadata *data, t_exec_list_sim *cmd_list)
 {
-	int i;
-	t_file *head;
+	int		i;
+	t_file	*head;
 
 	i = 0;
 	while (i < data->cmd_count)
@@ -58,7 +58,8 @@ void	get_all_heredoc(t_metadata *data, t_exec_list_sim *cmd_list)
 		while (cmd_list->infile_list)
 		{
 			if (cmd_list->infile_list->mode == LESSLESS)
-				heredoc_handling(cmd_list->heredoc_pipe, cmd_list->infile_list->filename);
+				heredoc_handling
+					(cmd_list->heredoc_pipe, cmd_list->infile_list->filename);
 			if (cmd_list->infile_list->next && cmd_list->heredoc_pipe[0])
 			{
 				close_and_check(cmd_list->heredoc_pipe[0]);

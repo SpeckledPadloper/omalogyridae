@@ -6,12 +6,12 @@
 #    By: lwiedijk <marvin@codam.nl>                   +#+                      #
 #                                                    +#+                       #
 #    Created: 2022/05/04 10:58:28 by lwiedijk      #+#    #+#                  #
-#    Updated: 2022/09/19 15:21:12 by lwiedijk      ########   odam.nl          #
+#    Updated: 2022/09/19 15:54:24 by lwiedijk      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
 NAME		=	minishell
-SRCS		=	executer.c path_builder.c error_handling.c executer_utils.c heredoc_handling.c list_sim.c
+SRCS		=	executer.c path_builder.c error_handling.c executer_utils.c heredoc_handling.c file_handling.c list_sim.c
 OBJS_DIR	=	objs/
 OBJS		=	$(addprefix $(OBJS_DIR), $(SRCS:.c=.o))
 CFLAGS		=	-g
