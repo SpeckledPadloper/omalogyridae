@@ -12,6 +12,10 @@
 /*------------------------- basic executer ---------------------------*/
 
 void	open_necessary_fd(t_metadata *data, t_exec_list_sim *cmd_list)
+
+/* if <<, pipe, write to pipe, if not last redirect close pipe, else set
+	readend_fd to data->fd_list->pipe_to_read? change or add if() in redirect_input()  */
+
 {
 	if (cmd_list->infile_list) // dit moet dat een list loop worden tot aan einde list? meteen vanuit hier close per stuk aanroepen?
 		data->fd_list->fd_in = open(cmd_list->infile_list->filename, O_RDONLY);
