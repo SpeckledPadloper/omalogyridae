@@ -6,7 +6,7 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/14 12:48:41 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/09/18 20:24:25 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/09/22 18:09:30 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 #include "hdr/lexer.h"
 #include "hdr/charchecks.h"
-#include "hdr/token_utils.h"
+#include "../utils/hdr/token_utils.h"
 #include "../hdr/structs.h"
 
 int	fsm_start(t_line_nav *lnav, t_token **head)

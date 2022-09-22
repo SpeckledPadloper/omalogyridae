@@ -1,26 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   parcer.c                                           :+:    :+:            */
+/*   tests.h                                            :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2022/09/18 17:44:02 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/09/22 17:54:05 by mteerlin      ########   odam.nl         */
+/*   Created: 2022/09/20 15:29:23 by mteerlin      #+#    #+#                 */
+/*   Updated: 2022/09/20 15:39:45 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "hdr/parcer.h"
-#include "../utils/hdr/token_utils.h"
+#ifndef TESTS_H
+# define TESTS_H
+# include "../hdr/structs.h"
 
-#include "../tests/tests.h" //for testing, remove before handin
-#include <stdio.h>
+void	test_lex(t_token *head);
+void	test_split(t_token_section *first);
 
-void	parce(t_token *head)
-{
-	t_token_section	*first;
-
-	first = tokenlst_split(head);
-	test_split(first);
-	split_cmd_rdir(first);
-}
+#endif

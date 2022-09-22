@@ -6,13 +6,14 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/18 17:48:05 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/09/18 20:17:20 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/09/22 17:27:51 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef STRUCTS_H
 # define STRUCTS_H
 # define SHLNAME "SpeckledPadloper"
+# include <stdbool.h>
 
 typedef struct s_base_args
 {
@@ -31,19 +32,34 @@ typedef struct s_token
 	struct s_token	*next;
 }					t_token;
 
-typedef struct s_preexpand
+typedef struct s_token_section
 {
-	t_token	*head;
-	char	*q;
-}	t_preexpand;
+	t_token					*head;
+	struct s_token_section	*next;
+}	t_token_section;
 
-typedef struct s_simple_command
+typedef struct s_split_cmd_rdir
 {
-	int						index;
+	t_token	*cmd_head;
+	t_token	*in_head;
+	t_token	*out_head;
+}	t_split_cmd_rdir;
+
+typedef struct s_file
+{
+	char			*filename;
+	bool			mode;
+	struct s_file	*next;
+}	t_file;
+
+typedef struct s_exec_list_sim
+{
 	char					**cmd;
-	char					*redir_in;
-	char					*redir_out;
-	struct s_simple_command	*next;
-}	t_simple_command;
+	int						index;
+	t_file					*infile_list;
+	t_file					*outfile_list;
+	int						heredoc_pipe[2];
+	struct s_exec_list_sim	*next;
+}	t_exec_list_sim;
 
 #endif

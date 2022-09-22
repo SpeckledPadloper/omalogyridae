@@ -6,19 +6,19 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/14 12:29:38 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/09/18 20:07:37 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/09/21 15:24:27 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
 #include <unistd.h>
 
-#include "hdr/lexer.h"
+#include "../lexer/hdr/lexer.h"
 #include "hdr/token_utils.h"
 #include "../../libft/libft.h"
 #include "../hdr/structs.h"
-#include "hdr/errors.h"
-#include "hdr/charchecks.h"
+#include "../lexer/hdr/errors.h"
+#include "../lexer/hdr/charchecks.h"
 
 t_token	*new_node(int index, char *value, int state, t_line_nav *lnav)
 {
@@ -85,8 +85,10 @@ bool	add_token_to_list(t_token **head, char *val, int s, t_line_nav *lnav)
 	}
 	token_index = token_index + 1;
 	node = new_node(token_index, val, s, lnav);
-	if (*head && tokenlst_last(*head)->token_label < PIPE && \
-		node->token_label <= PIPE)
+	if (*head && ((tokenlst_last(*head)->token_label < PIPE \
+		&& node->token_label <= PIPE) \
+		|| (tokenlst_last(*head)->token_label == PIPE \
+		&& node->token_label == PIPE)))
 	{
 		syntax_error(val);
 		return (false);

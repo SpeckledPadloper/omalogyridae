@@ -6,7 +6,7 @@
 #    By: lwiedijk <marvin@codam.nl>                   +#+                      #
 #                                                    +#+                       #
 #    Created: 2022/05/04 10:58:28 by lwiedijk      #+#    #+#                  #
-#    Updated: 2022/09/14 16:38:12 by mteerlin      ########   odam.nl          #
+#    Updated: 2022/09/19 15:05:18 by mteerlin      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,10 +30,13 @@ $(NAME): $(OBJS) $(LIBFT)
 
 $(OBJS_DIR)%.o: %.c $(HEADERS)
 	@mkdir -p $(@D)
-	$(CC) $(CFLAGS) -I$(LIBFT_DIR) -c $< -o $@
+	$(CC) $(CFLAGS) -I$(VPATH) -I$(LIBFT_DIR) -c $< -o $@
 
 $(LIBFT):
 	make bonus -C $(LIBFT_DIR)
+
+test:
+	@echo $(VPATH)
 
 clean:
 	$(RM) $(OBJS)

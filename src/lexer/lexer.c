@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/04/18 11:03:49 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/09/18 20:26:57 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/09/22 18:10:46 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,13 +25,12 @@
 #include "../../libft/libft.h"
 #include "hdr/lexer.h"
 #include "hdr/fsm.h"
-#include "hdr/token_utils.h"
+#include "../utils/hdr/token_utils.h"
 #include "hdr/charchecks.h"
 #include "../hdr/structs.h"
 #include "hdr/errors.h"
 
-#define KNRM  "\e[0m"
-#define KRED  "\e[1;31m"
+#include "../tests/tests.h" //for testing, remove before handin.
 
 t_base_args	*set_base_args(int argc, char **argv, char **env)
 {
@@ -83,7 +82,13 @@ static void	end_of_input(t_token **head, t_line_nav *lnav, int state, int ps)
 	if (state == STATE_SQUOTE || state == STATE_DQUOTE \
 		|| (state == STATE_EXPAND && ps == STATE_DQUOTE))
 	{
-		write(2, "error: unclosed quote\n", 22);
+		write(2, SHLNAME, ft_strlen(SHLNAME));
+		write(2, ": unexpecter EOF while looking for matching '", 45);
+		if (state == STATE_SQUOTE)
+			write(2, "'", 1);
+		else if (state == STATE_DQUOTE || ps == STATE_DQUOTE)
+			write(2, "\"", 1);
+		write(2, "'\n", 2);
 		if (*head != NULL)
 			tokenlst_clear(head);
 	}
@@ -101,7 +106,6 @@ t_token	*lex(char *ret)
 	t_line_nav	lnav;
 	int			state;
 	static int	prev_state = -1;
-	t_token		*itter;
 
 	lnav.ret = ret;
 	lnav.i = 0;
@@ -129,11 +133,6 @@ t_token	*lex(char *ret)
 		syntax_error("newline");
 		tokenlst_clear(&head);
 	}
-	itter = head;
-	while (itter)
-	{
-		printf("token = %s\t| token_label = %d\t| token_index = %d\t| token_start = %d\t| token_end = %d\t| token_len = %zu\n", itter->token_value, itter->token_label, itter->i, itter->start_pos, itter->end_pos, ft_strlen(itter->token_value));
-		itter = itter->next;
-	}
+	test_lex(head);
 	return (head);
 }

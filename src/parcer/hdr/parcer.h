@@ -1,26 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   parcer.c                                           :+:    :+:            */
+/*   parcer.h                                           :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2022/09/18 17:44:02 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/09/22 17:54:05 by mteerlin      ########   odam.nl         */
+/*   Created: 2022/09/19 14:51:11 by mteerlin      #+#    #+#                 */
+/*   Updated: 2022/09/22 16:25:28 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "hdr/parcer.h"
-#include "../utils/hdr/token_utils.h"
+#ifndef PARCER_H
+# define PARCER_H
+# include "../../hdr/structs.h"
 
-#include "../tests/tests.h" //for testing, remove before handin
-#include <stdio.h>
-
-void	parce(t_token *head)
+typedef enum e_pxstates
 {
-	t_token_section	*first;
+	STATE_CMD,
+	STATE_RDIRIN,
+	STATE_RDIROUT
+}	t_pxstates;
 
-	first = tokenlst_split(head);
-	test_split(first);
-	split_cmd_rdir(first);
-}
+void	parce(t_token *head);
+void	split_cmd_rdir(t_token_section *current);
+
+#endif
