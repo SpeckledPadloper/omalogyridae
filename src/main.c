@@ -6,7 +6,7 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/18 16:18:33 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/09/20 19:28:33 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/09/23 18:46:03 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ int	main(int argc, char **argv, char **env)
 			continue ;
 		add_history(input);
 		free(input);
-		parce(head);
+		parce(head, &b_args->env);
 	}
 	free(prompt);
 	free(b_args);

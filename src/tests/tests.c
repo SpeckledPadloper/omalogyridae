@@ -6,7 +6,7 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/20 15:28:53 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/09/21 14:23:23 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/09/23 15:50:58 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,4 +41,14 @@ void	test_split(t_token_section *first)
 		i++;
 		itter = itter->next;
 	}
+}
+
+void	test_split_cmd_rdir(t_split_cmd_rdir *split)
+{
+	printf("\tCOMMAND LIST:\n");
+	test_lex(split->cmd_head);
+	printf("\n\n\tREDIRECT IN LIST:\n");
+	test_lex(split->in_head);
+	printf("\n\n\tREDIRECT OUT LIST:\n\n\n");
+	test_lex(split->out_head);
 }

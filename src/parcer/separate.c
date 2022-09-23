@@ -6,7 +6,7 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/21 18:02:50 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/09/22 18:19:08 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/09/23 18:45:37 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,13 +79,12 @@ int	set_separation_limit(t_token *temp)
 	int	separation_limit;
 
 	separation_limit = 2;
-	printf("separation_limit = %d\n", separation_limit);
 	if (temp->token_label == SINGLE_QUOTE || temp->token_label == DOUBLE_QUOTE)
 		separation_limit++;
 	if (temp->next && (temp->next->token_label == SINGLE_QUOTE \
-		|| temp->next->token_label == DOUBLE_QUOTE))
+		|| temp->next->token_label == DOUBLE_QUOTE \
+		|| (temp->next->token_label == EXPAND)))
 		separation_limit++;
-	printf("separation_limit = %d\n", separation_limit);
 	return (separation_limit);
 }
 
@@ -107,7 +106,6 @@ int	add_redir_list(t_token **rdir, t_token **temp)
 		((*temp)->next->token_label >= PIPE && \
 		((*temp)->next->start_pos - (*temp)->end_pos) < sep))
 	{
-		printf("start minus end = %d\n", ((*temp)->next->start_pos) - (*temp)->end_pos);
 		*temp = (*temp)->next;
 		sep = set_separation_limit(*temp);
 	}
@@ -119,17 +117,7 @@ int	add_redir_list(t_token **rdir, t_token **temp)
 	return (set_state_cio(*temp));
 }
 
-void	test_split_cmd_rdir(t_split_cmd_rdir *split)
-{
-	printf("\tCOMMAND LIST:\n");
-	test_lex(split->cmd_head);
-	printf("\n\n\tREDIRECT IN LIST:\n");
-	test_lex(split->in_head);
-	printf("\n\n\tREDIRECT OUT LIST:\n");
-	test_lex(split->out_head);
-}
-
-void	split_cmd_rdir(t_token_section *current)
+t_split_cmd_rdir	*split_cmd_rdir(t_token_section *current)
 {
 	t_token				*temp;
 	t_split_cmd_rdir	*split;
@@ -143,7 +131,6 @@ void	split_cmd_rdir(t_token_section *current)
 	state = set_state_cio(temp);
 	while (temp)
 	{
-		printf("state = %d\n", state);
 		if (state == STATE_RDIRIN)
 			state = add_redir_list(&split->in_head, &temp);
 		else if (state == STATE_RDIROUT)
@@ -151,5 +138,5 @@ void	split_cmd_rdir(t_token_section *current)
 		else
 			state = add_command_list(&split->cmd_head, &temp);
 	}
-	test_split_cmd_rdir(split);
+	return (split);
 }

@@ -6,7 +6,7 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/16 20:28:42 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/09/22 18:14:21 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/09/22 19:44:33 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,9 @@ int	fsm_common(t_line_nav *lnav, t_token **head)
 		return (STATE_DQUOTE);
 	}
 	if (lnav->ret[lnav->i] == '$')
+	{
+		lnav->count = 0;
 		return (STATE_EXPAND);
+	}
 	return (STATE_WS);
 }
