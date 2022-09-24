@@ -6,7 +6,7 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/21 18:02:50 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/09/23 18:45:37 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/09/24 20:14:46 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,10 @@ int	set_separation_limit(t_token *temp)
 {
 	int	separation_limit;
 
-	separation_limit = 2;
+	write(1, "8\n", 2);
+	if (temp == NULL)
+		return (0);
+	separation_limit = 1;
 	if (temp->token_label == SINGLE_QUOTE || temp->token_label == DOUBLE_QUOTE)
 		separation_limit++;
 	if (temp->next && (temp->next->token_label == SINGLE_QUOTE \

@@ -6,7 +6,7 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/16 20:28:42 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/09/22 19:44:33 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/09/24 15:27:25 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,17 +21,17 @@
 int	fsm_expand(t_line_nav *lnav, t_token **head, int *prev_state)
 {
 	add_token_to_list(head, allocate_token_value(lnav), STATE_EXPAND, lnav);
+	lnav->count = -1;
 	if (*prev_state == STATE_DQUOTE)
 	{
-		lnav->count = 1;
 		if (lnav->ret[lnav->i] == '"')
 		{
-			lnav->count = -1;
 			*prev_state = -1;
 			return (STATE_WS);
 		}
 		else
 		{
+			lnav->count = 1;
 			*prev_state = STATE_EXPAND;
 			return (STATE_DQUOTE);
 		}
@@ -44,11 +44,9 @@ int	fsm_expand(t_line_nav *lnav, t_token **head, int *prev_state)
 	}
 	else
 	{
-		lnav->count = -1;
-		if (lnav->ret[lnav->i] == '"' || lnav->ret[lnav->i] == '\'')
+		if (lnav->ret[lnav->i] == '"' || lnav->ret[lnav->i] == '\'' \
+			|| lnav->ret[lnav->i] == '$')
 			lnav->i--;
-		else
-			lnav->count = -1;
 		return (STATE_WS);
 	}
 }
@@ -62,26 +60,18 @@ int	fsm_common(t_line_nav *lnav, t_token **head)
 	lnav->count = -1;
 	if (is_whitespace(lnav->ret[lnav->i]))
 		return (STATE_WS);
-	else if (is_special_char(lnav->ret[lnav->i]))
+	if (is_special_char(lnav->ret[lnav->i]))
 	{
 		add_token_to_list(head, do_special_char(lnav), -1, lnav);
 		lnav->count = -1;
 		return (STATE_WS);
 	}
+	lnav->count = 0;
 	if (lnav->ret[lnav->i] == '\'')
-	{
-		lnav->count++;
 		return (STATE_SQUOTE);
-	}
 	if (lnav->ret[lnav->i] == '"')
-	{
-		lnav->count++;
 		return (STATE_DQUOTE);
-	}
 	if (lnav->ret[lnav->i] == '$')
-	{
-		lnav->count = 0;
 		return (STATE_EXPAND);
-	}
 	return (STATE_WS);
 }

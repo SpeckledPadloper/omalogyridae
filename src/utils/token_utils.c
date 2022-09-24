@@ -6,7 +6,7 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/14 12:29:38 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/09/22 19:44:05 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/09/24 20:12:02 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@
 #include "../hdr/structs.h"
 #include "../lexer/hdr/errors.h"
 #include "../lexer/hdr/charchecks.h"
+
+#include <stdio.h>
 
 t_token	*new_node(int index, char *value, int state, t_line_nav *lnav)
 {
@@ -49,13 +51,16 @@ t_token	*new_node(int index, char *value, int state, t_line_nav *lnav)
 
 t_token	*tokenlst_last(t_token *lst)
 {
+	t_token	*temp;
+
 	if (lst == NULL)
 		return (NULL);
-	while (lst->next != NULL)
+	temp = lst;
+	while (temp->next != NULL)
 	{
-		lst = lst->next;
+		temp = temp->next;
 	}
-	return (lst);
+	return (temp);
 }
 
 char	*allocate_token_value(t_line_nav *lnav)
@@ -78,13 +83,13 @@ bool	add_token_to_list(t_token **head, char *val, int s, t_line_nav *lnav)
 
 	if (!val || !head)
 		return (true);
-	if (*head == NULL && !ft_strncmp(val, "|", 2))
+	if (*head == NULL && !ft_strncmp(val, "|", 2) && s != STATE_DQUOTE)
 	{
 		syntax_error(val);
 		return (false);
 	}
-	token_index = token_index + 1;
 	node = new_node(token_index, val, s, lnav);
+	printf("new_node: %p\n", node);
 	if (*head && ((tokenlst_last(*head)->token_label < PIPE \
 		&& node->token_label <= PIPE) \
 		|| (tokenlst_last(*head)->token_label == PIPE \
@@ -93,6 +98,7 @@ bool	add_token_to_list(t_token **head, char *val, int s, t_line_nav *lnav)
 		syntax_error(val);
 		return (false);
 	}
+	token_index = token_index + 1;
 	if (!*head)
 		*head = node;
 	else

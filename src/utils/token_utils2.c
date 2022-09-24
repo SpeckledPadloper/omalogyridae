@@ -6,7 +6,7 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/18 16:19:49 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/09/21 14:30:15 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/09/24 19:51:26 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 #include "../error/error.h"
 
 #include <stdio.h>
+#include <unistd.h>
 
 void	tokenlst_clear(t_token **head)
 {
@@ -34,6 +35,25 @@ void	tokenlst_clear(t_token **head)
 	free(temp->token_value);
 	free(temp);
 	*head = NULL;
+}
+
+void	tokenlst_cut_one(t_token **head, t_token **target)
+{
+	t_token	*temp;
+
+	if (!head || !target)
+		return ;
+	temp = *head;
+	write(1, "5\n", 2);
+	while (temp->next != NULL && temp->next != *target)
+		temp = temp->next;
+	write(1, "6\n", 2);
+	temp->next = NULL;
+	temp = *target;
+	*target = (*target)->next;
+	temp->next = NULL;
+	tokenlst_clear(&temp);
+	write(1, "7\n", 2);
 }
 
 t_token_section	*new_token_section(t_token *head)
