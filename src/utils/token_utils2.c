@@ -6,7 +6,7 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/18 16:19:49 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/09/24 19:51:26 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/09/26 19:54:53 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,18 +22,16 @@ void	tokenlst_clear(t_token **head)
 {
 	t_token	*temp;
 
-	if (*head == NULL)
+	if (head == NULL || *head == NULL)
 		return ;
-	temp = *head;
-	while (temp->next)
+	while (*head)
 	{
-		*head = temp->next;
-		free(temp->token_value);
-		free(temp);
-		temp = *head;
+		temp = (*head)->next;
+		if (((*head)->token_value))
+			free((*head)->token_value);
+		free(*head);
+		*head = temp;
 	}
-	free(temp->token_value);
-	free(temp);
 	*head = NULL;
 }
 
@@ -44,16 +42,13 @@ void	tokenlst_cut_one(t_token **head, t_token **target)
 	if (!head || !target)
 		return ;
 	temp = *head;
-	write(1, "5\n", 2);
 	while (temp->next != NULL && temp->next != *target)
 		temp = temp->next;
-	write(1, "6\n", 2);
 	temp->next = NULL;
 	temp = *target;
 	*target = (*target)->next;
 	temp->next = NULL;
 	tokenlst_clear(&temp);
-	write(1, "7\n", 2);
 }
 
 t_token_section	*new_token_section(t_token *head)
@@ -78,42 +73,10 @@ t_token_section	*token_section_last(t_token_section *first)
 	return (ret);
 }
 
-void	add_section_to_list(t_token_section **first, t_token *head)
-{
-	t_token_section	*new;
-
-	new = new_token_section(head);
-	if (*first == NULL)
-		*first = new;
-	else
-		token_section_last(*first)->next = new;
-}
-
 void	cut_token(t_token **head, t_token **tail)
 {
 	*head = (*tail)->next->next;
+	free((*tail)->next->token_value);
 	free((*tail)->next);
 	(*tail)->next = NULL;
-}
-
-t_token_section	*tokenlst_split(t_token *head)
-{
-	t_token_section	*first;
-	t_token			*temp;
-
-	first = NULL;
-	temp = head;
-	while (temp && temp->next)
-	{
-		if (temp->next->token_label == PIPE)
-		{
-			add_section_to_list(&first, head);
-			cut_token(&head, &temp);
-			temp = head;
-		}
-		else if (temp)
-			temp = temp->next;
-	}
-	add_section_to_list(&first, head);
-	return (first);
 }

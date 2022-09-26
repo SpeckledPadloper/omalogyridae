@@ -6,7 +6,7 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/14 12:31:24 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/09/24 19:39:55 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/09/26 17:01:27 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,11 @@ void			tokenlst_clear(t_token **head);
 void			tokenlst_cut_one(t_token **head, t_token **target);
 int				add_token_label(char current, char next_char);
 
-t_token_section	*tokenlst_split(t_token *head);
+t_token_section	*tokenlst_split(t_token **head);
 void			cut_token(t_token **head, t_token **tail);
 void			add_section_to_list(t_token_section **first, t_token *head);
 t_token_section	*token_section_last(t_token_section *first);
-t_token_section	*new_token_section(t_token *head);
+t_token_section	*new_token_section(t_token **head);
+t_token_section	*rdirlst_split(t_token **head, int f1, int f2);
 
 #endif

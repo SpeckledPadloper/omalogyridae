@@ -6,7 +6,7 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/14 12:29:38 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/09/24 20:12:02 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/09/26 13:30:30 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,6 @@ bool	add_token_to_list(t_token **head, char *val, int s, t_line_nav *lnav)
 		return (false);
 	}
 	node = new_node(token_index, val, s, lnav);
-	printf("new_node: %p\n", node);
 	if (*head && ((tokenlst_last(*head)->token_label < PIPE \
 		&& node->token_label <= PIPE) \
 		|| (tokenlst_last(*head)->token_label == PIPE \

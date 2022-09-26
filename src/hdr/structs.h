@@ -6,7 +6,7 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/18 17:48:05 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/09/22 17:27:51 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/09/26 15:07:59 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,13 @@
 # define STRUCTS_H
 # define SHLNAME "SpeckledPadloper"
 # include <stdbool.h>
+
+typedef enum e_file_flags
+{
+	RDIR_AMBIGUOUS,
+	RDIR_SINGLE,
+	RDIR_DOUBLE
+}	t_file_flags;
 
 typedef struct s_base_args
 {
@@ -40,15 +47,15 @@ typedef struct s_token_section
 
 typedef struct s_split_cmd_rdir
 {
-	t_token	*cmd_head;
-	t_token	*in_head;
-	t_token	*out_head;
+	t_token			*cmd_head;
+	t_token_section	*in_head;
+	t_token_section	*out_head;
 }	t_split_cmd_rdir;
 
 typedef struct s_file
 {
 	char			*filename;
-	bool			mode;
+	int				mode;
 	struct s_file	*next;
 }	t_file;
 

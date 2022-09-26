@@ -6,7 +6,7 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/21 18:02:50 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/09/24 20:14:46 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/09/26 19:45:02 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 #include "hdr/parcer.h"
 #include "../lexer/hdr/lexer.h"
 #include "../utils/hdr/token_utils.h"
+#include "hdr/separate.h"
 
 #include "../tests/tests.h"
 
@@ -44,16 +45,6 @@
  * 		add tokens to the set until redirect character is found
  */
 
-int	set_state_cio(t_token *temp)
-{
-	if (temp->token_label == LESS || temp->token_label == LESS)
-		return (STATE_RDIRIN);
-	else if (temp->token_label == GREAT || temp->token_label == GREATGREAT)
-		return (STATE_RDIROUT);
-	else
-		return (STATE_CMD);
-}
-
 int	add_command_list(t_token **cmd, t_token **temp)
 {
 	t_token	*temp2;
@@ -74,23 +65,6 @@ int	add_command_list(t_token **cmd, t_token **temp)
 	return (set_state_cio(*temp));
 }
 
-int	set_separation_limit(t_token *temp)
-{
-	int	separation_limit;
-
-	write(1, "8\n", 2);
-	if (temp == NULL)
-		return (0);
-	separation_limit = 1;
-	if (temp->token_label == SINGLE_QUOTE || temp->token_label == DOUBLE_QUOTE)
-		separation_limit++;
-	if (temp->next && (temp->next->token_label == SINGLE_QUOTE \
-		|| temp->next->token_label == DOUBLE_QUOTE \
-		|| (temp->next->token_label == EXPAND)))
-		separation_limit++;
-	return (separation_limit);
-}
-
 int	add_redir_list(t_token **rdir, t_token **temp)
 {
 	t_token	*temp2;
@@ -102,20 +76,19 @@ int	add_redir_list(t_token **rdir, t_token **temp)
 		*rdir = *temp;
 	else
 		tokenlst_last(*rdir)->next = *temp;
+	sep = 1;
 	*temp = (*temp)->next;
 	if ((*temp)->next)
 		sep = set_separation_limit(*temp);
 	while ((*temp)->next && \
 		((*temp)->next->token_label >= PIPE && \
-		((*temp)->next->start_pos - (*temp)->end_pos) < sep))
+		((*temp)->next->start_pos - (*temp)->end_pos) <= sep))
 	{
 		*temp = (*temp)->next;
 		sep = set_separation_limit(*temp);
 	}
 	temp2 = *temp;
 	*temp = (*temp)->next;
-	if (*temp == NULL)
-		return (STATE_CMD);
 	temp2->next = NULL;
 	return (set_state_cio(*temp));
 }
@@ -123,23 +96,30 @@ int	add_redir_list(t_token **rdir, t_token **temp)
 t_split_cmd_rdir	*split_cmd_rdir(t_token_section *current)
 {
 	t_token				*temp;
+	t_token				*commands;
+	t_token				*rdir_in;
+	t_token				*rdir_out;
 	t_split_cmd_rdir	*split;
 	int					state;
 
 	split = malloc(sizeof(t_split_cmd_rdir));
 	split->cmd_head = NULL;
-	split->in_head = NULL;
-	split->out_head = NULL;
+	commands = NULL;
+	rdir_in = NULL;
+	rdir_out = NULL;
 	temp = current->head;
 	state = set_state_cio(temp);
 	while (temp)
 	{
 		if (state == STATE_RDIRIN)
-			state = add_redir_list(&split->in_head, &temp);
+			state = add_redir_list(&rdir_in, &temp);
 		else if (state == STATE_RDIROUT)
-			state = add_redir_list(&split->out_head, &temp);
+			state = add_redir_list(&rdir_out, &temp);
 		else
-			state = add_command_list(&split->cmd_head, &temp);
+			state = add_command_list(&commands, &temp);
 	}
+	split->cmd_head = cmdlst_split(&commands);
+	split->in_head = rdirlst_split(&rdir_in, LESS, LESSLESS);
+	split->out_head = rdirlst_split(&rdir_out, GREAT, GREATGREAT);
 	return (split);
 }
