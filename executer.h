@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/09/27 14:29:18 by lwiedijk      ########   odam.nl         */
+/*   Updated: 2022/09/27 17:14:20 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 
 # define MODE_RW_R_R 0644
 # define CNF_BUF_SIZE 18
+# define BUILDIN_AMOUNT 7
 
 typedef enum e_open_modes
 {
@@ -64,12 +65,21 @@ typedef struct s_exec_list_sim
 typedef struct s_metadata
 {
 	t_fd_list	*fd_list;
+	char		*buildins[BUILDIN_AMOUNT];
+	void		(*fn_buildins[BUILDIN_AMOUNT])();
 	char		**envp;
 	int			child_count;
 	int			cmd_count;
 	pid_t		lastpid;
 	int			exitstatus;
 }					t_metadata;
+
+/*-------------------------buildins-------------------------*/
+
+void	check_echo(void);
+void	check_export(void);
+void	check_cd(void);
+void	check_pwd(void);
 
 /*-------------------------executer-------------------------*/
 
@@ -92,6 +102,8 @@ char	*path_builder(t_metadata *data, char *cmd);
 int		ft_sim_lstsize(t_exec_list_sim *lst);
 bool	is_path(char *cmd);
 void	close_and_check(int fd);
+
+void	set_buildin_array(t_metadata *data);
 
 void	free_2d_array(char **array);
 

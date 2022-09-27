@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/09/27 14:29:31 by lwiedijk      ########   odam.nl         */
+/*   Updated: 2022/09/27 17:15:21 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,18 @@
 #include <fcntl.h>
 
 #include <errno.h>
+
+void	set_buildin_array(t_metadata *data)
+{
+	data->buildins[0] = "echo";
+	data->buildins[1] = "cd";
+	data->buildins[2] = "pwd";
+	data->buildins[3] = "export";
+	data->fn_buildins[0] = &check_echo;
+	data->fn_buildins[1] = &check_cd;
+	data->fn_buildins[2] = &check_pwd;
+	data->fn_buildins[3] = &check_export;
+}
 
 void	free_2d_array(char **array)
 {
