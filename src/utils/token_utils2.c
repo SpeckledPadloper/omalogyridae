@@ -6,7 +6,7 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/18 16:19:49 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/09/26 19:54:53 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/09/27 20:25:54 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,13 +35,21 @@ void	tokenlst_clear(t_token **head)
 	*head = NULL;
 }
 
-void	tokenlst_cut_one(t_token **head, t_token **target)
+void	tokenlst_cut_one(t_token *head, t_token **target)
 {
 	t_token	*temp;
 
 	if (!head || !target)
 		return ;
-	temp = *head;
+	if (head == *target)
+	{
+		temp = (*target);
+		(*target) = (*target)->next;
+		temp->next = NULL;
+		tokenlst_clear(&temp);
+		return ;
+	}
+	temp = head;
 	while (temp->next != NULL && temp->next != *target)
 		temp = temp->next;
 	temp->next = NULL;
@@ -49,28 +57,6 @@ void	tokenlst_cut_one(t_token **head, t_token **target)
 	*target = (*target)->next;
 	temp->next = NULL;
 	tokenlst_clear(&temp);
-}
-
-t_token_section	*new_token_section(t_token *head)
-{
-	t_token_section	*new;
-
-	new = malloc(sizeof(t_token_section));
-	if (!new)
-		mem_all_error();
-	new->head = head;
-	new->next = NULL;
-	return (new);
-}
-
-t_token_section	*token_section_last(t_token_section *first)
-{
-	t_token_section	*ret;
-
-	ret = first;
-	while (ret->next != NULL)
-		ret = ret->next;
-	return (ret);
 }
 
 void	cut_token(t_token **head, t_token **tail)

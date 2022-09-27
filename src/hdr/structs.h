@@ -6,7 +6,7 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/18 17:48:05 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/09/26 15:07:59 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/09/27 13:48:13 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ typedef struct s_token_section
 
 typedef struct s_split_cmd_rdir
 {
-	t_token			*cmd_head;
+	t_token_section	*cmd_head;
 	t_token_section	*in_head;
 	t_token_section	*out_head;
 }	t_split_cmd_rdir;

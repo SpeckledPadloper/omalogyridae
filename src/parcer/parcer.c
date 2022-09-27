@@ -6,7 +6,7 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/18 17:44:02 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/09/26 19:35:37 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/09/27 20:28:03 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include "../utils/hdr/token_utils.h"
 #include "../lexer/hdr/charchecks.h"
 #include "../../libft/libft.h"
+#include "hdr/separate.h"
 
 #include "../tests/tests.h" //for testing, remove before handin
 #include <stdio.h>
@@ -74,22 +75,16 @@ void	expand_tokens(t_token **head, char ***env)
 	t_token	*temp;
 	int		cnt;
 	int		len;
-	int		end_prev;
 	int		sep;
 	bool	dquote;
 
 	temp = *head;
-	end_prev = 0;
-	sep = 2;
 	dquote = false;
 	expanded = NULL;
 	while (temp)
 	{
-		if (dquote == false && temp->token_label == DOUBLE_QUOTE)
-			dquote = true;
-		else if (dquote == true && temp->token_label != DOUBLE_QUOTE \
-				&& (temp->start_pos - end_prev) >= (sep - 1))
-			dquote = false;
+		sep = set_separation_limit(temp);
+		dquote = set_dquote_flag(dquote, temp, sep);
 		if (temp->token_value[0] == '$' && temp->token_label != LESSLESS)
 		{
 			cnt = 0;
@@ -98,36 +93,68 @@ void	expand_tokens(t_token **head, char ***env)
 			{
 				if (!ft_strncmp(&temp->token_value[1], (*env)[cnt], len))
 				{
-					expanded = expand_string((*env)[cnt], dquote);
-					tokenlst_cut_one(head, &temp);
+					expanded = expand_string((*env)[cnt], dquote);					
+					tokenlst_cut_one(*head, &temp);
 					tokenlst_last(expanded)->next = temp;
-					tokenlst_last(*head)->next = expanded;
+					if (*head)
+						tokenlst_last(*head)->next = expanded;
+					else
+						*head = expanded;
 					break ;
 				}
 				cnt++;
 			}
 			if ((*env)[cnt] == NULL && (*head)->token_label > SINGLE_QUOTE)
 			{
-				tokenlst_cut_one(head, &temp);
+				tokenlst_cut_one(*head, &temp);
 				tokenlst_last(*head)->next = temp;
 			}
+			printf("%p\n", temp);
+			continue ;
 		}
-		if (temp)
-		{
-			end_prev = temp->end_pos;
-			sep = set_separation_limit(temp);
-			temp = temp->next;
-		}
+		printf("%p\t%p\n", temp, temp->next);
+		temp = temp->next;
 	}
+}
+
+// void	expand_tokens(t_token **current, char ***env)
+// {
+// 	t_token	*expanded;
+// 	t_token	*temp;
+// 	bool	dquote;
+// 	int		sep;
+
+// 	expanded = NULL;
+// 	temp = *current;
+// 	dquote = false;
+// 	while (temp)
+// 	{
+// 		sep = set_separation_limit(temp);
+// 		dquote = set_dquote_flag(dquote, temp, )
+// 	}
+// }
+
+void	expand_section(t_token_section *first, char ***env)
+{
+	t_token_section	*temp;
+
+	if (!first)
+		return ;
+	temp = first;
+	while (temp)
+	{
+		expand_tokens(&temp->head, env);
+		printf("hello\n%p\nhello\n%p\nhello\n%s\nhello\n", temp, temp->head,temp->head->next->token_value);
+		temp = temp->next;
+	}
+	printf("it does get here right?\n");
 }
 
 void	parce(t_token *head, char ***env)
 {
 	t_token_section		*first;
 	t_token_section		*temp;
-	t_token_section		*temp2;
 	t_split_cmd_rdir	*split;
-	// t_exec_list_sim		*start;
 
 	first = tokenlst_split(&head);
 	test_split(first);
@@ -136,20 +163,10 @@ void	parce(t_token *head, char ***env)
 	{
 		split = split_cmd_rdir(temp);
 		test_split_cmd_rdir(split);
-		expand_tokens(&split->cmd_head, env);
-		temp2 = split->in_head;
-		while (temp2)
-		{
-			printf("temp 2 engaged\n");
-			expand_tokens(&split->in_head->head, env);
-			printf("how many get after the expansion?\n");
-			temp2 = temp2->next;
-		}
-		printf("\n\n\n");
-		test_lex(split->cmd_head);
-		printf("\n\n\n");
-		if (split && split->in_head)
-			test_lex(split->in_head->head);
+		expand_section(split->cmd_head, env);
+		expand_section(split->in_head, env);
+		expand_section(split->out_head, env);
 		temp = temp->next;
 	}
+	test_split_cmd_rdir(split);
 }

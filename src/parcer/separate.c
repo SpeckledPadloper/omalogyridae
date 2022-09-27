@@ -6,7 +6,7 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/21 18:02:50 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/09/26 19:45:02 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/09/27 16:06:34 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 #include "../lexer/hdr/lexer.h"
 #include "../utils/hdr/token_utils.h"
 #include "hdr/separate.h"
+#include "../../libft/libft.h"
 
 #include "../tests/tests.h"
 
@@ -96,30 +97,30 @@ int	add_redir_list(t_token **rdir, t_token **temp)
 t_split_cmd_rdir	*split_cmd_rdir(t_token_section *current)
 {
 	t_token				*temp;
-	t_token				*commands;
-	t_token				*rdir_in;
-	t_token				*rdir_out;
+	t_token_section		*cmd_io;
 	t_split_cmd_rdir	*split;
 	int					state;
 
-	split = malloc(sizeof(t_split_cmd_rdir));
-	split->cmd_head = NULL;
-	commands = NULL;
-	rdir_in = NULL;
-	rdir_out = NULL;
+	split = ft_calloc(sizeof(t_split_cmd_rdir), 1);
+	if (!split)
+		exit(EXIT_FAILURE);
+	cmd_io = NULL;
+	add_section_to_list(&cmd_io, NULL);
+	add_section_to_list(&cmd_io, NULL);
+	add_section_to_list(&cmd_io, NULL);
 	temp = current->head;
 	state = set_state_cio(temp);
 	while (temp)
 	{
 		if (state == STATE_RDIRIN)
-			state = add_redir_list(&rdir_in, &temp);
+			state = add_redir_list(&cmd_io->next->head, &temp);
 		else if (state == STATE_RDIROUT)
-			state = add_redir_list(&rdir_out, &temp);
+			state = add_redir_list(&cmd_io->next->next->head, &temp);
 		else
-			state = add_command_list(&commands, &temp);
+			state = add_command_list(&cmd_io->head, &temp);
 	}
-	split->cmd_head = cmdlst_split(&commands);
-	split->in_head = rdirlst_split(&rdir_in, LESS, LESSLESS);
-	split->out_head = rdirlst_split(&rdir_out, GREAT, GREATGREAT);
+	split->cmd_head = cmdlst_split(&cmd_io->head);
+	split->in_head = rdirlst_split(&cmd_io->next->head, LESS, LESSLESS);
+	split->out_head = rdirlst_split(&cmd_io->next->next->head, GREAT, GREATGREAT);
 	return (split);
 }

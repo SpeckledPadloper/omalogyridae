@@ -6,7 +6,7 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/26 13:12:30 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/09/26 14:19:41 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/09/27 13:57:47 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ t_file	*filelst_last(t_file *head)
 	ret = head;
 	while (ret->next)
 		ret = ret->next;
+	return(ret);
 }
 
 void	filelst_add_back(t_file **head, t_file *new)
