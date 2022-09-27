@@ -18,7 +18,7 @@
 
 # define MODE_RW_R_R 0644
 # define CNF_BUF_SIZE 18
-# define BUILDIN_AMOUNT 7
+# define BUILDIN_AMOUNT 7 // BUILTIN_AMOUNT
 
 typedef enum e_open_modes
 {
