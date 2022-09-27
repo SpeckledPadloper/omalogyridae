@@ -127,19 +127,19 @@ int main(int ac, char **av, char **env)
 
 	make_file_list(&head_out, "out_noright", GREAT);
 	make_file_list(&head_outtwo, "d_out", GREAT);
-	make_file_list(&head_outtwo, "e_append", GREATGREAT);
+	//make_file_list(&head_outtwo, "e_append", GREATGREAT);
 
 
-	char *test_path1[] = {"cat", "-e", NULL};
+	char *test_path1[] = {"echo", "hello", NULL};
 	char *test_path2[] = {"cat", "-e", NULL};
 	char *test_path3[] = {"cat", "-e", NULL};
 	char *test_path4[] = {"cat", "-e", NULL};
 	char *test_path5[] = {"cat", "-e", NULL};
-	make_execlist_sim(&head, test_path4, head_neutral, NULL);
-	make_execlist_sim(&head, test_path2, NULL, NULL);
 	make_execlist_sim(&head, test_path1, NULL, NULL);
+	make_execlist_sim(&head, test_path2, NULL, NULL);
 	make_execlist_sim(&head, test_path3, NULL, NULL);
-	make_execlist_sim(&head, test_path5, NULL, head_outtwo);
+	make_execlist_sim(&head, test_path4, NULL, NULL);
+	make_execlist_sim(&head, test_path5, NULL, NULL);
 
 
 	/* init mata data struct */
