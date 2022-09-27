@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/09/19 15:15:18 by lwiedijk      ########   odam.nl         */
+/*   Updated: 2022/09/27 13:12:18 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,7 @@ char	*path_builder(t_metadata *data, char *cmd)
 	path = NULL;
 	env_path = get_env_path_array(data->envp, &count);
 	if (env_path == NULL)
-		print_error_exit(cmd, 2, CMD_NOT_FOUND);
+		print_error_exit(cmd, ERRNO_NO_SUCH_FILE, CMD_NOT_FOUND);
 	path = check_path(cmd, env_path, count);
 	if (!path)
 		path = check_absolute_path(data, cmd);

@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/09/19 16:24:20 by lwiedijk      ########   odam.nl         */
+/*   Updated: 2022/09/27 13:11:45 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,12 +28,13 @@ typedef enum e_open_modes
 	GREATGREAT = 3,
 }				t_open_modes;
 
-typedef enum e_bash_exitcode
+typedef enum e_exit_error_code
 {
 	EMPTY = 0,
+	ERRNO_NO_SUCH_FILE = 2,
 	CMD_CANT_EXE = 126,
 	CMD_NOT_FOUND = 127,
-}				t_bash_exitcode;
+}				t_exit_error_code;
 
 typedef struct s_fd_list
 {
