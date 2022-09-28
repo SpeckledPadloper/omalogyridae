@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/09/27 17:15:52 by lwiedijk      ########   odam.nl         */
+/*   Updated: 2022/09/28 20:00:02 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,6 +112,7 @@ void	executer(t_metadata *meta_data, t_exec_list_sim *cmd_list)
 	get_all_heredoc(meta_data, cmd_list);
 	if (!meta_data->cmd_count)
 		return ; // no exit, this is parent, handle next promt
+	/* er kan een node zijn zonder cmd, cat | < file | ls, dus data->cmd_count is geen goede case */
 	fork_processes(meta_data, cmd_list);
 	while (1)
 	{
