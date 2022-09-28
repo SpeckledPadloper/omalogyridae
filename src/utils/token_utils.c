@@ -6,7 +6,7 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/14 12:29:38 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/09/27 20:24:02 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/09/28 20:41:50 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,7 @@ t_token	*tokenlst_last(t_token *lst)
 	temp = lst;
 	while (temp->next != NULL)
 	{
+		// printf("this is fucking infinite innit?\n");
 		temp = temp->next;
 	}
 	return (temp);
@@ -131,16 +132,3 @@ int	add_token_label(char current, char next_char)
 	return (token_label);
 }
 
-// void	stitch_token(t_token **token, char *stitch_value, int *stitch_label)
-// {
-// 	t_token	*node;
-
-// 	if (!stitch_value || !token)
-// 		return ;
-// 	node = new_node(0, stitch_value);
-// 	*stitch_label = NO_LABEL;
-// 	if (!*token)
-// 		*token = node;
-// 	else
-// 		tokenlst_last(*token)->next = node;
-// }

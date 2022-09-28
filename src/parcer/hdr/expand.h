@@ -1,21 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   separate.h                                         :+:    :+:            */
+/*   expand.h                                           :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2022/09/26 19:39:12 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/09/28 14:33:16 by mteerlin      ########   odam.nl         */
+/*   Created: 2022/09/28 13:38:32 by mteerlin      #+#    #+#                 */
+/*   Updated: 2022/09/28 17:13:48 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef SEPARATE_H
-# define SEPARATE_H
+#ifndef EXPAND_H
+# define EXPAND_H
 # include "../../hdr/structs.h"
 
-int		set_state_cio(t_token *temp);
-int		set_separation_limit(t_token *temp);
-bool	set_quote_state(bool dq, t_token *temp, int sep);
+t_token	*expand_to_one(char *env_var);
+t_token	*expand_to_lst(char *env_var);
+t_token	*expand_token(t_token	*current, char ***env, bool quote);
+void	expand_tokenlst(t_token *head, char ***env);
+void	expand_section(t_token_section **head, char ***env);
 
 #endif

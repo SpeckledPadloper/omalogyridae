@@ -6,7 +6,7 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/26 19:38:46 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/09/27 18:44:54 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/09/28 20:06:05 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,10 @@ int	set_separation_limit(t_token *temp)
 	return (separation_limit);
 }
 
-bool	set_dquote_flag(bool dq, t_token *temp, int sep)
+bool	set_quote_state(bool dq, t_token *temp, int sep)
 {
+	if (temp == NULL)
+		return (false);
 	if (dq == false && temp->token_label == DOUBLE_QUOTE)
 		return (true);
 	else if (dq == true && temp->token_label != DOUBLE_QUOTE && sep > 1)

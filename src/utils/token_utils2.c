@@ -6,7 +6,7 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/18 16:19:49 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/09/27 20:25:54 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/09/28 21:11:04 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 #include <stdlib.h>
 #include "../hdr/structs.h"
 #include "../error/error.h"
+#include "hdr/token_utils.h"
+#include "../../libft/libft.h"
 
 #include <stdio.h>
 #include <unistd.h>
@@ -35,28 +37,25 @@ void	tokenlst_clear(t_token **head)
 	*head = NULL;
 }
 
-void	tokenlst_cut_one(t_token *head, t_token **target)
+void	tokenlst_cut_one(t_token **head, t_token **target)
 {
 	t_token	*temp;
 
 	if (!head || !target)
 		return ;
-	if (head == *target)
+	temp = (*head);
+	while (temp)
 	{
-		temp = (*target);
-		(*target) = (*target)->next;
-		temp->next = NULL;
-		tokenlst_clear(&temp);
-		return ;
-	}
-	temp = head;
-	while (temp->next != NULL && temp->next != *target)
+		if (temp->next == *target)
+		{
+			(*target) = (*target)->next;
+			free(temp->next->token_value);
+			free(temp->next);
+			temp->next = 0;
+			break ;
+		}
 		temp = temp->next;
-	temp->next = NULL;
-	temp = *target;
-	*target = (*target)->next;
-	temp->next = NULL;
-	tokenlst_clear(&temp);
+	}
 }
 
 void	cut_token(t_token **head, t_token **tail)
@@ -65,4 +64,27 @@ void	cut_token(t_token **head, t_token **tail)
 	free((*tail)->next->token_value);
 	free((*tail)->next);
 	(*tail)->next = NULL;
+}
+
+t_token	*exp_new_token(char *value)
+{
+	t_token	*new;
+
+	new = ft_calloc(sizeof(t_token), 1);
+	if (!new)
+		exit(EXIT_FAILURE);
+	new->token_value = value;
+	new->token_label = EXPAND;
+	new->next = NULL;
+	return (new);
+}
+
+void	exp_token_add_back(t_token **head, t_token *new)
+{
+	if (!head)
+		exit(EXIT_FAILURE);
+	if (!(*head))
+		*head = new;
+	else
+		tokenlst_last(*head)->next = new;
 }

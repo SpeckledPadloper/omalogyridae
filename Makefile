@@ -6,20 +6,21 @@
 #    By: mteerlin <mteerlin@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2021/07/21 12:25:06 by mteerlin      #+#    #+#                  #
-#    Updated: 2022/09/27 14:03:58 by mteerlin      ########   odam.nl          #
+#    Updated: 2022/09/28 17:08:18 by mteerlin      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
 NAME	= minishell
 
 VPATH	=	$(shell find src -type d) $(shell find libft -type d)
-SRC		:= src/main.c \
-src/error/error.c \
+SRC		:= src/error/error.c \
 src/lexer/charchecks.c \
 src/lexer/fsm_op.c \
 src/lexer/fsm_op2.c \
 src/lexer/lexer.c \
 src/lexer/stx_error.c \
+src/main.c \
+src/parcer/expand.c \
 src/parcer/parcer.c \
 src/parcer/separate.c \
 src/parcer/separation_utils.c \

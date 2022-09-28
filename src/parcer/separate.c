@@ -6,7 +6,7 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/21 18:02:50 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/09/27 16:06:34 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/09/28 19:20:26 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,29 +22,6 @@
 #include "../../libft/libft.h"
 
 #include "../tests/tests.h"
-
-/**
- * separation == 2;
- *
- * if (token is LESS or LESSLESS) 
- * 		if (label next == quote label)
- * 			separation++
- * 		if (label == quote label)
- * 			separation++;
- * 		while (token end a - token start b < separation)
- * 			consider token to be part of this list
- * 			separation == 2;
- * 			if (label next == quote label)
- * 				separation++
- * 			if (label == quote label)
- * 				separation++;
- * 
- * if (token is GREAT or GREATGREAT)
- * 		same as LESS or LESSLESS
- * 
- * if (token is anything else)
- * 		add tokens to the set until redirect character is found
- */
 
 int	add_command_list(t_token **cmd, t_token **temp)
 {

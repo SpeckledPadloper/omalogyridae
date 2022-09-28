@@ -6,7 +6,7 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/26 19:45:39 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/09/27 15:42:57 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/09/28 19:37:15 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,12 +92,14 @@ t_token_section	*rdirlst_split(t_token **head, int f1, int f2)
 	if (!head || !(*head))
 		return (NULL);
 	first = NULL;
-	state = (*head)->token_label;
+	if ((*head)->token_label == LESSLESS)
+		(*head)->next->start_pos = -1;
+	if ((*head)->token_label == GREATGREAT)
+		(*head)->next->start_pos = -2;
 	temp = (*head)->next;
 	(*head)->next = NULL;
 	tokenlst_clear(head);
 	*head = temp;
-	(*head)->token_label = state;
 	while (temp && temp->next)
 	{
 		if (temp->next->token_label == f1 || temp->next->token_label == f2)
@@ -106,7 +108,10 @@ t_token_section	*rdirlst_split(t_token **head, int f1, int f2)
 			add_section_to_list(&first, *head);
 			cut_token(head, &temp);
 			temp = *head;
-			(*head)->token_label = state;
+			if (state == LESSLESS)
+				(*head)->start_pos = -1;
+			if (state == GREATGREAT)
+				(*head)->start_pos = -2;
 		}
 		else if (temp)
 			temp = temp->next;

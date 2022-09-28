@@ -5,6 +5,7 @@ src/lexer/fsm_op2.c \
 src/lexer/lexer.c \
 src/lexer/stx_error.c \
 src/main.c \
+src/parcer/expand.c \
 src/parcer/parcer.c \
 src/parcer/separate.c \
 src/parcer/separation_utils.c \
@@ -20,6 +21,7 @@ src/lexer/hdr/charchecks.h \
 src/lexer/hdr/errors.h \
 src/lexer/hdr/fsm.h \
 src/lexer/hdr/lexer.h \
+src/parcer/hdr/expand.h \
 src/parcer/hdr/parcer.h \
 src/parcer/hdr/separate.h \
 src/tests/tests.h \

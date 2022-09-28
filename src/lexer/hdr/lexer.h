@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/09/22 18:10:49 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/09/28 19:32:54 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 
 typedef enum e_token_label
 {
-	LESS,
+	LESS = 0,
 	LESSLESS,
 	GREAT,
 	GREATGREAT,
