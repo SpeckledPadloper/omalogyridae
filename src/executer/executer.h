@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/09/27 17:14:20 by lwiedijk      ########   odam.nl         */
+/*   Updated: 2022/09/29 12:32:08 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,10 +76,13 @@ typedef struct s_metadata
 
 /*-------------------------buildins-------------------------*/
 
-void	check_echo(void);
-void	check_export(void);
-void	check_cd(void);
-void	check_pwd(void);
+void	padloper_echo(void);
+void	padloper_cd(void);
+void	padloper_pwd(void);
+void	padloper_export(void);
+void	padloper_unset(void);
+void	padloper_env(void);
+void	padloper_exit(void);
 
 /*-------------------------executer-------------------------*/
 

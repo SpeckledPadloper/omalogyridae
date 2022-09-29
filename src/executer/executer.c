@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/09/29 11:37:51 by lwiedijk      ########   odam.nl         */
+/*   Updated: 2022/09/29 12:37:13 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,33 +19,6 @@
 #include <string.h>
 #include <fcntl.h>
 #include <errno.h>
-
-void	check_echo(void)
-{
-	fprintf(stderr, "check echo\n");
-	write(STDOUT_FILENO, "echo go to pipe\n", 16);
-	exit(0);
-}
-
-void	check_export(void)
-{
-	fprintf(stderr, "check export\n");
-	write(STDOUT_FILENO, "export go to pipe\n", 18);
-	exit(0);
-}
-
-
-void	check_cd(void)
-{
-	fprintf(stderr, "check cd\n");
-	exit(0);
-}
-
-void	check_pwd(void)
-{
-	fprintf(stderr, "check pwd\n");
-	exit(0);
-}
 
 void	check_run_buildin(t_metadata *data, t_exec_list_sim *cmd_list)
 {
