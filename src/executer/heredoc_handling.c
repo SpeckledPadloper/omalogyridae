@@ -6,14 +6,14 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/09/19 16:19:03 by lwiedijk      ########   odam.nl         */
+/*   Updated: 2022/09/29 11:40:41 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <unistd.h>
 #include <stdlib.h>
 #include <errno.h>
-#include "libft.h"
+#include "../../libft/libft.h"
 #include "executer.h"
 
 static char	*get_input(char *str)
