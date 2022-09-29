@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/09/29 12:37:13 by lwiedijk      ########   odam.nl         */
+/*   Updated: 2022/09/29 12:58:34 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void	check_run_buildin(t_metadata *data, t_exec_list_sim *cmd_list)
 	i = 0;
 	while(i < BUILDIN_AMOUNT)
 	{
-		if (cmd_list->cmd[0] == data->buildins[i]) // strcmp!?
+		if (!(ft_strcmp(cmd_list->cmd[0], data->buildins[i])))
 			data->fn_buildins[i]();
 		i++;
 	}
@@ -52,7 +52,7 @@ void	execute_cmd(t_metadata *data, t_exec_list_sim *cmd_list)
 
 static void	fork_processes(t_metadata *data, t_exec_list_sim *cmd_list)
 {
-	if (data->cmd_count == 1)
+	if (data->cmd_count == 1 && cmd_list->cmd)
 		check_run_buildin(data, cmd_list);
 	while (data->child_count < data->cmd_count)
 	{

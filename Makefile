@@ -6,7 +6,7 @@
 #    By: mteerlin <mteerlin@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2021/07/21 12:25:06 by mteerlin      #+#    #+#                  #
-#    Updated: 2022/09/29 11:39:23 by lwiedijk      ########   odam.nl          #
+#    Updated: 2022/09/29 12:04:24 by lwiedijk      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,7 +19,15 @@ src/executer/error_handling.c \
 src/executer/executer_utils.c \
 src/executer/heredoc_handling.c \
 src/executer/file_handling.c \
-src/executer/list_sim.c
+src/executer/list_sim.c \
+src/builtins/padloper_echo.c \
+src/builtins/padloper_cd.c \
+src/builtins/padloper_pwd.c \
+src/builtins/padloper_export.c \
+src/builtins/padloper_unset.c \
+src/builtins/padloper_env.c \
+src/builtins/padloper_exit.c \
+
 
 OBJ_DIR := 	obj/
 OBJ		= 	$(addprefix $(OBJ_DIR), $(SRC:src/%.c=%.o))
