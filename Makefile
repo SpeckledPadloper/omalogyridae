@@ -3,42 +3,71 @@
 #                                                         ::::::::             #
 #    Makefile                                           :+:    :+:             #
 #                                                      +:+                     #
-#    By: lwiedijk <marvin@codam.nl>                   +#+                      #
+#    By: mteerlin <mteerlin@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
-#    Created: 2022/05/04 10:58:28 by lwiedijk      #+#    #+#                  #
-#    Updated: 2022/09/27 14:48:29 by lwiedijk      ########   odam.nl          #
+#    Created: 2021/07/21 12:25:06 by mteerlin      #+#    #+#                  #
+#    Updated: 2022/09/29 11:39:23 by lwiedijk      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
-NAME		=	minishell
-HEADERS 	= 	executer.h
-SRCS		=	executer.c path_builder.c error_handling.c executer_utils.c heredoc_handling.c file_handling.c list_sim.c
-OBJS_DIR	=	objs/
-OBJS		=	$(addprefix $(OBJS_DIR), $(SRCS:.c=.o))
-CFLAGS		=	-g
+NAME	= minishell
 
-LIBFT_DIR	=	libft/
-LIBFT		=	$(addprefix $(LIBFT_DIR), libft.a)
+VPATH	=	$(shell find src -type d) $(shell find libft -type d)
+SRC		:= src/executer/executer.c \
+src/executer/path_builder.c \
+src/executer/error_handling.c \
+src/executer/executer_utils.c \
+src/executer/heredoc_handling.c \
+src/executer/file_handling.c \
+src/executer/list_sim.c
 
-all: $(NAME)
+OBJ_DIR := 	obj/
+OBJ		= 	$(addprefix $(OBJ_DIR), $(SRC:src/%.c=%.o))
 
-$(NAME): $(OBJS) $(LIBFT)
-	$(CC) $(CFLAGS) -lreadline $(OBJS) -L$(LIBFT_DIR) -lft -o $(NAME)
+LIBFT_DIR := $(INCL_DIR)libft/
+LIBFT	:= $(LIBFT_DIR)libft.a
 
-$(OBJS_DIR)%.o: %.c $(HEADERS)
-	@mkdir -p $(@D)
-	$(CC) $(CFLAGS) -I$(LIBFT_DIR) -c $< -o $@
+AR		?= ar rcs;
+SANFLAGS ?= -fsanitize=address -g
+CFLAGS	?= -g
+
+all: 		$(NAME)
+
+$(NAME):	$(LIBFT) $(OBJ)
+			@echo $(HDR)
+			@echo "Compiling minishell."
+			@$(CC) $(CFLAGS) -lreadline $(LIBFT) $(OBJ) -o $(NAME)
+#			@$(CC) $(CFLAGS) -L$(LIBFT_DIR) $(OBJ) -lft -o $(NAME)
+			@echo "Compilation finished."
 
 $(LIBFT):
-	make bonus -C $(LIBFT_DIR)
+			@echo "Making library libft."
+			@$(MAKE) --no-print-directory -C $(LIBFT_DIR) bonus
+
+$(OBJ_DIR)%.o:		%.c $(HDR_DIR)$(HDR)
+			@echo creating object files.
+			@mkdir -p $(dir $@)
+			@$(CC) $(CFLAGS) -c $< -o $@
+
+test:		
+			@echo $(VPATH)
+			@echo " "
+			@echo $(SRC)
+			@echo " "
+			@echo $(OBJ)
+			@echo " "
+			@echo $(HDR)
 
 clean:
-	$(RM) $(OBJS)
-	make fclean -C $(LIBFT_DIR)
+			@echo "Removing object files"
+			@rm -rf $(OBJ_DIR) $(LIBFT_DIR)*.o
 
-fclean: clean
-	$(RM) $(NAME)
+fclean:
+			@$(MAKE) --no-print-directory clean
+			@echo "Removing excecutables"
+			@rm -f $(NAME) $(LIBFT)
+re:
+			@$(MAKE) --no-print-directory fclean
+			@$(MAKE) --no-print-directory all
 
-re: fclean all
-
-.PHONY: all clean fclean re bonus
+.PHONY:		all, clean, fclean, re, test;
