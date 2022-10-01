@@ -130,16 +130,16 @@ int main(int ac, char **av, char **envp)
 	//make_file_list(&head_outtwo, "e_append", GREATGREAT);
 
 
-	char *test_path1[] = {"env", NULL};
+	char *test_path1[] = {"bash", NULL};
 	char *test_path2[] = {"cat", "-e", NULL};
 	char *test_path3[] = {"cat", "-e", NULL};
 	char *test_path4[] = {"cat", "-e", NULL};
 	char *test_path5[] = {"cat", "-e", NULL};
 	make_execlist_sim(&head, test_path1, NULL, NULL);
-	make_execlist_sim(&head, test_path2, NULL, NULL);
-	make_execlist_sim(&head, test_path3, NULL, NULL);
-	make_execlist_sim(&head, test_path4, NULL, NULL);
-	make_execlist_sim(&head, test_path5, NULL, NULL);
+	//make_execlist_sim(&head, test_path2, NULL, NULL);
+	//make_execlist_sim(&head, test_path3, NULL, NULL);
+	//make_execlist_sim(&head, test_path4, NULL, NULL);
+	//make_execlist_sim(&head, test_path5, NULL, NULL);
 
 	/* init padloper_envp 
 		* copy environment

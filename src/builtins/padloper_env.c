@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/10/01 16:27:42 by lwiedijk      ########   odam.nl         */
+/*   Updated: 2022/10/01 16:49:43 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,26 +44,25 @@ char **copy_env(char **src)
 char **new_padloper_envp(char **original_envp)
 {
 	char **new_padloper_envp;
-	//int i;
+	int i;
+	int res;
+	char *res_str;
 
 	new_padloper_envp = copy_env(original_envp);
-	//i = 0;
-	//while(new_padloper_envp[i])
-	//{
-	//	if (!ft_strncmp(new_padloper_envp[i], "SHLVL=", 6))
-	//	{
-	//		
-	//	}
-	//	i++;
-	//}
-
-	//int i;
-	//i = 0;
-	//while(new_padloper_envp[i])
-	//{
-	//	printf("new: %s\n", new_padloper_envp[i]);
-	//	i++;
-	//}
+	i = 0;
+	while(new_padloper_envp[i])
+	{
+		if (!ft_strncmp(new_padloper_envp[i], "SHLVL=", 6))
+		{
+			res = ft_atoi(&new_padloper_envp[i][6]);
+			res++;
+			res_str = ft_itoa(res);
+			free(new_padloper_envp[i]);
+			new_padloper_envp[i] = ft_strjoin("SHLVL=", res_str);
+			free(res_str);
+		}
+		i++;
+	}
 	return (new_padloper_envp);
 }
 
