@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/09/29 12:58:34 by lwiedijk      ########   odam.nl         */
+/*   Updated: 2022/10/01 16:12:30 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	check_run_buildin(t_metadata *data, t_exec_list_sim *cmd_list)
 	while(i < BUILDIN_AMOUNT)
 	{
 		if (!(ft_strcmp(cmd_list->cmd[0], data->buildins[i])))
-			data->fn_buildins[i]();
+			data->fn_buildins[i](data);
 		i++;
 	}
 	return ;
@@ -46,7 +46,7 @@ void	execute_cmd(t_metadata *data, t_exec_list_sim *cmd_list)
 	close_unused_fd(data, cmd_list);
 	check_run_buildin(data, cmd_list);
 	path = path_builder(data, cmd_list->cmd[0]);
-	execve(path, cmd_list->cmd, data->envp);
+	execve(path, cmd_list->cmd, data->padloper_envp);
 	print_error_exit("execve", errno, EXIT_FAILURE);
 }
 

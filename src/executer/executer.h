@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/09/29 12:32:08 by lwiedijk      ########   odam.nl         */
+/*   Updated: 2022/10/01 16:15:21 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,8 +66,8 @@ typedef struct s_metadata
 {
 	t_fd_list	*fd_list;
 	char		*buildins[BUILDIN_AMOUNT];
-	void		(*fn_buildins[BUILDIN_AMOUNT])();
-	char		**envp;
+	void		(*fn_buildins[BUILDIN_AMOUNT])(struct s_metadata *);
+	char		**padloper_envp;
 	int			child_count;
 	int			cmd_count;
 	pid_t		lastpid;
@@ -76,13 +76,16 @@ typedef struct s_metadata
 
 /*-------------------------buildins-------------------------*/
 
-void	padloper_echo(void);
-void	padloper_cd(void);
-void	padloper_pwd(void);
-void	padloper_export(void);
-void	padloper_unset(void);
-void	padloper_env(void);
-void	padloper_exit(void);
+void	padloper_echo(t_metadata *data);
+void	padloper_cd(t_metadata *data);
+void	padloper_pwd(t_metadata *data);
+void	padloper_export(t_metadata *data);
+void	padloper_unset(t_metadata *data);
+void	padloper_env(t_metadata *data);
+void	padloper_exit(t_metadata *data);
+
+char **copy_env(char **src);
+char **new_padloper_envp(char **original_envp);
 
 /*-------------------------executer-------------------------*/
 

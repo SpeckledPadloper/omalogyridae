@@ -104,7 +104,7 @@ void make_file_list(t_file **head, char *filename, t_open_modes mode)
 		list_file_last(*head)->next = node;
 }
 
-int main(int ac, char **av, char **env)
+int main(int ac, char **av, char **envp)
 {
 
 	/* init cmd_list */
@@ -130,7 +130,7 @@ int main(int ac, char **av, char **env)
 	//make_file_list(&head_outtwo, "e_append", GREATGREAT);
 
 
-	char *test_path1[] = {"cd", NULL};
+	char *test_path1[] = {"env", NULL};
 	char *test_path2[] = {"cat", "-e", NULL};
 	char *test_path3[] = {"cat", "-e", NULL};
 	char *test_path4[] = {"cat", "-e", NULL};
@@ -141,13 +141,19 @@ int main(int ac, char **av, char **env)
 	make_execlist_sim(&head, test_path4, NULL, NULL);
 	make_execlist_sim(&head, test_path5, NULL, NULL);
 
+	/* init padloper_envp 
+		* copy environment
+		* update shelllevel  */
 
-	/* init mata data struct */
+
+
+
+	/* init meta data struct */
 	t_fd_list	fd_list;
 	ft_bzero(&fd_list, sizeof(t_fd_list));
 	t_metadata meta_data;
 	ft_bzero(&meta_data, sizeof(t_metadata));
-	meta_data.envp = env;
+	meta_data.padloper_envp = new_padloper_envp(envp);
 	meta_data.fd_list = &fd_list;
 	meta_data.cmd_count = ft_sim_lstsize(head);
 	set_buildin_array(&meta_data);
