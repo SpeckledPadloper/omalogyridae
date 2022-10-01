@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/10/01 16:49:43 by lwiedijk      ########   odam.nl         */
+/*   Updated: 2022/10/01 17:06:41 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 #include <stdlib.h>
 #include "../../libft/libft.h"
 #include "../executer/executer.h"
+
+// protect all below malloc calls! 
 
 char **copy_env(char **src)
 {
