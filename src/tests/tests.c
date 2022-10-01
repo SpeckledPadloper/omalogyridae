@@ -6,7 +6,7 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/20 15:28:53 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/09/28 14:00:43 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/10/01 20:23:16 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,4 +60,50 @@ void	test_split_cmd_rdir(t_split_cmd_rdir *split)
 	test_split(split->out_head);
 	printf("\ttest_split_cmd_rdir completed\n");
 	printf("--------------------------------------\n\n");
+}
+
+void	test_filelst(t_file *head, bool is_infile)
+{
+	t_file	*temp;
+
+	if (head == NULL)
+		return ;
+	if (is_infile == true)
+		printf("\tinfiles:\n");
+	else
+		printf("\toutfiles:\n");
+	temp = head;
+	while (temp)
+	{
+		printf("filename: %s\t| filemode: %d\n", temp->filename, temp->mode);
+		temp = temp->next;
+	}	
+}
+
+void	test_simple_command(t_exec_list_sim	*current)
+{
+	t_exec_list_sim	*temp;
+	int				cnt;
+
+	temp = current;
+	printf("\tSIMPLE COMMAND:\n");
+	while (temp)
+	{
+		cnt = 0;
+		printf("\tcommands:\n");
+		if (temp->cmd != NULL)
+		{
+			while (temp->cmd[cnt])
+			{
+				printf("%s ", temp->cmd[cnt]);
+				cnt++;
+			}
+		}
+		printf("\n");
+		test_filelst(temp->infile_list, true);
+		printf("\n");
+		test_filelst(temp->outfile_list, false);
+		printf("\n");
+		temp = temp->next;
+	}
 }

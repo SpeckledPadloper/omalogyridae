@@ -6,7 +6,7 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/26 19:38:46 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/09/28 20:06:05 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/10/01 19:59:44 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,20 @@ bool	set_quote_state(bool dq, t_token *temp, int sep)
 		return (false);
 	if (dq == false && temp->token_label == DOUBLE_QUOTE)
 		return (true);
-	else if (dq == true && temp->token_label != DOUBLE_QUOTE && sep > 1)
-		return (false);
+	else if (dq == true && temp->token_label != DOUBLE_QUOTE)
+	{
+		if (temp->next && sep < (temp->next->start_pos - temp->end_pos) + 1)
+			return (false);
+	}
 	return (dq);
+}
+
+void	free_cmd_rdir(t_split_cmd_rdir	**split)
+{
+	if (!split || !(*split))
+		return ;
+	clear_section(&(*split)->cmd_head);
+	clear_section(&(*split)->in_head);
+	clear_section(&(*split)->out_head);
+	free(*split);
 }

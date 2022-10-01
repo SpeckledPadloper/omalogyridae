@@ -6,7 +6,7 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/16 20:28:42 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/09/24 15:27:25 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/09/29 15:45:08 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ int	fsm_expand(t_line_nav *lnav, t_token **head, int *prev_state)
 {
 	add_token_to_list(head, allocate_token_value(lnav), STATE_EXPAND, lnav);
 	lnav->count = -1;
+	//printf("\nstate_dquote = %d\nstate_previous = %d\n\n", STATE_DQUOTE, *prev_state);
 	if (*prev_state == STATE_DQUOTE)
 	{
 		if (lnav->ret[lnav->i] == '"')
@@ -29,10 +30,14 @@ int	fsm_expand(t_line_nav *lnav, t_token **head, int *prev_state)
 			*prev_state = -1;
 			return (STATE_WS);
 		}
+		else if (lnav->ret[lnav->i] == '$')
+		{
+			lnav->count = 0;
+			return (STATE_EXPAND);
+		}
 		else
 		{
 			lnav->count = 1;
-			*prev_state = STATE_EXPAND;
 			return (STATE_DQUOTE);
 		}
 	}

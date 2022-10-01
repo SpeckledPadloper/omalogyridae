@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/09/28 19:32:54 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/09/29 16:48:20 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 
 typedef enum e_token_label
 {
-	LESS = 0,
+	LESS,
 	LESSLESS,
 	GREAT,
 	GREATGREAT,
@@ -38,12 +38,6 @@ typedef enum e_fin_states
 	STATE_COMMON,
 	STATE_STXERROR
 }	t_fin_state;
-
-typedef struct s_label_flag
-{
-	bool	single_quote;
-	bool	double_quote;
-}				t_label_flag;
 
 typedef struct s_line_nav
 {

@@ -6,7 +6,7 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/28 13:38:24 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/09/28 21:14:23 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/10/01 15:36:45 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,19 +30,20 @@
 #include "../../libft/libft.h"
 #include "../utils/hdr/token_utils.h"
 #include "../lexer/hdr/charchecks.h"
+#include "hdr/expand.h"
 
 #include <stdio.h>
+#include "../tests/tests.h"
 
 t_token	*expand_to_one(char *env_var)
 {
 	t_token		*expanded;
 	t_line_nav	lnav;
 
-	lnav.ret = env_var;
+	lnav.ret = ft_strdup(env_var);
 	lnav.i = ft_strlen(lnav.ret);
 	lnav.count = lnav.i;
 	expanded = new_node(0, lnav.ret, DOUBLE_QUOTE, &lnav);
-	printf("expand_to_one done\n");
 	return (expanded);
 }
 
@@ -53,7 +54,7 @@ t_token	*expand_to_lst(char *env_var)
 	char		*new_val;
 
 	expanded = NULL;
-	lnav.ret = env_var;
+	lnav.ret = ft_strdup(env_var);
 	lnav.i = 0;
 	lnav.count = 0;
 	while (is_whitespace(lnav.ret[lnav.i]))
@@ -64,7 +65,7 @@ t_token	*expand_to_lst(char *env_var)
 		{
 			new_val = allocate_token_value(&lnav);
 			exp_token_add_back(&expanded, exp_new_token(new_val));
-			lnav.count = 0;
+			lnav.count = -1;
 			while (is_whitespace(lnav.ret[lnav.i + 1]))
 				lnav.i++;
 		}
@@ -97,7 +98,7 @@ t_token	*expand_token(t_token	*current, char ***env, bool quote)
 	return (current);
 }
 
-void	expand_tokenlst(t_token *head, char ***env)
+void	expand_tokenlst(t_token **head, char ***env, bool isredir)
 {
 	t_token	*itter;
 	t_token	*temp;
@@ -105,32 +106,25 @@ void	expand_tokenlst(t_token *head, char ***env)
 	bool	quote;
 	int		sep;
 
-	itter = head;
+	itter = *head;
+	quote = false;
 	while (itter)
 	{
-		//printf("itter value = %s\n", itter->token_value);
 		sep = set_separation_limit(itter);
 		quote = set_quote_state(quote, itter, sep);
 		if (itter->token_label == EXPAND)
 		{
 			expanded = expand_token(itter, env, quote);
+			if (isredir == true && expanded->next)
+			{
+				itter->token_label = RDIR_AMBIGUOUS;
+				return ;
+			}
 			temp = itter;
 			itter = itter->next;
-			if (temp == head)
-			{
-				printf("head_last->value: %s\n", head->token_value);
-				tokenlst_last(expanded)->next = temp->next;
-				head = expanded;
-				temp->next = NULL;
-				tokenlst_clear(&temp);
-			}
-			else
-			{
-				tokenlst_cut_one(&head, &temp);
-				tokenlst_last(expanded)->next = temp;
-				printf("head_last->value: %s\n", tokenlst_last(head)->token_value);
-				tokenlst_last(head)->next = expanded;
-			}
+			if (expanded == temp)
+				continue ;
+			link_expand_tokens(head, &temp, &expanded);
 			continue ;
 		}
 		if (itter)
@@ -138,22 +132,24 @@ void	expand_tokenlst(t_token *head, char ***env)
 	}
 }
 
-void	expand_section(t_token_section **head, char ***env)
+void	expand_section(t_token_section **head, char ***env, bool isredir)
 {
 	t_token_section	*temp;
 
 	if (!head)
 		return ;
 	temp = *head;
-	while (temp)
+	while (temp && temp->head)
 	{
-		if (temp->head && temp->head->start_pos == -1)
+		if (temp->head->start_pos == -1)
 		{
 			temp = temp->next;
 			continue ;
 		}
 		else
-			expand_tokenlst(temp->head, env);
+		{
+			expand_tokenlst(&temp->head, env, isredir);
+		}
 		temp = temp->next;
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/14 12:48:41 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/09/22 18:09:30 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/09/29 15:46:55 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,7 @@ int	fsm_dquote(t_line_nav *lnav, t_token **head, int *prev_state)
 		lnav->count--;
 		add_token_to_list(head, allocate_token_value(lnav), STATE_DQUOTE, lnav);
 		lnav->count = -1;
+		*prev_state = -1;
 		return (STATE_WS);
 	}
 	else if (lnav->ret[lnav->i] == '$')

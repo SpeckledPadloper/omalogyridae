@@ -6,7 +6,7 @@
 #    By: mteerlin <mteerlin@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2021/07/21 12:25:06 by mteerlin      #+#    #+#                  #
-#    Updated: 2022/09/28 17:08:18 by mteerlin      ########   odam.nl          #
+#    Updated: 2022/10/01 16:17:58 by mteerlin      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,14 +21,19 @@ src/lexer/lexer.c \
 src/lexer/stx_error.c \
 src/main.c \
 src/parcer/expand.c \
+src/parcer/expand2.c \
 src/parcer/parcer.c \
 src/parcer/separate.c \
 src/parcer/separation_utils.c \
+src/parcer/simple_cmd.c \
+src/parcer/stitching.c \
 src/tests/tests.c \
 src/utils/filelst_utils.c \
+src/utils/simple_cmd_utils.c \
 src/utils/token_section_utils.c \
+src/utils/token_section_utils2.c \
 src/utils/token_utils.c \
-src/utils/token_utils2.c    
+src/utils/token_utils2.c   
 
 OBJ_DIR := 	obj/
 OBJ		= 	$(addprefix $(OBJ_DIR), $(SRC:src/%.c=%.o))

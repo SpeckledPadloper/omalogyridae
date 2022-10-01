@@ -6,7 +6,7 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/18 17:48:05 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/09/27 13:48:13 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/10/01 15:48:41 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,9 @@
 
 typedef enum e_file_flags
 {
-	RDIR_AMBIGUOUS,
-	RDIR_SINGLE,
-	RDIR_DOUBLE
+	RDIR_AMBIGUOUS = -3,
+	RDIR_SINGLE = -2,
+	RDIR_DOUBLE = -1
 }	t_file_flags;
 
 typedef struct s_base_args

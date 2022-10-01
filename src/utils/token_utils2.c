@@ -6,7 +6,7 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/18 16:19:49 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/09/28 21:11:04 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/10/01 15:20:16 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,6 @@ void	tokenlst_clear(t_token **head)
 		free(*head);
 		*head = temp;
 	}
-	*head = NULL;
 }
 
 void	tokenlst_cut_one(t_token **head, t_token **target)

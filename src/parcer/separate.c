@@ -6,7 +6,7 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/21 18:02:50 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/09/28 19:20:26 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/09/29 17:21:32 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,7 @@ int	add_redir_list(t_token **rdir, t_token **temp)
 	temp2 = *temp;
 	*temp = (*temp)->next;
 	temp2->next = NULL;
+	//tokenlst_clear(&temp2);	this still causes a segfault for some reason
 	return (set_state_cio(*temp));
 }
 
