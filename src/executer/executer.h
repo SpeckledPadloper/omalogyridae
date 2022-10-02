@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/10/02 13:20:01 by lwiedijk      ########   odam.nl         */
+/*   Updated: 2022/10/02 13:41:01 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ void	padloper_unset(t_metadata *data, t_exec_list_sim *cmd_list);
 void	padloper_env(t_metadata *data, t_exec_list_sim *cmd_list);
 void	padloper_exit(t_metadata *data, t_exec_list_sim *cmd_list);
 
-char **copy_env(char **src);
+char **allocate_env(char **src, int *envp_size, bool unset, bool export);
 char **new_padloper_envp(char **original_envp, int *envp_size);
 
 /*-------------------------executer-------------------------*/

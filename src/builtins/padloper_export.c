@@ -6,13 +6,14 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/10/02 13:27:17 by lwiedijk      ########   odam.nl         */
+/*   Updated: 2022/10/02 13:57:15 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdio.h>
 #include <unistd.h>
 #include <stdlib.h>
+#include <stdbool.h>
 #include "../executer/executer.h"
 
 /*  
@@ -53,6 +54,10 @@ int	envcmp(char *s1, char *s2)
 void	add_var(t_metadata *data, t_exec_list_sim *cmd_list)
 {
 	printf("hallo add variable: %s\n", cmd_list->cmd[1]);
+	data->padloper_envp = allocate_env(data->padloper_envp, &(data->envp_size), false, true);
+	// dit lekt, fix
+	data->padloper_envp[data->envp_size - 1] = cmd_list->cmd[1];
+	
 }
 
 void	padloper_export(t_metadata *data, t_exec_list_sim *cmd_list)
@@ -92,6 +97,12 @@ void	padloper_export(t_metadata *data, t_exec_list_sim *cmd_list)
 	while (i < data->envp_size)
 	{
 		printf("declare -x %s\n", sorted_env[i]);
+		i++;
+	}
+	i = 0;
+	while (i < data->envp_size)
+	{
+		printf("original: %s\n", data->padloper_envp[i]);
 		i++;
 	}
 	exit(0);
