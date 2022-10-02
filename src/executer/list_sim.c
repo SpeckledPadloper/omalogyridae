@@ -130,7 +130,7 @@ int main(int ac, char **av, char **envp)
 	//make_file_list(&head_outtwo, "e_append", GREATGREAT);
 
 
-	char *test_path1[] = {"bash", NULL};
+	char *test_path1[] = {"export", NULL};
 	char *test_path2[] = {"cat", "-e", NULL};
 	char *test_path3[] = {"cat", "-e", NULL};
 	char *test_path4[] = {"cat", "-e", NULL};
@@ -153,10 +153,12 @@ int main(int ac, char **av, char **envp)
 	ft_bzero(&fd_list, sizeof(t_fd_list));
 	t_metadata meta_data;
 	ft_bzero(&meta_data, sizeof(t_metadata));
-	meta_data.padloper_envp = new_padloper_envp(envp);
+	meta_data.padloper_envp = new_padloper_envp(envp, &meta_data.envp_size);
 	meta_data.fd_list = &fd_list;
 	meta_data.cmd_count = ft_sim_lstsize(head);
 	set_buildin_array(&meta_data);
+
+	printf("envp_size = %d\n", meta_data.envp_size);
 
 	//itter = head;
 	//while (itter)
