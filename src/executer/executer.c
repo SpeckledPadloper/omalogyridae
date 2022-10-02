@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/10/01 16:12:30 by lwiedijk      ########   odam.nl         */
+/*   Updated: 2022/10/02 13:23:25 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	check_run_buildin(t_metadata *data, t_exec_list_sim *cmd_list)
 	while(i < BUILDIN_AMOUNT)
 	{
 		if (!(ft_strcmp(cmd_list->cmd[0], data->buildins[i])))
-			data->fn_buildins[i](data);
+			data->fn_buildins[i](data, cmd_list);
 		i++;
 	}
 	return ;

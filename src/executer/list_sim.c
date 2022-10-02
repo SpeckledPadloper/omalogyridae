@@ -130,7 +130,7 @@ int main(int ac, char **av, char **envp)
 	//make_file_list(&head_outtwo, "e_append", GREATGREAT);
 
 
-	char *test_path1[] = {"export", NULL};
+	char *test_path1[] = {"export", "VAR=variable", NULL};
 	char *test_path2[] = {"cat", "-e", NULL};
 	char *test_path3[] = {"cat", "-e", NULL};
 	char *test_path4[] = {"cat", "-e", NULL};
