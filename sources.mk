@@ -1,4 +1,18 @@
-SRC		:= src/error/error.c \
+SRC		:= src/builtins/padloper_cd.c \
+src/builtins/padloper_echo.c \
+src/builtins/padloper_env.c \
+src/builtins/padloper_exit.c \
+src/builtins/padloper_export.c \
+src/builtins/padloper_pwd.c \
+src/builtins/padloper_unset.c \
+src/error/error.c \
+src/executer/error_handling.c \
+src/executer/executer.c \
+src/executer/executer_utils.c \
+src/executer/file_handling.c \
+src/executer/heredoc_handling.c \
+src/executer/list_sim.c \
+src/executer/path_builder.c \
 src/lexer/charchecks.c \
 src/lexer/fsm_op.c \
 src/lexer/fsm_op2.c \
@@ -21,6 +35,7 @@ src/utils/token_utils.c \
 src/utils/token_utils2.c \
 
 HDR		:= src/error/error.h \
+src/executer/executer.h \
 src/hdr/structs.h \
 src/lexer/hdr/charchecks.h \
 src/lexer/hdr/errors.h \

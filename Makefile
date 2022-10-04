@@ -6,14 +6,28 @@
 #    By: mteerlin <mteerlin@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2021/07/21 12:25:06 by mteerlin      #+#    #+#                  #
-#    Updated: 2022/10/04 15:25:52 by mteerlin      ########   odam.nl          #
+#    Updated: 2022/10/04 15:33:31 by mteerlin      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
 NAME	= minishell
 
 VPATH	=	$(shell find src -type d) $(shell find libft -type d)
-SRC		:= src/error/error.c \
+SRC		:= src/builtins/padloper_cd.c \
+src/builtins/padloper_echo.c \
+src/builtins/padloper_env.c \
+src/builtins/padloper_exit.c \
+src/builtins/padloper_export.c \
+src/builtins/padloper_pwd.c \
+src/builtins/padloper_unset.c \
+src/error/error.c \
+src/executer/error_handling.c \
+src/executer/executer.c \
+src/executer/executer_utils.c \
+src/executer/file_handling.c \
+src/executer/heredoc_handling.c \
+src/executer/list_sim.c \
+src/executer/path_builder.c \
 src/lexer/charchecks.c \
 src/lexer/fsm_op.c \
 src/lexer/fsm_op2.c \
@@ -61,7 +75,7 @@ $(LIBFT):
 $(OBJ_DIR)%.o:		%.c $(HDR_DIR)$(HDR)
 			@echo creating object files.
 			@mkdir -p $(dir $@)
-			@$(CC) $(CFLAGS) -c $< -o $@
+			@$(CC) -c $< -o $@
 
 test:		
 			@echo $(VPATH)
