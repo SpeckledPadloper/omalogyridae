@@ -6,7 +6,7 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/18 17:44:02 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/10/01 20:19:22 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/10/04 19:01:39 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,8 @@ void	parce(t_token *head, char ***env)
 	t_exec_list_sim		*simple_cmd;
 
 	first = tokenlst_split(&head);
-	test_split(first);
-	printf("\n");
+	//test_split(first);
+	//printf("\n");
 	temp = first;
 	simple_cmd = NULL;
 	while (temp)
@@ -47,11 +47,12 @@ void	parce(t_token *head, char ***env)
 		split = split_cmd_rdir(temp);
 		test_split_cmd_rdir(split);
 		expand_variables(split, env);
+		printf("expansion completed\n");
 		test_split_cmd_rdir(split);
 		stitch(&split);
 		test_split_cmd_rdir(split);
 		simple_cmd_add_back(&simple_cmd, set_simple_command(split));
-		test_simple_command(simple_cmd);
+		//test_simple_command(simple_cmd);
 		free_cmd_rdir(&split);
 		temp = temp->next;
 	}

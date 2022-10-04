@@ -6,7 +6,7 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/29 14:49:02 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/10/01 15:45:12 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/10/04 18:55:48 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@ bool	is_ambiguous_rdir(t_token *current)
 	t_token	*temp;
 
 	temp = current;
+	if (!current)
+		return (false);
 	while (temp)
 	{
 		if (temp->token_label == RDIR_AMBIGUOUS)
