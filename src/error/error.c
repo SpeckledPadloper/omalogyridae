@@ -1,20 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   ft_isdigit_min.c                                   :+:    :+:            */
+/*   error.c                                            :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
+/*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2020/11/06 14:55:17 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2021/10/13 13:17:48 by lwiedijk      ########   odam.nl         */
+/*   Created: 2022/09/20 15:08:46 by mteerlin      #+#    #+#                 */
+/*   Updated: 2022/09/20 15:23:31 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-int	ft_isdigit_min(int c)
+#include <unistd.h>
+#include <stdlib.h>
+
+void	mem_all_error(void)
 {
-	if ((c >= '0' && c <= '9') || c == '-')
-	{
-		return (1);
-	}
-	return (0);
+	write(2, "memory allocation error\n", 24);
+	exit(EXIT_FAILURE);
 }

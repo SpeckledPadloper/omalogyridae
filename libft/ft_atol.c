@@ -1,36 +1,40 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   ft_atoi.c                                          :+:    :+:            */
+/*   ft_atol.c                                          :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
+/*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2020/11/06 12:33:37 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2021/10/13 13:12:28 by lwiedijk      ########   odam.nl         */
+/*   Created: 2021/09/07 15:48:50 by mteerlin      #+#    #+#                 */
+/*   Updated: 2021/09/07 15:49:40 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-long int	ft_atol(const char *str)
-{
-	int				i;
-	int				plu_min;
-	long int		result;
+#include "libft.h"
 
-	i = 0;
-	plu_min = 1;
+long int	ft_atol(const char *nptr)
+{
+	int				offset;
+	long long int	result;
+	int				negative;
+
+	offset = 0;
 	result = 0;
-	while (str[i] == 32 || (str[i] > 8 && str[i] < 14))
-		i++;
-	if (str[i] == '+' || str[i] == '-')
+	negative = 1;
+	while ((nptr[offset] >= '\t' && nptr[offset] <= '\r') || nptr[offset] == 32)
+		offset++;
+	if (nptr[offset] == '+')
+		offset++;
+	else if (nptr[offset] == '-')
 	{
-		if (str[i] == '-')
-			plu_min *= -1;
-		i++;
+		negative *= -1;
+		offset++;
 	}
-	while (str[i] >= '0' && str[i] <= '9')
+	while (ft_isdigit(nptr[offset]))
 	{
-		result = (result * 10) + (str[i] - '0');
-		i++;
+		result *= 10;
+		result += (nptr[offset] - '0');
+		offset++;
 	}
-	return (result * plu_min);
+	return (result * negative);
 }

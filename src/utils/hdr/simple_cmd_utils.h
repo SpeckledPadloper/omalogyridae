@@ -1,28 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   ft_strcmp.c                                        :+:    :+:            */
+/*   simple_cmd_utils.h                                 :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
+/*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2020/07/22 09:24:35 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2021/08/26 15:12:15 by lwiedijk      ########   odam.nl         */
+/*   Created: 2022/10/01 15:58:47 by mteerlin      #+#    #+#                 */
+/*   Updated: 2022/10/01 15:59:30 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-int	ft_strcmp(char *s1, char *s2)
-{
-	int	idex;
+#ifndef SIMPLE_CMD_UTILS_H
+# define SIMPLE_CMD_UTILS_H
 
-	idex = 0;
-	while (s1[idex] != '\0' || s2[idex] != '\0')
-	{
-		if (s1[idex] == s2[idex])
-		{
-			idex++;
-		}
-		else
-			return (s1[idex] - s2[idex]);
-	}
-	return (0);
-}
+t_exec_list_sim	*simple_cmdlst_last(t_exec_list_sim	**head);
+void			simple_cmd_add_back(t_exec_list_sim **head, t_exec_list_sim *new);
+
+#endif

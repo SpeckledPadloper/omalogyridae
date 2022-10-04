@@ -3,19 +3,21 @@
 /*                                                        ::::::::            */
 /*   ft_putendl_fd.c                                    :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
+/*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2020/11/06 18:27:48 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2020/11/28 10:05:08 by lwiedijk      ########   odam.nl         */
+/*   Created: 2020/11/04 10:53:39 by mteerlin      #+#    #+#                 */
+/*   Updated: 2020/11/09 13:34:20 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <unistd.h>
 #include "libft.h"
 
 void	ft_putendl_fd(char *s, int fd)
 {
-	if (!s)
+	if (s == NULL)
 		return ;
 	ft_putstr_fd(s, fd);
-	ft_putchar_fd('\n', fd);
+	write(fd, "\n", 1);
+	return ;
 }

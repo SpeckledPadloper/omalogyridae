@@ -3,28 +3,31 @@
 /*                                                        ::::::::            */
 /*   ft_strncmp.c                                       :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
+/*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2020/10/31 14:56:56 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2021/10/15 11:42:40 by lwiedijk      ########   odam.nl         */
+/*   Created: 2020/10/27 19:44:32 by mteerlin      #+#    #+#                 */
+/*   Updated: 2021/03/02 13:50:33 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stddef.h>
+#include <string.h>
 
 int	ft_strncmp(const char *s1, const char *s2, size_t n)
 {
-	size_t			i;
+	size_t	offset;
 
-	i = 0;
-	while ((s1[i] != '\0' || s2[i] != '\0') && i < n)
+	offset = 0;
+	if (n == 0)
+		return (0);
+	while (offset < n)
 	{
-		if (s1[i] == s2[i])
+		if (s1[offset] != s2[offset])
 		{
-			i++;
+			return ((unsigned char)s1[offset] - (unsigned char)s2[offset]);
 		}
-		else
-			return ((unsigned char)s1[i] - (unsigned char)s2[i]);
+		if (s1[offset] == '\0' || s2[offset] == '\0')
+			break ;
+		offset++;
 	}
 	return (0);
 }

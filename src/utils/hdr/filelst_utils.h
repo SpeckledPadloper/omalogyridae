@@ -1,25 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   ft_strcpy.c                                        :+:    :+:            */
+/*   filelst_utils.h                                    :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
+/*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2020/07/19 14:51:12 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2021/08/26 15:12:36 by lwiedijk      ########   odam.nl         */
+/*   Created: 2022/10/01 15:39:15 by mteerlin      #+#    #+#                 */
+/*   Updated: 2022/10/01 15:41:41 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-char	*ft_strcpy(char *dest, char *src)
-{
-	int	idex;
+#ifndef FILELST_UTILS_H
+# define FILELST_UTILS_H
 
-	idex = 0;
-	while (src[idex] != '\0')
-	{
-		dest[idex] = src[idex];
-		idex++;
-	}
-	dest[idex] = '\0';
-	return (dest);
-}
+t_file	*filelst_new(char *content, int flag);
+t_file	*filelst_last(t_file *head);
+void	filelst_add_back(t_file **head, t_file *new);
+
+#endif

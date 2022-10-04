@@ -1,20 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   ft_iswhitespace.c                                  :+:    :+:            */
+/*   ft_isspace.c                                       :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
+/*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2021/07/13 11:30:42 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2021/07/13 11:38:06 by lwiedijk      ########   odam.nl         */
+/*   Created: 2021/10/14 15:07:58 by mteerlin      #+#    #+#                 */
+/*   Updated: 2021/11/02 13:41:21 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-int	ft_iswhitespace(int c)
+int	ft_isspace(int argi)
 {
-	if ((c > 8 && c < 14) || c == 32)
-	{
+	if ((argi > 9 && argi < 13) || argi == ' ')
 		return (1);
-	}
 	return (0);
 }

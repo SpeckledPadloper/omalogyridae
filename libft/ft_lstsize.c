@@ -3,10 +3,10 @@
 /*                                                        ::::::::            */
 /*   ft_lstsize.c                                       :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
+/*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2020/11/28 11:46:16 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2020/11/28 14:10:36 by lwiedijk      ########   odam.nl         */
+/*   Created: 2020/11/07 13:46:59 by mteerlin      #+#    #+#                 */
+/*   Updated: 2021/03/02 13:47:30 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,13 @@
 
 int	ft_lstsize(t_list *lst)
 {
-	t_list	*temp;
-	int		count;
+	int	offset;
 
-	temp = lst;
-	count = 0;
-	while (temp != NULL)
+	offset = 0;
+	while (lst != NULL)
 	{
-		temp = temp->next;
-		count++;
+		lst = lst->next;
+		offset++;
 	}
-	return (count);
+	return (offset);
 }

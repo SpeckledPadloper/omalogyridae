@@ -3,33 +3,27 @@
 /*                                                        ::::::::            */
 /*   ft_strrchr.c                                       :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
+/*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2020/10/31 14:55:11 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2020/11/28 10:22:08 by lwiedijk      ########   odam.nl         */
+/*   Created: 2020/10/27 17:36:06 by mteerlin      #+#    #+#                 */
+/*   Updated: 2020/10/27 20:02:29 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stddef.h>
-
 char	*ft_strrchr(const char *s, int c)
 {
-	char	ch;
-	int		i;
+	int		offset;
+	char	i;
 
-	ch = (char)c;
-	i = 0;
-	while (s[i] != '\0')
+	offset = 0;
+	i = c;
+	while (s[offset] != '\0')
+		offset++;
+	while (offset >= 0)
 	{
-		i++;
+		if (i == s[offset])
+			return ((char *)&s[offset]);
+		offset--;
 	}
-	while (i >= 0)
-	{
-		if (s[i] == ch)
-		{
-			return ((char *)s + i);
-		}
-		i--;
-	}
-	return (NULL);
+	return (0);
 }

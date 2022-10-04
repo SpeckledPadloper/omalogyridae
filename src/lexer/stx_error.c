@@ -1,25 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   ft_putstr.c                                        :+:    :+:            */
+/*   stx_error.c                                        :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
+/*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2020/07/22 16:24:40 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2021/08/26 15:07:08 by lwiedijk      ########   odam.nl         */
+/*   Created: 2022/09/18 19:37:01 by mteerlin      #+#    #+#                 */
+/*   Updated: 2022/09/18 20:17:14 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <unistd.h>
+#include "../../libft/libft.h"
+#include "../hdr/structs.h"
 
-void	ft_putstr(char *str)
+void	syntax_error(char *token)
 {
-	int	i;
-
-	i = 0;
-	while (str[i] != '\0')
-	{
-		write(1, &str[i], 1);
-		i++;
-	}
+	write(2, SHLNAME, ft_strlen(SHLNAME));
+	write(2, ": syntax error near unexpected token '", 38);
+	ft_putstr_fd(token, 2);
+	write(2, "'\n", 2);
 }

@@ -3,35 +3,29 @@
 /*                                                        ::::::::            */
 /*   ft_memcmp.c                                        :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
+/*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2020/10/31 14:48:59 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2020/11/28 10:02:02 by lwiedijk      ########   odam.nl         */
+/*   Created: 2020/10/28 15:37:29 by mteerlin      #+#    #+#                 */
+/*   Updated: 2020/11/12 11:54:55 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stddef.h>
+#include "libft.h"
 
 int	ft_memcmp(const void *s1, const void *s2, size_t n)
 {
-	const unsigned char	*s1p;
-	const unsigned char	*s2p;
-	size_t				i;
+	size_t	offset;
+	char	*ts1;
+	char	*ts2;
 
-	i = 0;
-	s1p = (const unsigned char *)s1;
-	s2p = (const unsigned char *)s2;
-	if (s1p == s2p || n == 0)
+	offset = 0;
+	ts1 = (char *)s1;
+	ts2 = (char *)s2;
+	while (offset < n)
 	{
-		return (0);
-	}
-	while (i < n)
-	{
-		if (s1p[i] != s2p[i])
-		{
-			return (s1p[i] - s2p[i]);
-		}
-		i++;
+		if (ts1[offset] != ts2[offset])
+			return ((unsigned char)ts1[offset] - (unsigned char)ts2[offset]);
+		offset++;
 	}
 	return (0);
 }

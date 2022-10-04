@@ -3,18 +3,16 @@
 /*                                                        ::::::::            */
 /*   ft_isdigit.c                                       :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
+/*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2020/11/06 14:55:17 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2020/11/28 09:59:29 by lwiedijk      ########   odam.nl         */
+/*   Created: 2020/10/26 14:50:46 by mteerlin      #+#    #+#                 */
+/*   Updated: 2021/11/02 14:20:58 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-int	ft_isdigit(int c)
+int	ft_isdigit(int argi)
 {
-	if (c >= '0' && c <= '9')
-	{
+	if ((argi >= '0') && (argi <= '9'))
 		return (1);
-	}
 	return (0);
 }

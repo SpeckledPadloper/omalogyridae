@@ -3,36 +3,33 @@
 /*                                                        ::::::::            */
 /*   ft_putnbr_fd.c                                     :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
+/*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2020/11/06 18:28:10 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2021/08/26 15:06:39 by lwiedijk      ########   odam.nl         */
+/*   Created: 2020/11/04 10:54:26 by mteerlin      #+#    #+#                 */
+/*   Updated: 2021/03/02 13:49:31 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <unistd.h>
 #include "libft.h"
 
 void	ft_putnbr_fd(int n, int fd)
 {
-	long	i;
+	char	c;
 
-	i = n;
 	if (n == -2147483648)
 	{
-		ft_putchar_fd('-', fd);
-		ft_putchar_fd('2', fd);
-		ft_putnbr_fd(147483648, fd);
+		write(fd, "-2", 2);
+		n = 147483648;
 	}
-	else if (i < 0)
+	if (n < 0)
 	{
 		ft_putchar_fd('-', fd);
-		ft_putnbr_fd(-n, fd);
+		n *= -1;
 	}
-	else if (i > 9)
-	{
-		ft_putnbr_fd(i / 10, fd);
-		ft_putnbr_fd(i % 10, fd);
-	}
-	else
-		ft_putchar_fd(i + '0', fd);
+	if (n / 10)
+		ft_putnbr_fd((n / 10), fd);
+	c = (n % 10) + '0';
+	ft_putchar_fd(c, fd);
+	return ;
 }

@@ -3,60 +3,56 @@
 /*                                                        ::::::::            */
 /*   ft_itoa_base.c                                     :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: lwiedijk <lwiedijk@student.codam.nl>         +#+                     */
+/*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2021/02/01 11:12:03 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2021/03/09 17:28:51 by lwiedijk      ########   odam.nl         */
+/*   Created: 2021/01/15 15:41:55 by mteerlin      #+#    #+#                 */
+/*   Updated: 2021/03/02 13:44:52 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
 #include "libft.h"
+#include <stdlib.h>
+#include <stddef.h>
 
-static int	ft_numlen_base(long value, int base)
+static size_t	buildlen(long long int nbr, unsigned int base)
 {
-	int	len;
+	size_t	len;
 
-	len = 0;
-	if (value < 0)
-	{
-		value = value * -1;
+	len = 1;
+	if (nbr < 0)
 		len++;
-	}
-	if (value == 0)
-		len++;
-	while (value)
+	while (nbr / base)
 	{
-		value = value / base;
+		nbr /= base;
 		len++;
 	}
 	return (len);
 }
 
-char	*ft_itoa_base(long long value, int base, char *hex_case)
+char	*ft_itoa_base(long long int nbr, unsigned int base)
 {
-	int		l;
-	int		remainder;
-	char	*output;
+	size_t	len;
+	char	*arr;
 
-	l = ft_numlen_base(value, base);
-	output = (char *)malloc(sizeof(char) * l + 1);
-	if (output == NULL)
+	if (base < 2 || base > 36)
 		return (NULL);
-	if (value == 0)
-		output[0] = '0';
-	if (value < 0 && base == 10)
+	len = buildlen(nbr, base);
+	arr = (char *)calloc((len + 1), sizeof(char));
+	if (arr == NULL)
+		return (NULL);
+	if (nbr < 0)
 	{
-		output[0] = '-';
-		value = value * -1;
+		arr[0] = '-';
+		nbr *= -1;
 	}
-	output[l] = '\0';
-	while (value)
+	len--;
+	if (nbr == 0)
+		arr[len] = BASE_STR[0];
+	while (nbr)
 	{
-		l--;
-		remainder = value % base;
-		value = value / base;
-		output[l] = hex_case[remainder];
+		arr[len] = BASE_STR[nbr % base];
+		len--;
+		nbr /= base;
 	}
-	return (output);
+	return (arr);
 }

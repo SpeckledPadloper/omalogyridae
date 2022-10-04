@@ -3,19 +3,18 @@
 /*                                                        ::::::::            */
 /*   ft_isalnum.c                                       :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
+/*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2020/11/06 15:06:35 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2020/11/28 09:58:34 by lwiedijk      ########   odam.nl         */
+/*   Created: 2020/10/26 15:44:38 by mteerlin      #+#    #+#                 */
+/*   Updated: 2020/11/05 15:04:36 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-int	ft_isalnum(int c)
+#include "libft.h"
+
+int	ft_isalnum(int argi)
 {
-	if ((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z')
-		|| (c >= '0' && c <= '9'))
-	{
-		return (1);
-	}
-	return (0);
+	if (!(ft_isdigit(argi) || ft_isalpha(argi)))
+		return (0);
+	return (8);
 }

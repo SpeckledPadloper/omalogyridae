@@ -3,48 +3,37 @@
 /*                                                        ::::::::            */
 /*   ft_memmove.c                                       :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
+/*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2020/10/31 14:45:48 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2021/08/26 16:56:11 by lwiedijk      ########   odam.nl         */
+/*   Created: 2020/10/28 14:35:47 by mteerlin      #+#    #+#                 */
+/*   Updated: 2021/03/02 13:56:49 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stddef.h>
-#include <stdio.h>
 #include "libft.h"
 
-static void	*copy_backward(unsigned char *dstp,
-				const unsigned char *srcp, size_t len)
+void	*ft_memmove(void *dest, const void *src, size_t n)
 {
-	while (len > 0)
-	{
-		len--;
-		dstp[len] = srcp[len];
-	}
-	return (dstp);
-}
+	size_t	offset;
 
-void	*ft_memmove(void *dst, const void *src, size_t len)
-{
-	unsigned char		*dstp;
-	const unsigned char	*srcp;
-	size_t				i;
-
-	dstp = (unsigned char *)dst;
-	srcp = (unsigned char *)src;
-	if (!dstp && !srcp)
+	offset = 0;
+	if (dest == NULL && src == NULL)
 		return (NULL);
-	if (srcp < dstp)
-		return (copy_backward(dstp, srcp, len));
-	else
+	if (dest >= src)
 	{
-		i = 0;
-		while (i < len)
+		while (0 < n)
 		{
-			dstp[i] = srcp[i];
-			i++;
+			((char *)dest)[n - 1] = ((char *)src)[n - 1];
+			n--;
 		}
 	}
-	return (dst);
+	else
+	{
+		while (offset < n)
+		{
+			((char *)dest)[offset] = ((char *)src)[offset];
+			offset++;
+		}
+	}
+	return ((void *)dest);
 }

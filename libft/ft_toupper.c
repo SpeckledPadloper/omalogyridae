@@ -3,18 +3,16 @@
 /*                                                        ::::::::            */
 /*   ft_toupper.c                                       :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
+/*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2020/11/06 15:37:13 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2020/11/28 10:18:55 by lwiedijk      ########   odam.nl         */
+/*   Created: 2020/10/29 11:06:26 by mteerlin      #+#    #+#                 */
+/*   Updated: 2020/11/06 14:40:42 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 int	ft_toupper(int c)
 {
 	if (c >= 'a' && c <= 'z')
-	{
 		return (c - 32);
-	}
 	return (c);
 }

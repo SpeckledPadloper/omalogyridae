@@ -3,33 +3,27 @@
 /*                                                        ::::::::            */
 /*   ft_calloc.c                                        :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
+/*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2020/11/06 18:08:15 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2021/08/26 13:35:33 by lwiedijk      ########   odam.nl         */
+/*   Created: 2020/10/30 14:36:09 by mteerlin      #+#    #+#                 */
+/*   Updated: 2021/03/02 13:44:12 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
+#include "libft.h"
 
-void	*ft_calloc(size_t count, size_t size)
+void	*ft_calloc(size_t nmemb, size_t size)
 {
-	char	*ptr;
-	size_t	i;
+	size_t	max_size;
+	void	*ptr;
 
-	ptr = (void *)malloc(count * size);
-	if (ptr == NULL)
-	{
+	max_size = ((size_t) - 1) / 2;
+	if (nmemb != 0 && max_size / nmemb < size)
 		return (NULL);
-	}
-	else
-	{
-		i = 0;
-		while (i < count * size)
-		{
-			ptr[i] = '\0';
-			i++;
-		}
-	}
-	return ((void *)ptr);
+	ptr = malloc(nmemb * size);
+	if (ptr == NULL)
+		return (NULL);
+	ft_bzero(ptr, nmemb * size);
+	return (ptr);
 }

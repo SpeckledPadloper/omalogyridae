@@ -3,101 +3,97 @@
 /*                                                        ::::::::            */
 /*   ft_split.c                                         :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
+/*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2020/11/06 18:25:09 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2021/08/26 15:10:28 by lwiedijk      ########   odam.nl         */
+/*   Created: 2020/11/02 17:41:54 by mteerlin      #+#    #+#                 */
+/*   Updated: 2022/07/21 13:53:13 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
 #include <stdlib.h>
+#include "libft.h"
 
-static char	**ft_allocation_error(char **ptr)
+static unsigned int	wordcount(char const *s, char c)
 {
-	int	i;
+	int		wordcnt;
+	size_t	offset;
 
-	i = 0;
-	while (ptr[i] != NULL)
+	wordcnt = 0;
+	offset = 1;
+	while (offset <= ft_strlen((char *)s))
 	{
-		free(ptr[i]);
-		i++;
+		if (s[offset] == c && s[offset - 1] != c)
+			wordcnt++;
+		else if (s[offset] == '\0' && s[offset - 1] != c)
+			wordcnt++;
+		offset++;
 	}
-	free(ptr);
-	return (NULL);
+	return (wordcnt);
 }
 
-static int	ft_string_count(const char *s, char dil_c)
+static unsigned int	wordstart(char const *s, char c, int n)
 {
-	int	count;
-	int	i;
+	int				wordcnt;
+	size_t			offset;
 
-	if (!s[0])
-		return (0);
-	i = 0;
-	count = 0;
-	while (s[i] && s[i] == dil_c)
-		i++;
-	while (s[i] != '\0')
+	wordcnt = 0;
+	offset = 0;
+	while (((s[offset] != '\0') && (wordcnt < n)))
 	{
-		if (s[i] == dil_c)
-		{
-			count++;
-			while (s[i] && s[i] == dil_c)
-			{
-				i++;
-			}
-			continue ;
-		}
-		i++;
+		if (offset == 0 && s[offset] != c)
+			wordcnt++;
+		else if (s[offset] != c && s[offset - 1] == c)
+			wordcnt++;
+		offset++;
 	}
-	if (s[i - 1] != dil_c)
-		count = count + 1;
-	return (count);
+	return (offset - 1);
 }
 
-static void	ft_the_strings(char **substr, unsigned int *substrlen, char c)
+static unsigned int	wordlen(char const *s, unsigned int start, char c)
 {
-	unsigned int	i;
+	int	len;
 
-	*substr = *substr + *substrlen;
-	*substrlen = 0;
-	i = 0;
-	while (**substr && **substr == c)
-		(*substr)++;
-	while ((*substr)[i])
+	len = 0;
+	while (s[start + len] != c && s[start + len] != '\0')
+		len++;
+	return (len);
+}
+
+static void	freesplit(char **split, int offset)
+{
+	while (offset >= 0)
 	{
-		if ((*substr)[i] == c)
-			break ;
-		(*substrlen)++;
-		i++;
+		free(split[offset]);
+		offset--;
 	}
+	free(split);
 }
 
 char	**ft_split(char const *s, char c)
 {
-	char			**ptr;
-	char			*substr;
-	unsigned int	substrlen;
-	int				i;
+	unsigned int	len;
+	unsigned int	offset;
+	unsigned int	start;
+	char			**split;
 
-	if (!s)
+	offset = 0;
+	if (s == NULL)
 		return (NULL);
-	ptr = (char **)malloc((ft_string_count(s, c) + 1) * sizeof(char *));
-	if (ptr == NULL)
+	split = (char **)malloc((wordcount(s, c) + 1) * sizeof(char *));
+	if (split == NULL)
 		return (NULL);
-	i = 0;
-	substr = (char *)s;
-	substrlen = 0;
-	while (i < ft_string_count(s, c))
+	while (offset < wordcount(s, c))
 	{
-		ft_the_strings(&substr, &substrlen, c);
-		ptr[i] = (char *)malloc((substrlen + 1) * sizeof(char));
-		if (!ptr[i])
-			return (ft_allocation_error(ptr));
-		ft_strlcpy(ptr[i], substr, substrlen + 1);
-		i++;
+		start = wordstart(s, c, offset + 1);
+		len = wordlen(s, start, c);
+		split[offset] = ft_substr(s, start, len);
+		if (split[offset] == NULL)
+		{
+			freesplit(split, offset);
+			return (NULL);
+		}
+		offset++;
 	}
-	ptr[i] = NULL;
-	return (ptr);
+	split[wordcount(s, c)] = NULL;
+	return (split);
 }

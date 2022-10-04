@@ -3,75 +3,41 @@
 /*                                                        ::::::::            */
 /*   ft_strtrim.c                                       :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
+/*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2020/11/06 18:24:46 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2021/08/26 15:17:29 by lwiedijk      ########   odam.nl         */
+/*   Created: 2020/11/02 12:50:07 by mteerlin      #+#    #+#                 */
+/*   Updated: 2022/01/18 13:43:36 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
 #include <stdlib.h>
-
-static int	ch_to_trim(const char *trim_str, char str_c)
-{
-	int	i;
-
-	i = 0;
-	while (trim_str[i] != '\0')
-	{
-		if (trim_str[i] == str_c)
-		{
-			return (1);
-		}
-		i++;
-	}
-	return (0);
-}
-
-static int	start(const char *str1, const char *trim1)
-{
-	int	i;
-
-	i = 0;
-	while (str1[i] && ch_to_trim(trim1, str1[i]))
-	{
-		i++;
-	}
-	return (i);
-}
-
-static int	end(const char *str2, const char *trim2, int left)
-{
-	int	j;
-	int	substr_len;
-	int	end_count;
-
-	j = ft_strlen(str2);
-	end_count = 0;
-	while (j > left && ch_to_trim(trim2, str2[j - 1]))
-	{
-		j--;
-		end_count++;
-	}
-	substr_len = ft_strlen(str2) - end_count;
-	return (substr_len);
-}
+#include "libft.h"
 
 char	*ft_strtrim(char const *s1, char const *set)
 {
-	char	*trimmed_str;
-	int		left;
-	int		right;
+	unsigned int	start;
+	unsigned int	offset;
+	size_t			len;
 
-	if (!s1 || !set)
+	offset = 0;
+	start = 0;
+	if (s1 == NULL)
 		return (NULL);
-	if (s1 && set)
+	if (set == NULL)
+		return (ft_strdup(s1));
+	len = ft_strlen((char *)s1);
+	while (offset < ft_strlen((char *)set) && len != 0)
 	{
-		left = start(s1, set);
-		right = end(s1, set, left);
-		trimmed_str = ft_substr(s1, left, (right - left));
-		return (trimmed_str);
+		if (!ft_strncmp((s1 + start + len - 1), (set + offset), 1) \
+				|| !ft_strncmp((s1 + start), (set + offset), 1))
+		{
+			if (!ft_strncmp((s1 + start), (set + offset), 1))
+				start++;
+			len--;
+			offset = 0;
+			continue ;
+		}
+		offset++;
 	}
-	return (0);
+	return (ft_substr(s1, start, len));
 }

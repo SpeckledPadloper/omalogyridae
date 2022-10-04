@@ -3,38 +3,31 @@
 /*                                                        ::::::::            */
 /*   ft_strlcpy.c                                       :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
+/*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2020/10/31 14:52:09 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2020/11/28 10:12:02 by lwiedijk      ########   odam.nl         */
+/*   Created: 2020/10/27 13:51:00 by mteerlin      #+#    #+#                 */
+/*   Updated: 2021/03/02 13:50:15 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stddef.h>
+#include "libft.h"
 
 size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize)
 {
-	size_t	i;
+	size_t	offset;
+	size_t	len;
 
-	i = 0;
-	if (!dst || !src)
+	if (src == NULL)
 		return (0);
-	if (dstsize == 0)
+	len = ft_strlen((char *)src);
+	offset = 0;
+	if (dst == NULL || dstsize == 0)
+		return (len);
+	while ((offset < (dstsize - 1)) && (src[offset] != '\0'))
 	{
-		while (src[i] != '\0')
-		{
-			i++;
-		}
-		return (i);
+		dst[offset] = src[offset];
+		offset++;
 	}
-	while (src[i] != '\0' && i < dstsize - 1)
-	{
-		dst[i] = src[i];
-		i++;
-	}
-	if (i < dstsize)
-		dst[i] = '\0';
-	while (src[i])
-		i++;
-	return (i);
+	dst[offset] = '\0';
+	return (len);
 }

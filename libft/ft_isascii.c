@@ -3,18 +3,16 @@
 /*                                                        ::::::::            */
 /*   ft_isascii.c                                       :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
+/*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2020/11/06 15:19:42 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2020/11/28 09:59:13 by lwiedijk      ########   odam.nl         */
+/*   Created: 2020/10/26 16:17:59 by mteerlin      #+#    #+#                 */
+/*   Updated: 2020/10/26 16:23:48 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-int	ft_isascii(int c)
+int	ft_isascii(int argi)
 {
-	if (c >= 0 && c <= 127)
-	{
+	if ((argi >= 0) && (argi <= 127))
 		return (1);
-	}
 	return (0);
 }

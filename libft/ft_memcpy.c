@@ -3,30 +3,30 @@
 /*                                                        ::::::::            */
 /*   ft_memcpy.c                                        :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
+/*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2020/10/31 10:12:22 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2020/11/28 10:02:36 by lwiedijk      ########   odam.nl         */
+/*   Created: 2020/10/28 12:15:39 by mteerlin      #+#    #+#                 */
+/*   Updated: 2020/11/12 17:06:19 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stddef.h>
+#include "libft.h"
 
-void	*ft_memcpy(void *dst, const void *src, size_t n)
+void	*ft_memcpy(void *dest, const void *src, size_t n)
 {
-	const unsigned char	*str;
-	unsigned char		*mem;
-	size_t				i;
+	size_t		offset;
+	char		*tdest;
+	const char	*tsrc;
 
-	i = 0;
-	str = (const unsigned char *)src;
-	mem = (unsigned char *)dst;
-	if (!str && !mem)
-		return (NULL);
-	while (i < n)
+	offset = 0;
+	if (dest == 0 && src == 0)
+		return (0);
+	tdest = (char *)dest;
+	tsrc = (const char *)src;
+	while (offset < n)
 	{
-		mem[i] = str[i];
-		i++;
+		tdest[offset] = tsrc[offset];
+		offset++;
 	}
-	return ((unsigned char *)dst);
+	return (dest);
 }

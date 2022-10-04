@@ -3,31 +3,27 @@
 /*                                                        ::::::::            */
 /*   ft_memchr.c                                        :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
+/*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2020/10/31 14:47:39 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2020/11/28 10:01:36 by lwiedijk      ########   odam.nl         */
+/*   Created: 2020/10/28 15:07:23 by mteerlin      #+#    #+#                 */
+/*   Updated: 2020/11/13 11:48:05 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stddef.h>
+#include "libft.h"
 
 void	*ft_memchr(const void *s, int c, size_t n)
 {
-	unsigned char	*str;
-	unsigned char	uc;
-	size_t			i;
+	size_t			offset;
+	unsigned char	*ts;
 
-	i = 0;
-	str = (unsigned char *)s;
-	uc = (unsigned char)c;
-	while (i < n)
+	offset = 0;
+	ts = (unsigned char *)s;
+	while (offset < n)
 	{
-		if (str[i] == uc)
-		{
-			return ((unsigned char *)s + i);
-		}
-		i++;
+		if (ts[offset] == (unsigned char)c)
+			return (&ts[offset]);
+		offset++;
 	}
-	return (NULL);
+	return (0);
 }

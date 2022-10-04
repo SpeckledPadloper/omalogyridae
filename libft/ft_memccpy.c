@@ -3,34 +3,30 @@
 /*                                                        ::::::::            */
 /*   ft_memccpy.c                                       :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
+/*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2020/10/31 14:42:07 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2020/11/28 10:01:02 by lwiedijk      ########   odam.nl         */
+/*   Created: 2020/10/28 12:35:45 by mteerlin      #+#    #+#                 */
+/*   Updated: 2021/03/02 13:47:03 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stddef.h>
+#include "libft.h"
 
-void	*ft_memccpy(void *dst, const void *src, int c, size_t n)
+void	*ft_memccpy(void *dest, const void *src, int c, size_t n)
 {
-	unsigned char		*dstp;
-	const unsigned char	*srcp;
-	unsigned char		uc;
-	size_t				i;
+	size_t			offset;
+	unsigned char	*tdest;
+	const char		*tsrc;
 
-	i = 0;
-	uc = (unsigned char)c;
-	dstp = (unsigned char *)dst;
-	srcp = (const unsigned char *)src;
-	while (i < n)
+	offset = 0;
+	tdest = (unsigned char *)dest;
+	tsrc = (const char *)src;
+	while (offset < n)
 	{
-		dstp[i] = srcp[i];
-		if (dstp[i] == uc)
-		{
-			return (dst + i + 1);
-		}
-		i++;
+		tdest[offset] = tsrc[offset];
+		offset++;
+		if (tdest[offset - 1] == (unsigned char)c)
+			return (&tdest[offset]);
 	}
-	return (NULL);
+	return (0);
 }

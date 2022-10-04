@@ -3,30 +3,23 @@
 /*                                                        ::::::::            */
 /*   ft_itoa.c                                          :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
+/*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2020/11/06 18:25:33 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2021/08/26 13:37:47 by lwiedijk      ########   odam.nl         */
+/*   Created: 2020/11/04 11:00:28 by mteerlin      #+#    #+#                 */
+/*   Updated: 2021/03/02 13:44:39 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
+#include "libft.h"
 
-int	malloc_size(long nb)
+static int	buildlen(size_t len, int n)
 {
-	int	len;
-
-	len = 0;
-	if (nb < 0)
-	{
-		nb = nb * -1;
+	if (n < 0)
 		len++;
-	}
-	if (nb == 0)
-		len++;
-	while (nb > 0)
+	while (n / 10)
 	{
-		nb = nb / 10;
+		n /= 10;
 		len++;
 	}
 	return (len);
@@ -34,29 +27,29 @@ int	malloc_size(long nb)
 
 char	*ft_itoa(int n)
 {
-	char	*str;
-	long	num;
-	int		l;
+	size_t	len;
+	long	ln;
+	char	*arr;
 
-	num = n;
-	l = malloc_size(num);
-	str = (char *)malloc(sizeof(char) * (l + 1));
-	if (str == NULL)
+	len = 1;
+	ln = n;
+	len = buildlen(len, n);
+	arr = (char *)malloc((len + 1) * sizeof(char));
+	if (arr == NULL)
 		return (NULL);
-	str[l] = '\0';
-	l--;
-	if (num == 0)
-		str[0] = '0';
-	if (num < 0)
+	if (ln < 0)
 	{
-		str[0] = '-';
-		num = num * -1;
+		arr[0] = '-';
+		ln *= -1;
 	}
-	while (num > 0)
+	arr[len] = '\0';
+	len--;
+	while (ln / 10)
 	{
-		str[l] = num % 10 + '0';
-		num = num / 10;
-		l--;
+		arr[len] = (ln % 10) + '0';
+		len--;
+		ln /= 10;
 	}
-	return (str);
+	arr[len] = (ln % 10) + '0';
+	return (arr);
 }

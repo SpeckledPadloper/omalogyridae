@@ -3,18 +3,16 @@
 /*                                                        ::::::::            */
 /*   ft_isprint.c                                       :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
+/*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2020/11/06 15:29:35 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2020/11/28 09:59:48 by lwiedijk      ########   odam.nl         */
+/*   Created: 2020/10/26 16:30:10 by mteerlin      #+#    #+#                 */
+/*   Updated: 2020/11/09 11:33:01 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-int	ft_isprint(int c)
+int	ft_isprint(int argi)
 {
-	if (c >= 32 && c <= 126)
-	{
-		return (1);
-	}
+	if ((argi >= ' ') && (argi < 127))
+		return (16384);
 	return (0);
 }

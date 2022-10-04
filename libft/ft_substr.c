@@ -3,37 +3,28 @@
 /*                                                        ::::::::            */
 /*   ft_substr.c                                        :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
+/*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2020/11/06 18:23:35 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2021/08/26 15:17:46 by lwiedijk      ########   odam.nl         */
+/*   Created: 2020/11/01 13:31:26 by mteerlin      #+#    #+#                 */
+/*   Updated: 2020/11/20 16:54:43 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
+#include "libft.h"
 
 char	*ft_substr(char const *s, unsigned int start, size_t len)
 {
-	size_t	i;
-	size_t	j;
-	char	*ptr;
+	char	*sstr;
 
 	if (s == NULL)
 		return (NULL);
-	ptr = (char *)malloc((len + 1) * sizeof(char));
-	if (ptr == NULL)
+	sstr = (char *)malloc((len + 1) * sizeof(char));
+	if (sstr == NULL)
 		return (NULL);
-	i = 0;
-	j = 0;
-	while (s[i] != '\0')
-	{
-		if (i >= start && j < len)
-		{
-			ptr[j] = s[i];
-			j++;
-		}
-		i++;
-	}
-	ptr[j] = '\0';
-	return (ptr);
+	if (start > ft_strlen((char *)s))
+		ft_strlcpy(sstr, "", len + 1);
+	else
+		ft_strlcpy(sstr, (s + start), len + 1);
+	return (sstr);
 }

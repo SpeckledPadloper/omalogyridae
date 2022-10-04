@@ -3,25 +3,17 @@
 /*                                                        ::::::::            */
 /*   ft_bzero.c                                         :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
+/*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2020/10/30 14:58:39 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2020/11/28 09:57:12 by lwiedijk      ########   odam.nl         */
+/*   Created: 2020/10/27 20:04:27 by mteerlin      #+#    #+#                 */
+/*   Updated: 2020/11/09 11:35:39 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stddef.h>
+#include "libft.h"
 
 void	ft_bzero(void *s, size_t n)
 {
-	unsigned char	*str;
-	size_t			i;
-
-	i = 0;
-	str = (unsigned char *)s;
-	while (i < n)
-	{
-		str[i] = '\0';
-		i++;
-	}
+	ft_memset(s, '\0', n);
+	return ;
 }

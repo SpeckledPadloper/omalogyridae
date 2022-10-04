@@ -1,31 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   ft_numlen_base.c                                   :+:    :+:            */
+/*   errors.h                                           :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: lwiedijk <lwiedijk@student.codam.nl>         +#+                     */
+/*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2021/02/17 15:33:10 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2021/03/09 18:02:44 by lwiedijk      ########   odam.nl         */
+/*   Created: 2022/09/18 19:39:40 by mteerlin      #+#    #+#                 */
+/*   Updated: 2022/09/18 19:40:14 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-int	ft_numlen_base(long value, int base)
-{
-	int	len;
+#ifndef ERRORS_H
+# define ERRORS_H
 
-	len = 0;
-	if (value < 0)
-	{
-		value = value * -1;
-		len++;
-	}
-	if (value == 0)
-		len++;
-	while (value)
-	{
-		value = value / base;
-		len++;
-	}
-	return (len);
-}
+void	syntax_error(char *token);
+
+#endif

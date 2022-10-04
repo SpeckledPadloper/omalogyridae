@@ -3,10 +3,10 @@
 /*                                                        ::::::::            */
 /*   ft_lstlast.c                                       :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
+/*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2020/11/28 11:47:08 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2020/12/04 15:41:49 by lwiedijk      ########   odam.nl         */
+/*   Created: 2020/11/07 13:50:08 by mteerlin      #+#    #+#                 */
+/*   Updated: 2020/11/09 16:37:47 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,6 @@ t_list	*ft_lstlast(t_list *lst)
 	if (lst == NULL)
 		return (NULL);
 	while (lst->next != NULL)
-	{
 		lst = lst->next;
-	}
 	return (lst);
 }

@@ -3,18 +3,16 @@
 /*                                                        ::::::::            */
 /*   ft_isalpha.c                                       :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
+/*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2020/11/06 14:19:16 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2020/11/28 09:58:55 by lwiedijk      ########   odam.nl         */
+/*   Created: 2020/10/26 15:19:50 by mteerlin      #+#    #+#                 */
+/*   Updated: 2020/10/26 15:27:21 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-int	ft_isalpha(int c)
+int	ft_isalpha(int argi)
 {
-	if ((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z'))
-	{
-		return (1);
-	}
+	if (((argi >= 'A') && (argi <= 'Z')) || ((argi >= 'a') && (argi <= 'z')))
+		return (1024);
 	return (0);
 }

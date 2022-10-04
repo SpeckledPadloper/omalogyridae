@@ -3,23 +3,21 @@
 /*                                                        ::::::::            */
 /*   ft_strlen.c                                        :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
+/*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2020/10/31 14:50:16 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2020/11/28 10:12:39 by lwiedijk      ########   odam.nl         */
+/*   Created: 2020/10/27 13:32:03 by mteerlin      #+#    #+#                 */
+/*   Updated: 2021/03/02 13:50:25 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stddef.h>
+#include <string.h>
 
-size_t	ft_strlen(const char *s)
+size_t	ft_strlen(const char *args)
 {
-	size_t	i;
+	int	len;
 
-	i = 0;
-	while (s[i] != '\0')
-	{
-		i++;
-	}
-	return (i);
+	len = 0;
+	while (args[len] != '\0')
+		len++;
+	return (len);
 }
