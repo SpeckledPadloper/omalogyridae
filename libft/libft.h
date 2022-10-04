@@ -6,13 +6,16 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/10/31 10:01:17 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/10/04 15:26:30 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/10/04 16:08:24 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef LIBFT_H
 # define LIBFT_H
 # define BASE_STR "0123456789abcdefghijklmnopqrstuvwxyz"
+# ifndef BUFFER_SIZE
+#  define BUFFER_SIZE 42
+# endif
 # include <stddef.h>
 
 typedef struct s_list

@@ -6,7 +6,7 @@
 #    By: mteerlin <mteerlin@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2021/07/21 12:25:06 by mteerlin      #+#    #+#                  #
-#    Updated: 2022/10/04 15:33:31 by mteerlin      ########   odam.nl          #
+#    Updated: 2022/10/04 16:08:58 by mteerlin      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,7 +26,6 @@ src/executer/executer.c \
 src/executer/executer_utils.c \
 src/executer/file_handling.c \
 src/executer/heredoc_handling.c \
-src/executer/list_sim.c \
 src/executer/path_builder.c \
 src/lexer/charchecks.c \
 src/lexer/fsm_op.c \

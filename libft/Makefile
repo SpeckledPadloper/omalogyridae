@@ -6,7 +6,7 @@
 #    By: mteerlin <mteerlin@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2020/10/28 15:02:52 by mteerlin      #+#    #+#                  #
-#    Updated: 2022/10/04 16:00:12 by mteerlin      ########   odam.nl          #
+#    Updated: 2022/10/04 16:06:14 by mteerlin      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,7 +21,7 @@ REG_OBJ		= ft_atoi.o ft_bzero.o ft_calloc.o ft_isalnum.o ft_isalpha.o \
 				ft_strtrim.o ft_strrchr.o ft_substr.o ft_tolower.o \
 				ft_toupper.o ft_strjoin_free.o ft_strcmp.o ft_strcat.o \
 				ft_split_and_count.o ft_putstr.o ft_putnbr.o ft_power.o \
-				ft_numlen_base.o ft_strcpy.o
+				ft_numlen_base.o ft_strcpy.o get_next_line.o
 BONUS_OBJ	= ft_atof.o ft_atol.o ft_itoa_base.o ft_lstadd_back.o \
 				ft_lstadd_front.o ft_lstclear.o ft_lstdelone.o ft_lstiter.o \
 				ft_lstlast.o ft_lstnew.o ft_lstmap.o ft_lstsize.o ft_isspace.o \
