@@ -136,10 +136,10 @@ int main(int ac, char **av, char **env)
 	char *test_path4[] = {"cat", "-e", NULL};
 	char *test_path5[] = {"cat", "-e", NULL};
 	make_execlist_sim(&head, test_path1, NULL, NULL);
-	make_execlist_sim(&head, test_path2, NULL, NULL);
-	make_execlist_sim(&head, test_path3, NULL, NULL);
-	make_execlist_sim(&head, test_path4, NULL, NULL);
-	make_execlist_sim(&head, test_path5, NULL, NULL);
+	//make_execlist_sim(&head, test_path2, NULL, NULL);
+	//make_execlist_sim(&head, test_path3, NULL, NULL);
+	//make_execlist_sim(&head, test_path4, NULL, NULL);
+	//make_execlist_sim(&head, test_path5, NULL, NULL);
 
 
 	/* init mata data struct */
