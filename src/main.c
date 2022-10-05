@@ -6,7 +6,7 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/18 16:18:33 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/10/04 16:09:31 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/10/05 15:58:42 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,11 @@ int	main(int argc, char **argv, char **env)
 	t_token		*head;
 	char		*input;
 	t_base_args	*b_args;
+	t_metadata	data;
+	t_fd_list	fd_list;
 	char		*prompt;
 
+	init_metadata(&data, &fd_list, env);
 	b_args = set_base_args(argc, argv, env);
 	input = "";
 	prompt = ft_strjoin(SHLNAME, "> ");
@@ -47,8 +50,9 @@ int	main(int argc, char **argv, char **env)
 			continue ;
 		free(input);
 		parce(head, &b_args->env);
+		executer(&data, head);
 	}
 	free(prompt);
 	free(b_args);
-	return (0);
+	return (data.exitstatus);
 }
