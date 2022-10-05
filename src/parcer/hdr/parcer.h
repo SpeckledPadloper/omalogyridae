@@ -6,7 +6,7 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/19 14:51:11 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/10/01 20:10:29 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/10/05 16:25:45 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ typedef enum e_pxstates
 	STATE_RDIROUT
 }	t_pxstates;
 
-void				parce(t_token *head, char ***env);
+t_exec_list_sim		*parce(t_token *head, char ***env);
 t_split_cmd_rdir	*split_cmd_rdir(t_token_section *current);
 int					set_separation_limit(t_token *temp);
 void				stitch(t_split_cmd_rdir **current);

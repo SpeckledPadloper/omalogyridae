@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/04/18 11:03:49 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/09/29 16:33:11 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/10/05 16:46:54 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,7 +133,7 @@ t_token	*lex(char *ret)
 		syntax_error("newline");
 		tokenlst_clear(&head);
 	}
-	test_lex(head);
-	printf("\n");
+	//test_lex(head);
+	//printf("\n");
 	return (head);
 }

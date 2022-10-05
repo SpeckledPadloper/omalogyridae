@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/10/05 14:31:38 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/10/05 16:58:01 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,65 +15,12 @@
 
 # include <stdbool.h>
 # include <unistd.h>
+# include "../hdr/structs.h"
 
 # define MODE_RW_R_R 0644
 # define CNF_BUF_SIZE 18
-# define BUILDIN_AMOUNT 7 // BUILTIN_AMOUNT
-
-typedef enum e_open_modes
-{
-	NONE = -1,
-	LESS = 0,
-	LESSLESS = 1,
-	GREAT = 2,
-	GREATGREAT = 3,
-}				t_open_modes;
-
-typedef enum e_exit_error_code
-{
-	EMPTY = 0,
-	ERRNO_NO_SUCH_FILE = 2,
-	CMD_CANT_EXE = 126,
-	CMD_NOT_FOUND = 127,
-}				t_exit_error_code;
-
-typedef struct s_fd_list
-{
-	int	fd_in;
-	int	fd_out;
-	int	pipe[2];
-	int	pipe_to_read;
-}					t_fd_list;
-
-typedef struct s_file
-{
-	char			*filename;
-	t_open_modes	mode;
-	struct s_file	*next;
-}					t_file;
-
-typedef struct s_exec_list_sim
-{
-	char					**cmd;
-	int						index;
-	t_file					*infile_list;
-	t_file					*outfile_list;
-	int						heredoc_pipe[2];
-	struct s_exec_list_sim	*next;
-}				t_exec_list_sim;
-
-typedef struct s_metadata
-{
-	t_fd_list	*fd_list;
-	char		*buildins[BUILDIN_AMOUNT];
-	void		(*fn_buildins[BUILDIN_AMOUNT])(struct s_metadata *, t_exec_list_sim *);
-	char		**padloper_envp;
-	int			envp_size;
-	int			child_count;
-	int			cmd_count;
-	pid_t		lastpid;
-	int			exitstatus;
-}					t_metadata;
+# define EXISTING_VAR_HAS_NO_VALUE -61
+# define EXPORTED_VAR_HAS_NO_VALUE 61
 
 /*-------------------------buildins-------------------------*/
 
@@ -85,8 +32,9 @@ void	padloper_unset(t_metadata *data, t_exec_list_sim *cmd_list);
 void	padloper_env(t_metadata *data, t_exec_list_sim *cmd_list);
 void	padloper_exit(t_metadata *data, t_exec_list_sim *cmd_list);
 
-char **allocate_env(char **src, int *envp_size, bool unset, bool export);
-char **new_padloper_envp(char **original_envp, int *envp_size);
+char	**allocate_env(char **src, int *envp_size, int unset, int export);
+char	**new_padloper_envp(char **original_envp, int *envp_size);
+int		envcmp(char *s1, char *s2);
 
 /*-------------------------executer-------------------------*/
 

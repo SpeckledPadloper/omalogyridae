@@ -6,11 +6,12 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/10/04 15:32:53 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/10/05 15:46:56 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "executer.h"
+#include "../hdr/structs.h"
 #include "../../libft/libft.h"
 #include <stdio.h>
 #include <stdbool.h>

@@ -1,21 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   filelst_utils.h                                    :+:    :+:            */
+/*   ft_split_free.c                                    :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2022/10/01 15:39:15 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/10/05 17:17:20 by mteerlin      ########   odam.nl         */
+/*   Created: 2022/10/05 17:12:42 by mteerlin      #+#    #+#                 */
+/*   Updated: 2022/10/05 17:15:43 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FILELST_UTILS_H
-# define FILELST_UTILS_H
+#include <stdlib.h>
 
-t_file	*filelst_new(char *content, int flag);
-t_file	*filelst_last(t_file *head);
-void	filelst_add_back(t_file **head, t_file *new);
-void	filelst_clear(t_file *head);
+void	ft_free_split(char	**split)
+{
+	char	*itter;
+	int		cnt;
 
-#endif
+	cnt = 0;
+	itter = split[cnt];
+	while (itter)
+	{
+		free(itter);
+		cnt++;
+		itter = split[cnt];
+	}
+	free(split);
+}

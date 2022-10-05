@@ -6,14 +6,16 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/18 17:48:05 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/10/01 15:48:41 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/10/05 16:17:40 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef STRUCTS_H
 # define STRUCTS_H
 # define SHLNAME "SpeckledPadloper"
+# define BUILDIN_AMOUNT 7 // BUILTIN_AMOUNT
 # include <stdbool.h>
+# include <unistd.h>
 
 typedef enum e_file_flags
 {
@@ -21,6 +23,14 @@ typedef enum e_file_flags
 	RDIR_SINGLE = -2,
 	RDIR_DOUBLE = -1
 }	t_file_flags;
+
+typedef enum e_exit_error_code
+{
+	EMPTY = 0,
+	ERRNO_NO_SUCH_FILE = 2,
+	CMD_CANT_EXE = 126,
+	CMD_NOT_FOUND = 127,
+}				t_exit_error_code;
 
 typedef struct s_base_args
 {
@@ -68,5 +78,29 @@ typedef struct s_exec_list_sim
 	int						heredoc_pipe[2];
 	struct s_exec_list_sim	*next;
 }	t_exec_list_sim;
+
+typedef struct s_fd_list
+{
+	int	fd_in;
+	int	fd_out;
+	int	pipe[2];
+	int	pipe_to_read;
+}					t_fd_list;
+
+typedef struct s_metadata
+{
+	t_fd_list	*fd_list;
+	char		*buildins[BUILDIN_AMOUNT];
+	void		(*fn_buildins[BUILDIN_AMOUNT])(struct s_metadata *, t_exec_list_sim *);
+	char		**padloper_envp;
+	int			envp_size;
+	int			child_count;
+	int			cmd_count;
+	pid_t		lastpid;
+	int			exitstatus;
+}					t_metadata;
+
+void	init_metadata(t_metadata *data, t_fd_list *fd_list, char **envp);
+int	ft_sim_lstsize(t_exec_list_sim *lst);
 
 #endif

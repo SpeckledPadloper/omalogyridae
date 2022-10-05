@@ -6,11 +6,12 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/10/02 13:23:25 by lwiedijk      ########   odam.nl         */
+/*   Updated: 2022/10/05 16:40:26 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "executer.h"
+#include "../hdr/structs.h"
 #include "../../libft/libft.h"
 #include <stdio.h>
 #include <stdbool.h>
@@ -82,6 +83,7 @@ void	executer(t_metadata *meta_data, t_exec_list_sim *cmd_list)
 	int		status;
 	pid_t	wp;
 
+	meta_data->cmd_count = ft_sim_lstsize(cmd_list);
 	get_all_heredoc(meta_data, cmd_list);
 	if (!meta_data->cmd_count)
 		return ; // no exit, this is parent, handle next promt

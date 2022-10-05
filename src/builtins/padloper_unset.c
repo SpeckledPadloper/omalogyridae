@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/10/04 15:32:24 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/10/05 15:47:11 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include "../executer/executer.h"
+#include "../hdr/structs.h"
 
 void	padloper_unset(t_metadata *data, t_exec_list_sim *cmd_list)
 {
