@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/10/04 15:31:35 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/10/05 15:34:08 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 
 // protect all below malloc calls! 
 
-char **allocate_env(char **src, int *envp_size, bool unset, bool export)
+char **allocate_env(char **src, int *envp_size, int unset, int export)
 {
 	char **dst;
 	int i;
@@ -58,7 +58,7 @@ char **new_padloper_envp(char **original_envp, int *envp_size)
 	i = 0;
 	while(new_padloper_envp[i])
 	{
-		if (!ft_strncmp(new_padloper_envp[i], "SHLVL=", 6))
+		if (!envcmp(new_padloper_envp[i], "SHLVL="))
 		{
 			res = ft_atoi(&new_padloper_envp[i][6]);
 			res++;

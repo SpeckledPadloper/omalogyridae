@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/10/05 15:24:57 by lwiedijk      ########   odam.nl         */
+/*   Updated: 2022/10/05 15:33:41 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,9 @@
 
 # define MODE_RW_R_R 0644
 # define CNF_BUF_SIZE 18
-# define BUILDIN_AMOUNT 7
+# define BUILDIN_AMOUNT 7 // BUILTIN_AMOUNT
+# define EXISTING_VAR_HAS_NO_VALUE -61
+# define EXPORTED_VAR_HAS_NO_VALUE 61
 
 typedef enum e_open_modes
 {
@@ -85,8 +87,9 @@ void	padloper_unset(t_metadata *data, t_exec_list_sim *cmd_list);
 void	padloper_env(t_metadata *data, t_exec_list_sim *cmd_list);
 void	padloper_exit(t_metadata *data, t_exec_list_sim *cmd_list);
 
-char **allocate_env(char **src, int *envp_size, bool unset, bool export);
-char **new_padloper_envp(char **original_envp, int *envp_size);
+char	**allocate_env(char **src, int *envp_size, int unset, int export);
+char	**new_padloper_envp(char **original_envp, int *envp_size);
+int		envcmp(char *s1, char *s2);
 
 /*-------------------------executer-------------------------*/
 
