@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/09/29 11:37:51 by lwiedijk      ########   odam.nl         */
+/*   Updated: 2022/10/01 15:46:28 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,7 @@ char	*path_builder(t_metadata *data, char *cmd)
 	count = 0;
 	path = NULL;
 	//check absolut path before everything want als unset path, absolut bin/ls werkt nog!
-	env_path = get_env_path_array(data->envp, &count);
+	env_path = get_env_path_array(data->padloper_envp, &count);
 	if (env_path == NULL)
 		print_error_exit(cmd, ERRNO_NO_SUCH_FILE, CMD_NOT_FOUND);
 	path = check_path(cmd, env_path, count);

@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/09/29 12:32:08 by lwiedijk      ########   odam.nl         */
+/*   Updated: 2022/10/02 13:41:01 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,8 +66,9 @@ typedef struct s_metadata
 {
 	t_fd_list	*fd_list;
 	char		*buildins[BUILDIN_AMOUNT];
-	void		(*fn_buildins[BUILDIN_AMOUNT])();
-	char		**envp;
+	void		(*fn_buildins[BUILDIN_AMOUNT])(struct s_metadata *, t_exec_list_sim *);
+	char		**padloper_envp;
+	int			envp_size;
 	int			child_count;
 	int			cmd_count;
 	pid_t		lastpid;
@@ -76,13 +77,16 @@ typedef struct s_metadata
 
 /*-------------------------buildins-------------------------*/
 
-void	padloper_echo(void);
-void	padloper_cd(void);
-void	padloper_pwd(void);
-void	padloper_export(void);
-void	padloper_unset(void);
-void	padloper_env(void);
-void	padloper_exit(void);
+void	padloper_echo(t_metadata *data, t_exec_list_sim *cmd_list);
+void	padloper_cd(t_metadata *data, t_exec_list_sim *cmd_list);
+void	padloper_pwd(t_metadata *data, t_exec_list_sim *cmd_list);
+void	padloper_export(t_metadata *data, t_exec_list_sim *cmd_list);
+void	padloper_unset(t_metadata *data, t_exec_list_sim *cmd_list);
+void	padloper_env(t_metadata *data, t_exec_list_sim *cmd_list);
+void	padloper_exit(t_metadata *data, t_exec_list_sim *cmd_list);
+
+char **allocate_env(char **src, int *envp_size, bool unset, bool export);
+char **new_padloper_envp(char **original_envp, int *envp_size);
 
 /*-------------------------executer-------------------------*/
 
