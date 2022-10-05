@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/10/02 13:41:01 by lwiedijk      ########   odam.nl         */
+/*   Updated: 2022/10/05 15:24:57 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 
 # define MODE_RW_R_R 0644
 # define CNF_BUF_SIZE 18
-# define BUILDIN_AMOUNT 7 // BUILTIN_AMOUNT
+# define BUILDIN_AMOUNT 7
 
 typedef enum e_open_modes
 {
