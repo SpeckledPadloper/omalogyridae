@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/10/02 13:57:15 by lwiedijk      ########   odam.nl         */
+/*   Updated: 2022/10/05 14:22:19 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include "../executer/executer.h"
+#include "../../libft/libft.h"
 
 /*  
 
@@ -51,12 +52,62 @@ int	envcmp(char *s1, char *s2)
 	return (0);
 }
 
+int varlen(char *str)
+{
+	int i;
+
+	i = 1;
+	while(str[i] != '=')
+		i++;
+	return(i);
+}
+
 void	add_var(t_metadata *data, t_exec_list_sim *cmd_list)
 {
-	printf("hallo add variable: %s\n", cmd_list->cmd[1]);
-	data->padloper_envp = allocate_env(data->padloper_envp, &(data->envp_size), false, true);
-	// dit lekt, fix
-	data->padloper_envp[data->envp_size - 1] = cmd_list->cmd[1];
+	char **temp_env;
+	bool found;
+	int i;
+	int j;
+
+	i = 1;
+	j = 0;
+	// protect "not option with no '-' "
+	// behaviour with multiple arguments! 
+	// let op case dat variable al bestaat
+	while(cmd_list->cmd[i])
+	{
+		printf("hallo cmd is : %s\n", cmd_list->cmd[i]);
+		j = 0;
+		found = false;
+		while(data->padloper_envp[j])
+		{
+			if (!envcmp(data->padloper_envp[j], cmd_list->cmd[i])
+				|| envcmp(data->padloper_envp[j], cmd_list->cmd[i]) == EXISTING_VAR_HAS_NO_VALUE)
+			{
+				found = true;
+				data->padloper_envp[j] = cmd_list->cmd[i];
+				break ;
+			}
+			else if (envcmp(data->padloper_envp[j], cmd_list->cmd[i]) == EXPORTED_VAR_HAS_NO_VALUE)
+			{
+				found = true;
+				break ;
+			}
+			j++;
+		}
+		if (found)
+		{
+			i++;
+			continue;
+		}
+		printf("hallo add variable: %s\n", cmd_list->cmd[i]);
+		temp_env = allocate_env(data->padloper_envp, &(data->envp_size), false, true);
+		free(data->padloper_envp);
+		data->padloper_envp = temp_env;
+		data->padloper_envp[data->envp_size - 1] = cmd_list->cmd[i];
+		
+		i++;
+	}
 	
 }
 
