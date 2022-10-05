@@ -6,7 +6,7 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/18 17:44:02 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/10/01 20:19:22 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/10/05 16:49:03 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	expand_variables(t_split_cmd_rdir *head, char ***env)
 	expand_section(&head->out_head, env, true);
 }
 
-void	parce(t_token *head, char ***env)
+t_exec_list_sim	*parce(t_token *head, char ***env)
 {
 	t_token_section		*first;
 	t_token_section		*temp;
@@ -38,21 +38,22 @@ void	parce(t_token *head, char ***env)
 	t_exec_list_sim		*simple_cmd;
 
 	first = tokenlst_split(&head);
-	test_split(first);
-	printf("\n");
+	//test_split(first);
+	//printf("\n");
 	temp = first;
 	simple_cmd = NULL;
 	while (temp)
 	{
 		split = split_cmd_rdir(temp);
-		test_split_cmd_rdir(split);
+		//test_split_cmd_rdir(split);
 		expand_variables(split, env);
-		test_split_cmd_rdir(split);
+		//test_split_cmd_rdir(split);
 		stitch(&split);
-		test_split_cmd_rdir(split);
+		//test_split_cmd_rdir(split);
 		simple_cmd_add_back(&simple_cmd, set_simple_command(split));
+		//free_cmd_rdir(&split);
 		test_simple_command(simple_cmd);
-		free_cmd_rdir(&split);
 		temp = temp->next;
 	}
+	return (simple_cmd);
 }

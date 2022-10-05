@@ -6,7 +6,7 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/18 17:48:05 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/10/05 16:02:38 by lwiedijk      ########   odam.nl         */
+/*   Updated: 2022/10/05 16:17:40 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 # define SHLNAME "SpeckledPadloper"
 # define BUILDIN_AMOUNT 7 // BUILTIN_AMOUNT
 # include <stdbool.h>
+# include <unistd.h>
 
 typedef enum e_file_flags
 {

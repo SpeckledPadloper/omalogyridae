@@ -6,7 +6,7 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/18 16:18:33 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/10/05 15:58:42 by lwiedijk      ########   odam.nl         */
+/*   Updated: 2022/10/05 16:46:14 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ int	main(int argc, char **argv, char **env)
 	t_base_args	*b_args;
 	t_metadata	data;
 	t_fd_list	fd_list;
+	t_exec_list_sim *ret;
 	char		*prompt;
 
 	init_metadata(&data, &fd_list, env);
@@ -49,8 +50,8 @@ int	main(int argc, char **argv, char **env)
 		if (head == NULL)
 			continue ;
 		free(input);
-		parce(head, &b_args->env);
-		executer(&data, head);
+		ret = parce(head, &b_args->env);
+		executer(&data, ret);
 	}
 	free(prompt);
 	free(b_args);

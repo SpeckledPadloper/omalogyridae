@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/10/05 15:45:48 by lwiedijk      ########   odam.nl         */
+/*   Updated: 2022/10/05 16:06:52 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ void	get_all_heredoc(t_metadata *data, t_exec_list_sim *cmd_list)
 		head = cmd_list->infile_list;
 		while (cmd_list->infile_list)
 		{
-			if (cmd_list->infile_list->mode == LESSLESS)
+			if (cmd_list->infile_list->mode == RDIR_DOUBLE)
 				heredoc_handling
 					(cmd_list->heredoc_pipe, cmd_list->infile_list->filename);
 			if (cmd_list->infile_list->next && cmd_list->heredoc_pipe[0])
