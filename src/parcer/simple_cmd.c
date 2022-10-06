@@ -6,7 +6,7 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/01 14:33:10 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/10/01 20:22:08 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/10/06 15:38:55 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,7 @@ t_exec_list_sim	*set_simple_command(t_split_cmd_rdir *current)
 	simple_cmd->outfile_list = set_redir(current->out_head);
 	simple_cmd->next = NULL;
 	simple_cmd->index = index;
+	simple_cmd->heredoc_pipe[0] = 0;
 	index++;
 	return (simple_cmd);
 }

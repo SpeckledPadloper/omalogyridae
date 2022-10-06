@@ -6,7 +6,7 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/01 14:56:49 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/10/05 17:25:14 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/10/06 15:46:31 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,8 @@ void	simple_cmd_clear(t_exec_list_sim **head)
 {
 	t_exec_list_sim	*itter;
 
+	if (!head)
+		return ;
 	itter = *head;
 	while (itter)
 	{

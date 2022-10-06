@@ -6,7 +6,7 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/05 17:12:42 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/10/05 17:15:43 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/10/06 15:46:58 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ void	ft_free_split(char	**split)
 	char	*itter;
 	int		cnt;
 
+	if (!split)
+		return ;
 	cnt = 0;
 	itter = split[cnt];
 	while (itter)

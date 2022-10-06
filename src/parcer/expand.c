@@ -6,7 +6,7 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/28 13:38:24 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/10/06 13:47:27 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/10/06 15:26:45 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ t_token	*expand_to_one(char *env_var)
 	return (expanded);
 }
 
-t_token	*expand_to_lst(char *env_var)
+t_token	*expand_to_lst(char *env_var, bool isredir)
 {
 	t_token		*expanded;
 	t_line_nav	lnav;
@@ -74,10 +74,12 @@ t_token	*expand_to_lst(char *env_var)
 	}
 	new_val = allocate_token_value(&lnav);
 	exp_token_add_back(&expanded, exp_new_token(new_val));
+	if (isredir && expanded->next)
+		expanded->token_label = RDIR_AMBIGUOUS;
 	return (expanded);
 }
 
-t_token	*expand_token(t_token	*current, char ***env, bool quote)
+t_token	*expand_token(t_token	*current, char ***env, bool quote, bool isrdir)
 {
 	int		len;
 	int		cnt;
@@ -91,7 +93,7 @@ t_token	*expand_token(t_token	*current, char ***env, bool quote)
 			if (quote == true)
 				return (expand_to_one(ft_strchr((*env)[cnt], '=') + 1));
 			else
-				return (expand_to_lst(ft_strchr((*env)[cnt], '=') + 1));
+				return (expand_to_lst(ft_strchr((*env)[cnt], '=') + 1, isrdir));
 		}
 		cnt++;
 	}
@@ -99,38 +101,32 @@ t_token	*expand_token(t_token	*current, char ***env, bool quote)
 	return (current);
 }
 
-void	expand_tokenlst(t_token **head, char ***env, bool isredir)
+void	expand_tokenlst(t_token_section **head, char ***env, bool isredir)
 {
 	t_token	*itter;
-	t_token	*temp;
-	t_token	*expanded;
+	t_token	*expandlst;
 	bool	quote;
 	int		sep;
 
-	itter = *head;
+	itter = (*head)->head;
 	quote = false;
+	expandlst = NULL;
 	while (itter)
 	{
 		sep = set_separation_limit(itter);
 		quote = set_quote_state(quote, itter, sep);
 		if (itter->token_label == EXPAND)
-		{
-			expanded = expand_token(itter, env, quote);
-			if (isredir == true && expanded->next)
-			{
-				itter->token_label = RDIR_AMBIGUOUS;
-				return ;
-			}
-			temp = itter;
-			itter = itter->next;
-			if (expanded == temp)
-				continue ;
-			link_expand_tokens(head, &temp, &expanded);
-			continue ;
-		}
+			exp_token_add_back(&expandlst, expand_token(itter, env, quote, isredir));
 		if (itter)
 			itter = itter->next;
 	}
+	if (isredir && is_ambiguous_rdir(expandlst))
+	{
+		tokenlst_clear(&expandlst);
+		(*head)->head->token_label = RDIR_AMBIGUOUS;
+		return ;
+	}
+	link_expand_tokens(&(*head)->head, &expandlst);
 }
 
 void	expand_section(t_token_section **head, char ***env, bool isredir)
@@ -144,12 +140,13 @@ void	expand_section(t_token_section **head, char ***env, bool isredir)
 	{
 		if (temp->head->start_pos == -1)
 		{
+			temp->head->token_label = RDIR_DOUBLE;
 			temp = temp->next;
 			continue ;
 		}
 		else
 		{
-			expand_tokenlst(&temp->head, env, isredir);
+			expand_tokenlst(&temp, env, isredir);
 		}
 		temp = temp->next;
 	}
