@@ -6,7 +6,7 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/18 17:48:05 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/10/06 11:23:10 by lwiedijk      ########   odam.nl         */
+/*   Updated: 2022/10/06 15:09:42 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@ typedef enum e_file_flags
 
 typedef enum e_exit_error_code
 {
+	CNF = -1,
+	AR = -2,
 	EMPTY = 0,
 	ERRNO_NO_SUCH_FILE = 2,
 	CMD_CANT_EXE = 126,

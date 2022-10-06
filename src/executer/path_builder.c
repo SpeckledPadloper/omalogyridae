@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/10/06 11:39:55 by lwiedijk      ########   odam.nl         */
+/*   Updated: 2022/10/06 15:21:15 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ static char	*check_absolute_path(t_metadata *data, char *path)
 	int	file_does_not_exist;
 
 	if (!is_path(path))
-		print_error_exit(path, EMPTY, CMD_NOT_FOUND);
+		print_error_exit(path, CNF, CMD_NOT_FOUND);
 	is_not_executable = access(path, F_OK | X_OK);
 	if (is_not_executable)
 	{

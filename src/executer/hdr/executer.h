@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/10/06 13:51:56 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/10/06 15:06:49 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 
 # define MODE_RW_R_R 0644
 # define CNF_BUF_SIZE 18
+# define AR_BUF_SIZE 19
 # define EXISTING_VAR_HAS_NO_VALUE -61
 # define EXPORTED_VAR_HAS_NO_VALUE 61
 
