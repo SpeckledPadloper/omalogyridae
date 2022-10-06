@@ -6,7 +6,7 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/20 15:28:53 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/10/05 17:27:09 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/10/06 18:27:36 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ void	test_simple_command(t_exec_list_sim	*current)
 		{
 			while (temp->cmd[cnt])
 			{
-				printf("%s ", temp->cmd[cnt]);
+				printf("%s\n", temp->cmd[cnt]);
 				cnt++;
 			}
 		}
