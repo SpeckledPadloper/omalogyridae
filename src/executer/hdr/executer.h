@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/10/05 16:10:19 by lwiedijk      ########   odam.nl         */
+/*   Updated: 2022/10/06 11:37:49 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 # include <stdbool.h>
 # include <unistd.h>
-# include "../hdr/structs.h"
+# include "../../hdr/structs.h"
 
 # define MODE_RW_R_R 0644
 # define CNF_BUF_SIZE 18

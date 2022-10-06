@@ -6,7 +6,7 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/18 16:18:33 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/10/06 11:23:28 by lwiedijk      ########   odam.nl         */
+/*   Updated: 2022/10/06 11:40:25 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@
 #include "lexer/hdr/lexer.h"
 #include "hdr/structs.h"
 #include "parcer/hdr/parcer.h"
-#include "executer/executer.h"
+#include "executer/hdr/executer.h"
 
 int	main(int argc, char **argv, char **env)
 {
