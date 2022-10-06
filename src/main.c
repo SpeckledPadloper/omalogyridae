@@ -6,7 +6,7 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/18 16:18:33 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/10/05 16:46:14 by lwiedijk      ########   odam.nl         */
+/*   Updated: 2022/10/06 11:23:28 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ int	main(int argc, char **argv, char **env)
 		if (head == NULL)
 			continue ;
 		free(input);
+		reset_metadata(&data, &fd_list, env);
 		ret = parce(head, &b_args->env);
 		executer(&data, ret);
 	}

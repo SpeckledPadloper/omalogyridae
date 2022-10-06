@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/10/05 15:44:34 by lwiedijk      ########   odam.nl         */
+/*   Updated: 2022/10/06 11:17:32 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,24 +22,6 @@
 #include <fcntl.h>
 
 #include <errno.h>
-
-void	set_buildin_array(t_metadata *data)
-{
-	data->buildins[0] = "echo";
-	data->buildins[1] = "cd";
-	data->buildins[2] = "pwd";
-	data->buildins[3] = "export";
-	data->buildins[4] = "unset";
-	data->buildins[5] = "env";
-	data->buildins[6] = "exit";
-	data->fn_buildins[0] = &padloper_echo;
-	data->fn_buildins[1] = &padloper_cd;
-	data->fn_buildins[2] = &padloper_pwd;
-	data->fn_buildins[3] = &padloper_export;
-	data->fn_buildins[4] = &padloper_unset;
-	data->fn_buildins[5] = &padloper_env;
-	data->fn_buildins[6] = &padloper_exit;
-}
 
 void	free_2d_array(char **array)
 {
