@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/10/06 12:19:44 by lwiedijk      ########   odam.nl         */
+/*   Updated: 2022/10/06 14:42:10 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,10 @@ void	open_necessary_infiles(t_metadata *data, t_exec_list_sim *cmd_list)
 {	
 	while (cmd_list->infile_list)
 	{
+		//printf("mode = [%d]\n", cmd_list->infile_list->mode);
+		if (cmd_list->infile_list->mode == RDIR_AMBIGUOUS)
+			print_error_exit
+				(cmd_list->infile_list->filename, errno, EXIT_FAILURE);
 		if (cmd_list->infile_list->mode == RDIR_SINGLE)
 		{
 			data->fd_list->fd_in = open
@@ -45,8 +49,12 @@ void	open_necessary_infiles(t_metadata *data, t_exec_list_sim *cmd_list)
 
 void	open_necessary_outfiles(t_metadata *data, t_exec_list_sim *cmd_list)
 {
+	//fprintf(stderr, "mode = [%d]\n", cmd_list->outfile_list->mode);
 	while (cmd_list->outfile_list)
 	{
+		if (cmd_list->outfile_list->mode == RDIR_AMBIGUOUS)
+			print_error_exit
+				(cmd_list->outfile_list->filename, errno, EXIT_FAILURE);
 		if (cmd_list->outfile_list->mode == RDIR_SINGLE)
 		{
 			data->fd_list->fd_out = open(cmd_list->outfile_list->filename,
