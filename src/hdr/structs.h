@@ -6,7 +6,7 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/18 17:48:05 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/10/05 16:17:40 by lwiedijk      ########   odam.nl         */
+/*   Updated: 2022/10/06 11:23:10 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,8 @@ typedef struct s_metadata
 	int			exitstatus;
 }					t_metadata;
 
+void	reset_metadata(t_metadata *data, t_fd_list *fd_list, char **envp);
 void	init_metadata(t_metadata *data, t_fd_list *fd_list, char **envp);
-int	ft_sim_lstsize(t_exec_list_sim *lst);
+int		ft_sim_lstsize(t_exec_list_sim *lst);
 
 #endif

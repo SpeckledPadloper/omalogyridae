@@ -6,7 +6,7 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/18 16:18:33 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/10/05 17:27:43 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/10/06 13:52:08 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,7 @@
 #include "lexer/hdr/lexer.h"
 #include "hdr/structs.h"
 #include "parcer/hdr/parcer.h"
-#include "tests/tests.h"
-#include "executer/executer.h"
-#include "utils/hdr/simple_cmd_utils.h"
+#include "executer/hdr/executer.h"
 
 int	main(int argc, char **argv, char **env)
 {
@@ -52,6 +50,7 @@ int	main(int argc, char **argv, char **env)
 		if (head == NULL)
 			continue ;
 		free(input);
+		reset_metadata(&data, &fd_list, env);
 		ret = parce(head, &b_args->env);
 		test_simple_command(ret);
 		executer(&data, ret);

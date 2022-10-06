@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/10/05 16:06:52 by lwiedijk      ########   odam.nl         */
+/*   Updated: 2022/10/06 11:39:39 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include <stdlib.h>
 #include <errno.h>
 #include "../../libft/libft.h"
-#include "executer.h"
+#include "hdr/executer.h"
 #include "../hdr/structs.h"
 
 static char	*get_input(char *str)
