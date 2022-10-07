@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/10/07 11:19:01 by lwiedijk      ########   odam.nl         */
+/*   Updated: 2022/10/07 11:35:51 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ static char	**get_env_path_array(char **envp, int *count)
 	env_path = NULL;
 	while (envp[i])
 	{
-		if (!ft_strncmp(envp[i], "PATH=", 5))//use envcmp?
+		if (!ft_strncmp(envp[i], "PATH=", 5))
 		{
 			temp = ft_split(envp[i], '=');
 			if (!temp)
@@ -95,9 +95,9 @@ static char	**get_env_path_array(char **envp, int *count)
 
 static char	*check_absolute_path(t_metadata *data, char *path)
 {
-	int	is_not_executable;
-	int	file_does_not_exist;
-	struct stat check_dir;
+	int			is_not_executable;
+	int			file_does_not_exist;
+	struct stat	check_dir;
 
 	if (!is_path(path))
 		return (NULL);
@@ -121,7 +121,7 @@ char	*path_builder(t_metadata *data, char *cmd)
 	char	*path;
 	char	**env_path;
 	int		count;
-	
+
 	count = 0;
 	path = NULL;
 	path = check_absolute_path(data, cmd);
