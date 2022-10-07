@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/10/06 11:35:00 by lwiedijk      ########   odam.nl         */
+/*   Updated: 2022/10/07 14:21:11 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,10 +79,10 @@ void	padloper_env(t_metadata *data, t_exec_list_sim *cmd_list)
 {
 	int i;
 
-	if (!data || !cmd_list)
+	if (!data->padloper_envp || !cmd_list)
 	{
 		fprintf(stderr, "Parameters are NULL");
-		exit(1);
+		print_error_exit("padloper_env", EMPTY, EXIT_FAILURE);
 	}
 	i = 0;
 	while(data->padloper_envp[i])
@@ -90,5 +90,5 @@ void	padloper_env(t_metadata *data, t_exec_list_sim *cmd_list)
 		printf("padloper realness: %s\n", data->padloper_envp[i]);
 		i++;
 	}
-	exit(0);
+	return ;
 }

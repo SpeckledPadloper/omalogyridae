@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/10/07 11:18:07 by lwiedijk      ########   odam.nl         */
+/*   Updated: 2022/10/07 14:22:04 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,8 @@ void	print_error_exit(char *errorobject, int errnocopy, int exitcode)
 	char	*errno_string;
 
 	print = NULL;
+	if (errnocopy == EMPTY)
+		errno_string = "something is wrong";
 	if (errnocopy == CNF)
 		errno_string = "command not found";
 	else if (errnocopy == AR)
