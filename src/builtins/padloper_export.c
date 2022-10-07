@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/10/06 11:35:30 by lwiedijk      ########   odam.nl         */
+/*   Updated: 2022/10/07 18:05:12 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,14 @@ alloceer alleen een 2d pointer array met pointers naar env array in gesorteerde 
 sort array
 
 */
+
+void export_error(char *error_object, int error_case)
+{
+	if (error_case == NOT_SUPPORTED)
+		printf("options in export are not supported by Speckled Padloper\n");
+	else if (error_case == NOT_VALID)
+		printf("minishell: export: '%s': not a valid identifier\n", error_object);
+}
 
 int	envcmp(char *s1, char *s2)
 {
@@ -72,12 +80,17 @@ void	add_var(t_metadata *data, t_exec_list_sim *cmd_list)
 
 	i = 1;
 	j = 0;
+	// bash: export: `?': not a valid identifier
 	// protect "not option with no '-' "
-	// behaviour with multiple arguments! 
-	// let op case dat variable al bestaat
 	while(cmd_list->cmd[i])
 	{
 		printf("hallo cmd is : %s\n", cmd_list->cmd[i]);
+		if (!found && cmd_list->cmd[i][0] == '-')
+		{
+			export_error(cmd_list->cmd[i], NOT_SUPPORTED);
+			i++;
+			continue;
+		}
 		j = 0;
 		found = false;
 		while(data->padloper_envp[j])
@@ -106,7 +119,7 @@ void	add_var(t_metadata *data, t_exec_list_sim *cmd_list)
 		free(data->padloper_envp);
 		data->padloper_envp = temp_env;
 		data->padloper_envp[data->envp_size - 1] = cmd_list->cmd[i];
-		
+		found = true;
 		i++;
 	}
 	
@@ -157,5 +170,5 @@ void	padloper_export(t_metadata *data, t_exec_list_sim *cmd_list)
 		printf("original: %s\n", data->padloper_envp[i]);
 		i++;
 	}
-	exit(0);
+	return ;
 }
