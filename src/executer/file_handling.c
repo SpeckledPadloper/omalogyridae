@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/10/06 15:21:44 by lwiedijk      ########   odam.nl         */
+/*   Updated: 2022/10/07 13:11:07 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,6 @@ void	open_necessary_infiles(t_metadata *data, t_exec_list_sim *cmd_list)
 {	
 	while (cmd_list->infile_list)
 	{
-		//printf("mode = [%d]\n", cmd_list->infile_list->mode);
 		if (cmd_list->infile_list->mode == RDIR_AMBIGUOUS)
 			print_error_exit
 				(cmd_list->infile_list->filename, AR, EXIT_FAILURE);
@@ -49,7 +48,6 @@ void	open_necessary_infiles(t_metadata *data, t_exec_list_sim *cmd_list)
 
 void	open_necessary_outfiles(t_metadata *data, t_exec_list_sim *cmd_list)
 {
-	//fprintf(stderr, "mode = [%d]\n", cmd_list->outfile_list->mode);
 	while (cmd_list->outfile_list)
 	{
 		if (cmd_list->outfile_list->mode == RDIR_AMBIGUOUS)
