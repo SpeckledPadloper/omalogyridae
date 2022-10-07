@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/10/07 08:59:06 by lwiedijk      ########   odam.nl         */
+/*   Updated: 2022/10/07 11:18:07 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,8 @@ void	print_error_exit(char *errorobject, int errnocopy, int exitcode)
 		errno_string = "command not found";
 	else if (errnocopy == AR)
 		errno_string = "ambiguous redirect";
+	else if (errnocopy == IS_DIR)
+		errno_string = "is a directory";
 	else
 		errno_string = strerror(errnocopy);
 	print = ft_strjoin("minishell: ", errorobject);
