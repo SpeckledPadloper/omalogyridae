@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/10/07 16:52:11 by lwiedijk      ########   odam.nl         */
+/*   Updated: 2022/10/08 09:33:45 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ char **allocate_env(char **src, int *envp_size, int remove, int add)
 	if (!dst)
 		print_error_exit("malloc", errno, EXIT_FAILURE);
 	*envp_size = i;
-	populate_export(*envp_size, src, dst);
+	populate_env(*envp_size, src, dst);
 	return (dst);
 }
 

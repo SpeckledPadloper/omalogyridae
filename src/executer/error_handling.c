@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/10/07 14:22:04 by lwiedijk      ########   odam.nl         */
+/*   Updated: 2022/10/08 09:47:16 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,12 +21,8 @@
 #include <fcntl.h>
 #include <errno.h>
 
-void	print_error_exit(char *errorobject, int errnocopy, int exitcode)
+char	*get_error_string(char *errno_string, int errnocopy)
 {
-	char	*print;
-	char	*errno_string;
-
-	print = NULL;
 	if (errnocopy == EMPTY)
 		errno_string = "something is wrong";
 	if (errnocopy == CNF)
@@ -35,14 +31,25 @@ void	print_error_exit(char *errorobject, int errnocopy, int exitcode)
 		errno_string = "ambiguous redirect";
 	else if (errnocopy == IS_DIR)
 		errno_string = "is a directory";
-	else
-		errno_string = strerror(errnocopy);
+	return (errno_string);
+}
+
+void	print_error_exit(char *errorobject, int errnocopy, int exitcode)
+{
+	char	*print;
+	char	*errno_string;
+
+	print = NULL;
+	errno_string = strerror(errnocopy);
+	if (errnocopy <= 0)
+		errno_string = get_error_string(errno_string, errnocopy);
 	print = ft_strjoin("minishell: ", errorobject);
 	print = ft_strjoin_free(print, ": ");
 	print = ft_strjoin_free(print, errno_string);
 	print = ft_strjoin_free(print, "\n");
 	write(STDERR_FILENO, print, ft_strlen(print));
 	free(print);
+	// make function to free all before quit, also protect strjoins above. 
 	if (exitcode)
 		exit(exitcode);
 }
