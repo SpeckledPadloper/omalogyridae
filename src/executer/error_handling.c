@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/10/08 09:47:16 by lwiedijk      ########   odam.nl         */
+/*   Updated: 2022/10/08 10:49:21 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,12 +25,14 @@ char	*get_error_string(char *errno_string, int errnocopy)
 {
 	if (errnocopy == EMPTY)
 		errno_string = "something is wrong";
-	if (errnocopy == CNF)
+	else if (errnocopy == CNF)
 		errno_string = "command not found";
 	else if (errnocopy == AR)
 		errno_string = "ambiguous redirect";
 	else if (errnocopy == IS_DIR)
 		errno_string = "is a directory";
+	else if (errnocopy == NOT_VALID)
+		errno_string = "not a valid identifier";
 	return (errno_string);
 }
 

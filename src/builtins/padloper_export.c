@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/10/07 18:05:12 by lwiedijk      ########   odam.nl         */
+/*   Updated: 2022/10/08 12:13:15 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,12 +85,6 @@ void	add_var(t_metadata *data, t_exec_list_sim *cmd_list)
 	while(cmd_list->cmd[i])
 	{
 		printf("hallo cmd is : %s\n", cmd_list->cmd[i]);
-		if (!found && cmd_list->cmd[i][0] == '-')
-		{
-			export_error(cmd_list->cmd[i], NOT_SUPPORTED);
-			i++;
-			continue;
-		}
 		j = 0;
 		found = false;
 		while(data->padloper_envp[j])
@@ -114,12 +108,11 @@ void	add_var(t_metadata *data, t_exec_list_sim *cmd_list)
 			i++;
 			continue;
 		}
-		printf("hallo add variable: %s\n", cmd_list->cmd[i]);
+		printf("!!add new variable: %s\n", cmd_list->cmd[i]);
 		temp_env = allocate_env(data->padloper_envp, &(data->envp_size), false, true);
-		free(data->padloper_envp);
+		free(data->padloper_envp);//free whole array!!;
 		data->padloper_envp = temp_env;
-		data->padloper_envp[data->envp_size - 1] = cmd_list->cmd[i];
-		found = true;
+		add_env(data->padloper_envp, cmd_list->cmd[i], data->envp_size - 1);
 		i++;
 	}
 	

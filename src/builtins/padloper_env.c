@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/10/08 09:33:45 by lwiedijk      ########   odam.nl         */
+/*   Updated: 2022/10/08 12:13:00 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,24 +55,34 @@ void populate_export(int size, char **src, char **dst)
 	dst[i] = NULL;
 }
 
-void populate_env(int size, char **src, char **dst)
+void populate_env(int envp_size, char **src, char **dst)
 {
 	int i;
-	int j;
+	int size;
 	
 	i = 0;
-	while(i < size)
+	while(i < envp_size)
 	{
-		j = 0;
-		while(src[i][j])
-			j++;
-		dst[i] = (char*)malloc(sizeof(char) * j + 1);
-		if (!dst)
+		size = ft_strlen(src[i]);
+		dst[i] = (char*)malloc(sizeof(char) * size + 1);
+		if (!dst[i])
 			print_error_exit("malloc", errno, EXIT_FAILURE);
 		ft_strcpy(dst[i], src[i]);
 		i++;	
 	}
 	dst[i] = NULL;
+}
+
+void add_env(char **padloper_env, char *var, int pos)
+{
+	int size;
+
+	size = ft_strlen(var);
+	padloper_env[pos] = (char *)malloc(sizeof(char) * size + 1);
+	if (!padloper_env[pos])
+			print_error_exit("malloc", errno, EXIT_FAILURE);
+	ft_strcpy(padloper_env[pos], var);
+	padloper_env[pos + 1] = NULL;
 }
 
 char **allocate_env(char **src, int *envp_size, int remove, int add)
@@ -90,18 +100,30 @@ char **allocate_env(char **src, int *envp_size, int remove, int add)
 	if (!dst)
 		print_error_exit("malloc", errno, EXIT_FAILURE);
 	*envp_size = i;
-	populate_env(*envp_size, src, dst);
+	populate_env(*envp_size - add, src, dst);
 	return (dst);
 }
 
-char **new_padloper_envp(char **original_envp, int *envp_size)
+bool	has_var(char **array, char *var)
 {
-	char **new_padloper_envp;
 	int i;
-	int res;
-	char *res_str;
 
-	new_padloper_envp = allocate_env(original_envp, envp_size, false, false);
+	i = 0;
+	while(array[i])
+	{
+		if (!envcmp(array[i], var))
+			return(true);
+		i++;
+	}
+	return(false);
+}
+
+void	increment_shlvl(char **new_padloper_envp)
+{
+	int		res;
+	char	*res_str;
+	int		i;
+
 	i = 0;
 	while(new_padloper_envp[i])
 	{
@@ -114,10 +136,28 @@ char **new_padloper_envp(char **original_envp, int *envp_size)
 			new_padloper_envp[i] = ft_strjoin("SHLVL=", res_str);
 			free(res_str);
 		}
-		// handle SHLVL not set, handle PWD not set;
 		i++;
 	}
-	//*envp_size = i; 
+}
+
+char **new_padloper_envp(char **original_envp, int *envp_size)
+{
+	char **new_padloper_envp;
+	int missing_var;
+
+	missing_var = 0;
+	if (!has_var(original_envp, "SHLVL="))
+		missing_var++;
+	if (!has_var(original_envp, "PWD="))
+		missing_var++;
+	new_padloper_envp = allocate_env(original_envp, envp_size, false, missing_var);
+	if (!has_var(new_padloper_envp, "PWD="))
+		add_env(new_padloper_envp, "PWD=doeditnog!", ((*envp_size) - missing_var));
+	if (has_var(new_padloper_envp, "SHLVL="))
+		increment_shlvl(new_padloper_envp);
+	else
+		add_env(new_padloper_envp, "SHLVL=1", ((*envp_size) - 1));
+	new_padloper_envp[*envp_size] = NULL;
 	return (new_padloper_envp);
 }
 
@@ -125,15 +165,12 @@ void	padloper_env(t_metadata *data, t_exec_list_sim *cmd_list)
 {
 	int i;
 
-	if (!data->padloper_envp || !cmd_list)
-	{
-		fprintf(stderr, "Parameters are NULL");
+	if (!data || !data->padloper_envp)
 		print_error_exit("padloper_env", EMPTY, EXIT_FAILURE);
-	}
 	i = 0;
 	while(data->padloper_envp[i])
 	{
-		printf("padloper realness: %s\n", data->padloper_envp[i]);
+		printf("padlopers env: %s\n", data->padloper_envp[i]);
 		i++;
 	}
 	return ;
