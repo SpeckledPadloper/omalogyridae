@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/10/08 10:49:21 by lwiedijk      ########   odam.nl         */
+/*   Updated: 2022/10/11 11:09:45 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,12 @@ void	print_error_exit(char *errorobject, int errnocopy, int exitcode)
 	print = ft_strjoin_free(print, ": ");
 	print = ft_strjoin_free(print, errno_string);
 	print = ft_strjoin_free(print, "\n");
+	fprintf(stderr, "print = %s\n", print);
+	if (!print)
+	{
+		write(STDERR_FILENO, "malloc fail in error\n", 21);
+		exit(EXIT_FAILURE);
+	}
 	write(STDERR_FILENO, print, ft_strlen(print));
 	free(print);
 	// make function to free all before quit, also protect strjoins above. 
