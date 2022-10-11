@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/10/11 16:37:12 by lwiedijk      ########   odam.nl         */
+/*   Updated: 2022/10/11 21:26:32 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ int	unset_envcmp(char *s1, char *s2)
 	int	i;
 
 	i = 0;
-	while (s1[i] != '=' || s2[i] != '\0')
+	while (!(s1[i] == '=' || s1[i] == '\0') || s2[i] != '\0')
 	{
 		if (s1[i] == s2[i])
 			i++;
