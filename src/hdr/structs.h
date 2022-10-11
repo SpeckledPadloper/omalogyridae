@@ -6,7 +6,7 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/18 17:48:05 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/10/07 17:47:19 by lwiedijk      ########   odam.nl         */
+/*   Updated: 2022/10/11 14:15:00 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,8 @@ typedef struct s_metadata
 	char		*buildins[BUILDIN_AMOUNT];
 	void		(*fn_buildins[BUILDIN_AMOUNT])(struct s_metadata *, t_exec_list_sim *);
 	char		**padloper_envp;
+	char		**sorted_print_export;
+	bool		env_updated;
 	int			envp_size;
 	int			child_count;
 	int			cmd_count;

@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/10/08 12:13:15 by lwiedijk      ########   odam.nl         */
+/*   Updated: 2022/10/11 14:46:03 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#include <errno.h>
 #include "../executer/hdr/executer.h"
 #include "../hdr/structs.h"
 #include "../../libft/libft.h"
@@ -38,12 +39,51 @@ sort array
 
 */
 
-void export_error(char *error_object, int error_case)
+char	*export_strcpy(char *dest, char *src)
 {
-	if (error_case == NOT_SUPPORTED)
-		printf("options in export are not supported by Speckled Padloper\n");
-	else if (error_case == NOT_VALID)
-		printf("minishell: export: '%s': not a valid identifier\n", error_object);
+	int	i;
+	int j;
+
+	i = 0;
+	j = 0;
+	while (src[i] != '\0')
+	{
+		if (src[i] == '=')
+		{
+			dest[j] = src[i];
+			dest[j + 1] = '"';
+			i++;
+			j += 2;
+		}
+		if (src[i] == '\0')
+			break ; 
+		dest[j] = src[i];
+		i++;
+		j++;
+	}
+	dest[j] = '"';
+	dest[j + 1] = '\0';
+	return (dest);
+}
+
+void populate_export(int size, char **src, char **dst)
+{
+	int i;
+	int j;
+	
+	i = 0;
+	while(i < size)
+	{
+		j = 0;
+		while(src[i][j])
+			j++;
+		dst[i] = (char*)malloc(sizeof(char) * j + 3);
+		if (!dst)
+			print_error_exit("malloc", errno, EXIT_FAILURE);
+		export_strcpy(dst[i], src[i]);
+		i++;	
+	}
+	dst[i] = NULL;
 }
 
 int	envcmp(char *s1, char *s2)
@@ -61,14 +101,20 @@ int	envcmp(char *s1, char *s2)
 	return (0);
 }
 
-int varlen(char *str)
+bool	var_not_valid(char *var)
 {
 	int i;
 
 	i = 1;
-	while(str[i] != '=')
+	if (!(ft_isalpha(var[0]) || var[0] == '_'))
+		return (true);
+	while (var[i])
+	{
+		if (!ft_isalnum(var[i]))
+			return (true);
 		i++;
-	return(i);
+	}
+	return (false);
 }
 
 void	add_var(t_metadata *data, t_exec_list_sim *cmd_list)
@@ -80,11 +126,16 @@ void	add_var(t_metadata *data, t_exec_list_sim *cmd_list)
 
 	i = 1;
 	j = 0;
-	// bash: export: `?': not a valid identifier
-	// protect "not option with no '-' "
 	while(cmd_list->cmd[i])
 	{
 		printf("hallo cmd is : %s\n", cmd_list->cmd[i]);
+		if (var_not_valid(cmd_list->cmd[i]))
+		{
+			print_error_exit(cmd_list->cmd[i], NOT_VALID, EMPTY);//not corrent print format jet! add export: and quotes
+			i++;
+			continue ;
+		}
+		data->env_updated = true;
 		j = 0;
 		found = false;
 		while(data->padloper_envp[j])
@@ -110,7 +161,8 @@ void	add_var(t_metadata *data, t_exec_list_sim *cmd_list)
 		}
 		printf("!!add new variable: %s\n", cmd_list->cmd[i]);
 		temp_env = allocate_env(data->padloper_envp, &(data->envp_size), false, true);
-		free(data->padloper_envp);//free whole array!!;
+		env_pointer_cpy(data->envp_size, data->padloper_envp, temp_env);
+		free(data->padloper_envp);
 		data->padloper_envp = temp_env;
 		add_env(data->padloper_envp, cmd_list->cmd[i], data->envp_size - 1);
 		i++;
@@ -118,50 +170,56 @@ void	add_var(t_metadata *data, t_exec_list_sim *cmd_list)
 	
 }
 
-void	padloper_export(t_metadata *data, t_exec_list_sim *cmd_list)
+void	sort_env(t_metadata *data)
 {
-	char **sorted_env;
-	char *temp;
 	int i;
 	int j;
+	char *temp;
 
-	i = 0;
-	if (cmd_list->cmd[1])
-		add_var(data, cmd_list);
-	sorted_env = (char **)malloc(sizeof(char*) * data->envp_size + 1);
-	while(i < data->envp_size)
-	{
-		sorted_env[i] = data->padloper_envp[i];
-		i++;
-	}
-	sorted_env[i] = NULL;
 	i = 0;
 	while(i < data->envp_size)
 	{
 		j = 1 + i;
 		while(j < data->envp_size)
 		{
-			if (envcmp(sorted_env[i], sorted_env[j]) > 0)
+			if (envcmp(data->sorted_print_export[i], data->sorted_print_export[j]) > 0)
 			{
-				temp = sorted_env[j];
-				sorted_env[j] = sorted_env[i];
-				sorted_env[i] = temp;
+				temp = data->sorted_print_export[j];
+				data->sorted_print_export[j] = data->sorted_print_export[i];
+				data->sorted_print_export[i] = temp;
 			}
 			j++;
 		}
 		i++;
 	}
-	i = 0;
-	while (i < data->envp_size)
+}
+
+void	padloper_export(t_metadata *data, t_exec_list_sim *cmd_list)
+{
+	int i;
+
+	printf("entering export = [%d]\n", data->env_updated);
+	if (cmd_list->cmd[1])
 	{
-		printf("declare -x %s\n", sorted_env[i]);
-		i++;
+		printf("before add var = [%d]\n", data->env_updated);
+		add_var(data, cmd_list);
+		printf("after add var = [%d]\n", data->env_updated);
+		return ;
+	}
+	if (data->env_updated)
+	{
+		printf("!!hoi update array\n");
+		if (data->sorted_print_export)
+			free_2d_array(data->sorted_print_export);
+		data->sorted_print_export = allocate_env(data->padloper_envp, &(data->envp_size), false, false);
+		populate_export(data->envp_size, data->padloper_envp, data->sorted_print_export);
+		sort_env(data);
+		data->env_updated = false;
 	}
 	i = 0;
 	while (i < data->envp_size)
 	{
-		printf("original: %s\n", data->padloper_envp[i]);
+		printf("declare -x %s\n", data->sorted_print_export[i]);
 		i++;
 	}
-	return ;
 }

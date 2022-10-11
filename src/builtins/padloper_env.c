@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/10/08 12:13:00 by lwiedijk      ########   odam.nl         */
+/*   Updated: 2022/10/11 11:47:14 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,42 +18,6 @@
 #include "../../libft/libft.h"
 #include "../executer/hdr/executer.h"
 #include "../hdr/structs.h"
-
-char	*export_strcpy(char *dest, char *src)
-{
-	int	i;
-
-	i = 0;
-	dest[i] = '"';
-	while (src[i] != '\0')
-	{
-		dest[i + 1] = src[i];
-		i++;
-	}
-	dest[i + 1] = '"';
-	dest[i + 2] = '\0';
-	return (dest);
-}
-
-void populate_export(int size, char **src, char **dst)
-{
-	int i;
-	int j;
-	
-	i = 0;
-	while(i < size)
-	{
-		j = 0;
-		while(src[i][j])
-			j++;
-		dst[i] = (char*)malloc(sizeof(char) * j + 3);
-		if (!dst)
-			print_error_exit("malloc", errno, EXIT_FAILURE);
-		export_strcpy(dst[i], src[i]);
-		i++;	
-	}
-	dst[i] = NULL;
-}
 
 void populate_env(int envp_size, char **src, char **dst)
 {
@@ -71,6 +35,19 @@ void populate_env(int envp_size, char **src, char **dst)
 		i++;	
 	}
 	dst[i] = NULL;
+}
+
+void	env_pointer_cpy(int envp_size, char **old, char **new)
+{
+	int i;
+
+	i = 0;
+	while(i < envp_size)
+	{
+		new[i] = old[i];
+		i++;
+	}
+	new[envp_size] = NULL;
 }
 
 void add_env(char **padloper_env, char *var, int pos)
@@ -100,7 +77,6 @@ char **allocate_env(char **src, int *envp_size, int remove, int add)
 	if (!dst)
 		print_error_exit("malloc", errno, EXIT_FAILURE);
 	*envp_size = i;
-	populate_env(*envp_size - add, src, dst);
 	return (dst);
 }
 
@@ -151,6 +127,7 @@ char **new_padloper_envp(char **original_envp, int *envp_size)
 	if (!has_var(original_envp, "PWD="))
 		missing_var++;
 	new_padloper_envp = allocate_env(original_envp, envp_size, false, missing_var);
+	populate_env(*envp_size - missing_var, original_envp, new_padloper_envp);
 	if (!has_var(new_padloper_envp, "PWD="))
 		add_env(new_padloper_envp, "PWD=doeditnog!", ((*envp_size) - missing_var));
 	if (has_var(new_padloper_envp, "SHLVL="))

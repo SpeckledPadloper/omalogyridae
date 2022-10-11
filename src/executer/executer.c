@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/10/08 09:21:19 by lwiedijk      ########   odam.nl         */
+/*   Updated: 2022/10/11 14:44:29 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ void	execute_cmd(t_metadata *data, t_exec_list_sim *cmd_list)
 	path = NULL;
 	open_necessary_infiles(data, cmd_list);
 	open_necessary_outfiles(data, cmd_list);
-	redirect_input(data, cmd_list); // cat | cat | ls
+	redirect_input(data, cmd_list);
 	redirect_output(data, cmd_list);
 	close_unused_fd(data, cmd_list);
 	if (!(cmd_list->cmd))
