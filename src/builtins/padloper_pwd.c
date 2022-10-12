@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/10/11 17:10:53 by lwiedijk      ########   odam.nl         */
+/*   Updated: 2022/10/12 16:27:45 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,13 +22,13 @@ void	padloper_pwd(t_metadata *data, t_exec_list_sim *cmd_list)
 {
 	char buf[PATH_MAX];
 
-	if (!data || !cmd_list)
+	if (cmd_list->cmd[1] && cmd_list->cmd[1][0] == '-')
+		builtin_error("pwd: ", cmd_list->cmd[1], NOT_SUPPORTED, data);
+	else 
 	{
-		fprintf(stderr, "Parameters are NULL");
-		exit(1);
+		if (!getcwd(buf, sizeof(buf)))
+			print_error_exit("getcwd", errno, EXIT_FAILURE);
+		printf("%s\n", buf);
 	}
-	if (!getcwd(buf, sizeof(buf)))
-		print_error_exit("getcwd", errno, EXIT_FAILURE);
-	printf("%s\n", buf);
 	return ;
 }
