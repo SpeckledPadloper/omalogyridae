@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/10/11 13:25:26 by lwiedijk      ########   odam.nl         */
+/*   Updated: 2022/10/12 14:06:21 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,11 @@ char	*get_error_string(char *errno_string, int errnocopy)
 	else if (errnocopy == IS_DIR)
 		errno_string = "is a directory";
 	else if (errnocopy == NOT_VALID)
-		errno_string = "not a valid identifier";
+		errno_string = "': not a valid identifier\n";
+	else if (errnocopy == TOO_MANY)
+		errno_string = "minishell: exit: too many arguments\n";
+	else if (errnocopy == NOT_NUMERIC)
+		errno_string = ": numeric argument required\n";
 	return (errno_string);
 }
 

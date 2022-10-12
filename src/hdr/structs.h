@@ -6,7 +6,7 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/18 17:48:05 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/10/11 14:15:00 by lwiedijk      ########   odam.nl         */
+/*   Updated: 2022/10/12 13:58:59 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,8 @@ typedef enum e_exit_error_code
 	IS_DIR = -3,
 	NOT_VALID = -4,
 	NOT_SUPPORTED = -5,
+	NOT_NUMERIC = -6,
+	TOO_MANY = -7,
 	EMPTY = 0,
 	ERRNO_NO_SUCH_FILE = 2,
 	CMD_CANT_EXE = 126,

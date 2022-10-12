@@ -6,24 +6,49 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/10/06 11:35:19 by lwiedijk      ########   odam.nl         */
+/*   Updated: 2022/10/12 15:01:20 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdio.h>
 #include <unistd.h>
 #include <stdlib.h>
+#include <stdbool.h>
 #include "../executer/hdr/executer.h"
 #include "../hdr/structs.h"
+#include "../../libft/libft.h"
+
+bool	var_not_numeric(char *var)
+{
+	int i;
+
+	i = 0;
+	while(var[i])
+	{
+		if (!ft_isdigit(var[i]))
+			return (true);
+		i++;
+	}
+	return (false);
+}
 
 void	padloper_exit(t_metadata *data, t_exec_list_sim *cmd_list)
 {
-	if (!data || !cmd_list)
+	int exitcode;
+
+	if (data->cmd_count == 1)
+		printf("exit (buildin)\n");
+	if (!cmd_list->cmd[1])
+		exit(EXIT_SUCCESS);
+	if (var_not_numeric(cmd_list->cmd[1]))
+		builtin_error("exit: ", cmd_list->cmd[1], NOT_NUMERIC, data);
+	else if (cmd_list->cmd[2])
+		builtin_error("exit", NULL, TOO_MANY, data);
+	else
 	{
-		fprintf(stderr, "Parameters are NULL");
-		exit(1);
+		exitcode = 0;
+		exitcode = ft_atoi(cmd_list->cmd[1]);
+		data->exitstatus = exitcode;
 	}
-	fprintf(stderr, "check exit\n");
-	write(STDOUT_FILENO, "exit go to pipe\n", 16);
-	exit(0);
+	exit(data->exitstatus);
 }

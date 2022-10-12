@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/10/12 11:23:06 by lwiedijk      ########   odam.nl         */
+/*   Updated: 2022/10/12 14:13:19 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,7 +114,7 @@ void	add_var(t_metadata *data, t_exec_list_sim *cmd_list)
 		printf("hallo cmd is : %s\n", cmd_list->cmd[i]);
 		if (export_var_not_valid(cmd_list->cmd[i]))
 		{
-			print_argument_error("export: `", cmd_list->cmd[i], data);
+			builtin_error("export: `", cmd_list->cmd[i], NOT_VALID, data);
 			i++;
 			continue ;
 		}

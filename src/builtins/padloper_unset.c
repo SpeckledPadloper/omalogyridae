@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/10/12 11:42:15 by lwiedijk      ########   odam.nl         */
+/*   Updated: 2022/10/12 14:25:15 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,14 +17,22 @@
 #include "../hdr/structs.h"
 #include "../../libft/libft.h"
 
-void	print_argument_error(char *program, char *errorobject, t_metadata *data)
+void	builtin_error(char *program, char *object, int errnum, t_metadata *data)
 {
 	char *print;
+	char *message;
 
+	data->exitstatus = EXIT_FAILURE;
+	message = get_error_string(message, errnum);
+	if (errnum == TOO_MANY)
+	{
+		write(STDERR_FILENO, message, ft_strlen(message));
+		return ;
+	}
 	print = NULL;
 	print = ft_strjoin("minishell: ", program);
-	print = ft_strjoin_free(print, errorobject);
-	print = ft_strjoin_free(print, "': not a valid identifier\n");
+	print = ft_strjoin_free(print, object);
+	print = ft_strjoin_free(print, message);
 	if (!print)
 	{
 		write(STDERR_FILENO, "malloc fail in error\n", 21);
@@ -32,7 +40,6 @@ void	print_argument_error(char *program, char *errorobject, t_metadata *data)
 	}
 	write(STDERR_FILENO, print, ft_strlen(print));
 	free(print);
-	data->exitstatus = EXIT_FAILURE;
 }
 
 /*  
@@ -86,7 +93,7 @@ void	padloper_unset(t_metadata *data, t_exec_list_sim *cmd_list)
 	{
 		if (unset_var_not_valid(cmd_list->cmd[i]))
 		{
-			print_argument_error("unset: `", cmd_list->cmd[i], data);
+			builtin_error("unset: `", cmd_list->cmd[i], NOT_VALID, data);
 			i++;
 			continue ;
 		}
