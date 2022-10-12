@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/10/12 15:01:20 by lwiedijk      ########   odam.nl         */
+/*   Updated: 2022/10/12 15:11:46 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,10 @@ void	padloper_exit(t_metadata *data, t_exec_list_sim *cmd_list)
 	if (!cmd_list->cmd[1])
 		exit(EXIT_SUCCESS);
 	if (var_not_numeric(cmd_list->cmd[1]))
+	{
 		builtin_error("exit: ", cmd_list->cmd[1], NOT_NUMERIC, data);
+		data->exitstatus = 255;
+	}
 	else if (cmd_list->cmd[2])
 		builtin_error("exit", NULL, TOO_MANY, data);
 	else
