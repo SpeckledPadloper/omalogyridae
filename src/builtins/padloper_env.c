@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/10/11 11:47:14 by lwiedijk      ########   odam.nl         */
+/*   Updated: 2022/10/12 10:37:10 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,6 +142,7 @@ void	padloper_env(t_metadata *data, t_exec_list_sim *cmd_list)
 {
 	int i;
 
+	//protect for no args.
 	if (!data || !data->padloper_envp)
 		print_error_exit("padloper_env", EMPTY, EXIT_FAILURE);
 	i = 0;

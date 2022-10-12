@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/10/11 21:26:32 by lwiedijk      ########   odam.nl         */
+/*   Updated: 2022/10/12 11:42:15 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 #include "../hdr/structs.h"
 #include "../../libft/libft.h"
 
-void	print_argument_error(char *program, char *errorobject)
+void	print_argument_error(char *program, char *errorobject, t_metadata *data)
 {
 	char *print;
 
@@ -32,25 +32,14 @@ void	print_argument_error(char *program, char *errorobject)
 	}
 	write(STDERR_FILENO, print, ft_strlen(print));
 	free(print);
+	data->exitstatus = EXIT_FAILURE;
 }
 
 /*  
 
-wat unset betreft:
-houd een meta count bij n = number of strings in envp
-bij unset met parameter:
-strcmp tot aan unset, dan swop current i met n (naar laatste plaats),
-copyeer alles naar nieuwe array behalve laatste plaats
-update n naar n--
-
-bij export:
-update n naar n++;
-reallocate,
-
-sort by moving poitners ?
-alloceer alleen een 2d pointer array met pointers naar env array in gesorteerde volgorde?
-
-sort array
+	We could inplemet a buffer of env var locations, like vectors do in cpp,
+	if export then always 10 or 5 or so, keep a variable in meta to know how 
+	many places are in use.
 
 */
 bool	unset_var_not_valid(char *var)
@@ -97,7 +86,7 @@ void	padloper_unset(t_metadata *data, t_exec_list_sim *cmd_list)
 	{
 		if (unset_var_not_valid(cmd_list->cmd[i]))
 		{
-			print_argument_error("unset: `", cmd_list->cmd[i]);
+			print_argument_error("unset: `", cmd_list->cmd[i], data);
 			i++;
 			continue ;
 		}

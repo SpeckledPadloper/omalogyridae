@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/10/11 14:44:29 by lwiedijk      ########   odam.nl         */
+/*   Updated: 2022/10/12 11:19:47 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ void	execute_cmd(t_metadata *data, t_exec_list_sim *cmd_list)
 	if (!(cmd_list->cmd))
 		exit(EXIT_SUCCESS);
 	if (check_run_buildin(data, cmd_list))
-		exit(EXIT_SUCCESS);
+		exit(data->exitstatus);
 	path = path_builder(data, cmd_list->cmd[0]);
 	execve(path, cmd_list->cmd, data->padloper_envp);
 	print_error_exit("execve", errno, EXIT_FAILURE);
