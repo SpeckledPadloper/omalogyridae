@@ -6,7 +6,7 @@
 #    By: mteerlin <mteerlin@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2021/07/21 12:25:06 by mteerlin      #+#    #+#                  #
-#    Updated: 2022/10/13 14:40:29 by lwiedijk      ########   odam.nl          #
+#    Updated: 2022/10/13 15:18:34 by lwiedijk      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,11 +16,12 @@ VPATH	=	$(shell find src -type d) $(shell find libft -type d)
 SRC		:= src/builtins/padloper_cd.c \
 src/builtins/padloper_echo.c \
 src/builtins/padloper_env.c \
+src/builtins/new_padloper_env.c \
+src/builtins/env_utils.c \
 src/builtins/padloper_exit.c \
 src/builtins/padloper_export.c \
 src/builtins/padloper_pwd.c \
 src/builtins/padloper_unset.c \
-src/builtins/env_utils.c \
 src/error/error.c \
 src/executer/error_handling.c \
 src/executer/executer.c \

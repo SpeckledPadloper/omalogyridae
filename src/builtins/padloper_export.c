@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/10/13 14:47:46 by lwiedijk      ########   odam.nl         */
+/*   Updated: 2022/10/13 15:09:07 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,18 +102,12 @@ void	add_var(t_metadata *data, t_exec_list_sim *cmd_list)
 			continue ;
 		}
 		data->env_updated = true;
-		j = 0;
 		found = false;
-		while (data->padloper_envp[j])
+		if ((j = has_var(data->padloper_envp, cmd_list->cmd[i])))
 		{
-			if (!envcmp(data->padloper_envp[j], cmd_list->cmd[i]))
-			{
-				found = true;
-				if (env_has_value(cmd_list->cmd[i]))
-					add_env(data->padloper_envp, cmd_list->cmd[i], j);
-				break ;
-			}
-			j++;
+			found = true;
+			if (env_has_value(cmd_list->cmd[i]))
+				add_env(data->padloper_envp, cmd_list->cmd[i], j);
 		}
 		if (found)
 		{

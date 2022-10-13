@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/10/13 11:56:30 by lwiedijk      ########   odam.nl         */
+/*   Updated: 2022/10/13 15:02:50 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ void	env_pointer_cpy(int envp_size, char **old, char **new);
 char	**new_padloper_envp(char **original_envp, int *envp_size);
 int		envcmp(char *s1, char *s2);
 bool	env_has_value(char *var);
+int 	has_var(char **array, char *var);
 
 /*-------------------------executer-------------------------*/
 

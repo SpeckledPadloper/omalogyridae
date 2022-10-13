@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/10/13 14:47:58 by lwiedijk      ########   odam.nl         */
+/*   Updated: 2022/10/13 15:10:12 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,20 +76,16 @@ int	envcmp(char *s1, char *s2)
 	return (0);
 }
 
-char **allocate_env(char **src, int *envp_size, int remove, int add)
+int	has_var(char **array, char *var)
 {
-	char **dst;
 	int i;
 
-	dst = NULL;
 	i = 0;
-	while(src[i])
+	while(array[i])
+	{
+		if (!envcmp(array[i], var))
+			return(i);
 		i++;
-	i += add;
-	i -= remove;
-	dst = (char**)malloc(sizeof(char*) * i + 1);
-	if (!dst)
-		print_error_exit("malloc", errno, EXIT_FAILURE);
-	*envp_size = i;
-	return (dst);
+	}
+	return(0);
 }
