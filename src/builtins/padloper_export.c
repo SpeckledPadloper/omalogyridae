@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/10/13 14:32:24 by lwiedijk      ########   odam.nl         */
+/*   Updated: 2022/10/13 14:47:46 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,25 +68,6 @@ void	populate_export(int size, char **src, char **dst)
 	dst[i] = NULL;
 }
 
-int	envcmp(char *s1, char *s2)
-{
-	int	i;
-
-	i = 0;
-	while (!(s1[i] == '=' || s1[i] == '\0') || !(s2[i] == '=' || s2[i] == '\0'))
-	{
-		if (s1[i] == s2[i])
-			i++;
-		else if (s1[i] == '=')
-			return (0 - s2[i]);
-		else if (s2[i] == '=')
-			return (s1[i] - 0);
-		else
-			return (s1[i] - s2[i]);
-	}
-	return (0);
-}
-
 bool	export_var_not_valid(char *var)
 {
 	int	i;
@@ -114,8 +95,6 @@ void	add_var(t_metadata *data, t_exec_list_sim *cmd_list)
 	j = 0;
 	while (cmd_list->cmd[i])
 	{
-		printf("env size start = [%d]\n", data->envp_size);
-		printf("cmd is : %s\n", cmd_list->cmd[i]);
 		if (export_var_not_valid(cmd_list->cmd[i]))
 		{
 			builtin_error("export: `", cmd_list->cmd[i], NOT_VALID, data);
@@ -127,7 +106,6 @@ void	add_var(t_metadata *data, t_exec_list_sim *cmd_list)
 		found = false;
 		while (data->padloper_envp[j])
 		{
-			printf("envcmp returned [%d]\n", envcmp(data->padloper_envp[j], cmd_list->cmd[i]));
 			if (!envcmp(data->padloper_envp[j], cmd_list->cmd[i]))
 			{
 				found = true;

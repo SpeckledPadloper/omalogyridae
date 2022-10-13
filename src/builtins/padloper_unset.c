@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/10/13 14:31:15 by lwiedijk      ########   odam.nl         */
+/*   Updated: 2022/10/13 14:37:34 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,31 +16,6 @@
 #include "../executer/hdr/executer.h"
 #include "../hdr/structs.h"
 #include "../../libft/libft.h"
-
-void	builtin_error(char *program, char *object, int errnum, t_metadata *data)
-{
-	char *print;
-	char *message;
-
-	data->exitstatus = EXIT_FAILURE;
-	message = get_error_string(message, errnum);
-	if (errnum == TOO_MANY)
-	{
-		write(STDERR_FILENO, message, ft_strlen(message));
-		return ;
-	}
-	print = NULL;
-	print = ft_strjoin("minishell: ", program);
-	print = ft_strjoin_free(print, object);
-	print = ft_strjoin_free(print, message);
-	if (!print)
-	{
-		write(STDERR_FILENO, "malloc fail in error\n", 21);
-		exit(EXIT_FAILURE);
-	}
-	write(STDERR_FILENO, print, ft_strlen(print));
-	free(print);
-}
 
 /*  
 

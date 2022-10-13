@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/10/13 14:16:17 by lwiedijk      ########   odam.nl         */
+/*   Updated: 2022/10/13 14:46:02 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,48 +35,6 @@ void populate_env(int envp_size, char **src, char **dst)
 		i++;	
 	}
 	dst[i] = NULL;
-}
-
-void	env_pointer_cpy(int envp_size, char **old, char **new)
-{
-	int i;
-
-	i = 0;
-	while(i < envp_size)
-	{
-		new[i] = old[i];
-		i++;
-	}
-	new[envp_size] = NULL;
-}
-
-void add_env(char **padloper_env, char *var, int pos)
-{
-	int size;
-
-	size = ft_strlen(var);
-	padloper_env[pos] = (char *)malloc(sizeof(char) * size + 1);
-	if (!padloper_env[pos])
-			print_error_exit("malloc", errno, EXIT_FAILURE);
-	ft_strcpy(padloper_env[pos], var);
-}
-
-char **allocate_env(char **src, int *envp_size, int remove, int add)
-{
-	char **dst;
-	int i;
-
-	dst = NULL;
-	i = 0;
-	while(src[i])
-		i++;
-	i += add;
-	i -= remove;
-	dst = (char**)malloc(sizeof(char*) * i + 1);
-	if (!dst)
-		print_error_exit("malloc", errno, EXIT_FAILURE);
-	*envp_size = i;
-	return (dst);
 }
 
 bool	has_var(char **array, char *var)
@@ -150,20 +108,6 @@ char **new_padloper_envp(char **original_envp, int *envp_size)
 		add_env(new_padloper_envp, "SHLVL=1", ((*envp_size) - 1));
 	new_padloper_envp[*envp_size] = NULL;
 	return (new_padloper_envp);
-}
-
-bool	env_has_value(char *var)
-{
-	int i;
-
-	i = 0;
-	while(var[i])
-	{
-		if (var[i] == '=')
-			return true;
-		i++;
-	}
-	return false;
 }
 
 void	padloper_env(t_metadata *data, t_exec_list_sim *cmd_list)
