@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/10/12 14:10:12 by lwiedijk      ########   odam.nl         */
+/*   Updated: 2022/10/13 11:56:30 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,6 @@
 # include "../../hdr/structs.h"
 
 # define MODE_RW_R_R 0644
-# define CNF_BUF_SIZE 18
-# define AR_BUF_SIZE 19
-# define EXISTING_VAR_HAS_NO_VALUE -61
-# define EXPORTED_VAR_HAS_NO_VALUE 61
 
 /*-------------------------buildins-------------------------*/
 
@@ -39,6 +35,7 @@ void 	add_env(char **padloper_env, char *var, int pos);
 void	env_pointer_cpy(int envp_size, char **old, char **new);
 char	**new_padloper_envp(char **original_envp, int *envp_size);
 int		envcmp(char *s1, char *s2);
+bool	env_has_value(char *var);
 
 /*-------------------------executer-------------------------*/
 

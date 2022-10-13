@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/10/12 16:23:16 by lwiedijk      ########   odam.nl         */
+/*   Updated: 2022/10/13 09:54:48 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,8 @@ char	*get_error_string(char *errno_string, int errnocopy)
 		errno_string = ": numeric argument required\n";
 	else if (errnocopy == NOT_SUPPORTED)
 		errno_string = ": options not supported\n";
+	else if (errnocopy == NOT_SUPPORTED_BOTH)
+		errno_string = ": options or arguments not supported\n";
 	return (errno_string);
 }
 

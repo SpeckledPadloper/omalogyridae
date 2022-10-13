@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/10/13 09:38:26 by lwiedijk      ########   odam.nl         */
+/*   Updated: 2022/10/13 14:16:17 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,6 @@ void add_env(char **padloper_env, char *var, int pos)
 	if (!padloper_env[pos])
 			print_error_exit("malloc", errno, EXIT_FAILURE);
 	ft_strcpy(padloper_env[pos], var);
-	padloper_env[pos + 1] = NULL;
 }
 
 char **allocate_env(char **src, int *envp_size, int remove, int add)
@@ -153,17 +152,36 @@ char **new_padloper_envp(char **original_envp, int *envp_size)
 	return (new_padloper_envp);
 }
 
+bool	env_has_value(char *var)
+{
+	int i;
+
+	i = 0;
+	while(var[i])
+	{
+		if (var[i] == '=')
+			return true;
+		i++;
+	}
+	return false;
+}
+
 void	padloper_env(t_metadata *data, t_exec_list_sim *cmd_list)
 {
 	int i;
 
-	//protect for no args.
+	if (cmd_list->cmd[1])
+	{
+		builtin_error("env: ", cmd_list->cmd[1], NOT_SUPPORTED_BOTH, data);
+		return ;
+	}
 	if (!data || !data->padloper_envp)
 		print_error_exit("padloper_env", EMPTY, EXIT_FAILURE);
 	i = 0;
 	while(data->padloper_envp[i])
 	{
-		printf("padlopers env: %s\n", data->padloper_envp[i]);
+		if (env_has_value(data->padloper_envp[i]))
+			printf("padlopers env: %s\n", data->padloper_envp[i]);
 		i++;
 	}
 	return ;

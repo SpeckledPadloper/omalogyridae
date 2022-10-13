@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/10/12 14:25:15 by lwiedijk      ########   odam.nl         */
+/*   Updated: 2022/10/13 14:31:15 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,22 +65,6 @@ bool	unset_var_not_valid(char *var)
 	return (false);
 }
 
-int	unset_envcmp(char *s1, char *s2)
-{
-	int	i;
-
-	i = 0;
-	while (!(s1[i] == '=' || s1[i] == '\0') || s2[i] != '\0')
-	{
-		if (s1[i] == s2[i])
-			i++;
-		else
-			return (s1[i] - s2[i]);
-	}
-	return (0);
-}
-
-
 void	padloper_unset(t_metadata *data, t_exec_list_sim *cmd_list)
 {
 	int	i;
@@ -100,7 +84,7 @@ void	padloper_unset(t_metadata *data, t_exec_list_sim *cmd_list)
 		j = 0;
 		while (data->padloper_envp[j])
 		{
-			if(!unset_envcmp(data->padloper_envp[j], cmd_list->cmd[i]))
+			if(!envcmp(data->padloper_envp[j], cmd_list->cmd[i]))
 			{
 				printf("!!unset var [%s]\n", cmd_list->cmd[i]);
 				free(data->padloper_envp[j]);

@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/10/12 14:13:19 by lwiedijk      ########   odam.nl         */
+/*   Updated: 2022/10/13 14:32:24 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,10 +73,14 @@ int	envcmp(char *s1, char *s2)
 	int	i;
 
 	i = 0;
-	while (s1[i] != '=' || s2[i] != '=')
+	while (!(s1[i] == '=' || s1[i] == '\0') || !(s2[i] == '=' || s2[i] == '\0'))
 	{
 		if (s1[i] == s2[i])
 			i++;
+		else if (s1[i] == '=')
+			return (0 - s2[i]);
+		else if (s2[i] == '=')
+			return (s1[i] - 0);
 		else
 			return (s1[i] - s2[i]);
 	}
@@ -90,8 +94,7 @@ bool	export_var_not_valid(char *var)
 	i = 1;
 	if (!(ft_isalpha(var[0]) || var[0] == '_'))
 		return (true);
-	//deze regel reld tot aan '='! 
-	while (var[i])
+	while (var[i] && var[i] != '=')
 	{
 		if (!(ft_isalnum(var[i]) || var[i] == '='))
 			return (true);
@@ -111,7 +114,8 @@ void	add_var(t_metadata *data, t_exec_list_sim *cmd_list)
 	j = 0;
 	while (cmd_list->cmd[i])
 	{
-		printf("hallo cmd is : %s\n", cmd_list->cmd[i]);
+		printf("env size start = [%d]\n", data->envp_size);
+		printf("cmd is : %s\n", cmd_list->cmd[i]);
 		if (export_var_not_valid(cmd_list->cmd[i]))
 		{
 			builtin_error("export: `", cmd_list->cmd[i], NOT_VALID, data);
@@ -123,16 +127,12 @@ void	add_var(t_metadata *data, t_exec_list_sim *cmd_list)
 		found = false;
 		while (data->padloper_envp[j])
 		{
-			if (!envcmp(data->padloper_envp[j], cmd_list->cmd[i])
-				|| envcmp(data->padloper_envp[j], cmd_list->cmd[i]) == EXISTING_VAR_HAS_NO_VALUE)
+			printf("envcmp returned [%d]\n", envcmp(data->padloper_envp[j], cmd_list->cmd[i]));
+			if (!envcmp(data->padloper_envp[j], cmd_list->cmd[i]))
 			{
 				found = true;
-				data->padloper_envp[j] = cmd_list->cmd[i];
-				break ;
-			}
-			else if (envcmp(data->padloper_envp[j], cmd_list->cmd[i]) == EXPORTED_VAR_HAS_NO_VALUE)
-			{
-				found = true;
+				if (env_has_value(cmd_list->cmd[i]))
+					add_env(data->padloper_envp, cmd_list->cmd[i], j);
 				break ;
 			}
 			j++;
@@ -148,7 +148,9 @@ void	add_var(t_metadata *data, t_exec_list_sim *cmd_list)
 		free(data->padloper_envp);
 		data->padloper_envp = temp_env;
 		add_env(data->padloper_envp, cmd_list->cmd[i], data->envp_size - 1);
+		data->padloper_envp[data->envp_size] = NULL;
 		i++;
+		printf("env size end = [%d]\n", data->envp_size);
 	}
 }
 
