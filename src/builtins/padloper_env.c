@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/10/12 10:37:10 by lwiedijk      ########   odam.nl         */
+/*   Updated: 2022/10/13 09:38:26 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,6 +116,21 @@ void	increment_shlvl(char **new_padloper_envp)
 	}
 }
 
+void	set_pwd(char **new_padloper_envp, int pos)
+{
+	char *buf;
+	char *pwd_var;
+
+	buf = NULL;
+	buf = getcwd(buf, sizeof(buf));
+	if (!buf)
+		print_error_exit("getcwd", errno, EXIT_FAILURE);
+	pwd_var = ft_strjoin("PWD=", buf);
+	add_env(new_padloper_envp, pwd_var, pos);
+	free(buf);
+	free(pwd_var);
+}
+
 char **new_padloper_envp(char **original_envp, int *envp_size)
 {
 	char **new_padloper_envp;
@@ -129,7 +144,7 @@ char **new_padloper_envp(char **original_envp, int *envp_size)
 	new_padloper_envp = allocate_env(original_envp, envp_size, false, missing_var);
 	populate_env(*envp_size - missing_var, original_envp, new_padloper_envp);
 	if (!has_var(new_padloper_envp, "PWD="))
-		add_env(new_padloper_envp, "PWD=doeditnog!", ((*envp_size) - missing_var));
+		set_pwd(new_padloper_envp, ((*envp_size) - missing_var));
 	if (has_var(new_padloper_envp, "SHLVL="))
 		increment_shlvl(new_padloper_envp);
 	else
