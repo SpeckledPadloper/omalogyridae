@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/10/13 14:37:34 by lwiedijk      ########   odam.nl         */
+/*   Updated: 2022/10/13 16:06:46 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,15 +40,25 @@ bool	unset_var_not_valid(char *var)
 	return (false);
 }
 
+void	unset_var(t_metadata *data, int pos)
+{
+	free(data->padloper_envp[pos]);
+	data->padloper_envp[pos]
+		= data->padloper_envp[data->envp_size - 1];
+	data->padloper_envp[data->envp_size - 1] = NULL;
+	data->envp_size--;
+	data->env_updated = true;
+}
+
 void	padloper_unset(t_metadata *data, t_exec_list_sim *cmd_list)
 {
 	int	i;
-	int	j;
+	int	pos;
 
 	i = 1;
 	if (!cmd_list->cmd[1])
 		return ;
-	while(cmd_list->cmd[i])
+	while (cmd_list->cmd[i])
 	{
 		if (unset_var_not_valid(cmd_list->cmd[i]))
 		{
@@ -56,22 +66,9 @@ void	padloper_unset(t_metadata *data, t_exec_list_sim *cmd_list)
 			i++;
 			continue ;
 		}
-		j = 0;
-		while (data->padloper_envp[j])
-		{
-			if(!envcmp(data->padloper_envp[j], cmd_list->cmd[i]))
-			{
-				printf("!!unset var [%s]\n", cmd_list->cmd[i]);
-				free(data->padloper_envp[j]);
-				data->padloper_envp[j] = data->padloper_envp[data->envp_size - 1];
-				data->padloper_envp[data->envp_size - 1] = NULL;
-				data->envp_size--;
-				data->env_updated = true;
-				printf("last place [%s]\n", data->padloper_envp[data->envp_size - 1]);
-				printf("swapped place [%s]\n", data->padloper_envp[j]);
-			}
-			j++;
-		}
+		pos = has_var(data->padloper_envp, cmd_list->cmd[i]);
+		if (pos)
+			unset_var(data, pos);
 		i++;
 	}
 }

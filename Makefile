@@ -6,7 +6,7 @@
 #    By: mteerlin <mteerlin@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2021/07/21 12:25:06 by mteerlin      #+#    #+#                  #
-#    Updated: 2022/10/13 15:18:34 by lwiedijk      ########   odam.nl          #
+#    Updated: 2022/10/13 16:16:15 by lwiedijk      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,6 +20,7 @@ src/builtins/new_padloper_env.c \
 src/builtins/env_utils.c \
 src/builtins/padloper_exit.c \
 src/builtins/padloper_export.c \
+src/builtins/export_utils.c \
 src/builtins/padloper_pwd.c \
 src/builtins/padloper_unset.c \
 src/error/error.c \
