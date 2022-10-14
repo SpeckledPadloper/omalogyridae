@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/10/13 14:37:15 by lwiedijk      ########   odam.nl         */
+/*   Updated: 2022/10/14 14:19:16 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,9 @@
 
 char	*get_error_string(char *errno_string, int errnocopy)
 {
-	if (errnocopy == EMPTY)
+	if (errnocopy > 0)
+		errno_string = strerror(errnocopy);
+	else if (errnocopy == EMPTY)
 		errno_string = "something is wrong";
 	else if (errnocopy == CNF)
 		errno_string = "command not found";
@@ -59,7 +61,11 @@ void	builtin_error(char *program, char *object, int errnum, t_metadata *data)
 	print = NULL;
 	print = ft_strjoin("minishell: ", program);
 	print = ft_strjoin_free(print, object);
+	if (errnum > 0)
+		print = ft_strjoin_free(print, ": ");
 	print = ft_strjoin_free(print, message);
+	if (errnum > 0)
+		print = ft_strjoin_free(print, "\n");
 	if (!print)
 	{
 		write(STDERR_FILENO, "malloc fail in error\n", 21);
@@ -75,9 +81,7 @@ void	print_error_exit(char *errorobject, int errnocopy, int exitcode)
 	char	*errno_string;
 
 	print = NULL;
-	errno_string = strerror(errnocopy);
-	if (errnocopy <= 0)
-		errno_string = get_error_string(errno_string, errnocopy);
+	errno_string = get_error_string(errno_string, errnocopy);
 	print = ft_strjoin("minishell: ", errorobject);
 	print = ft_strjoin_free(print, ": ");
 	print = ft_strjoin_free(print, errno_string);
