@@ -47,7 +47,6 @@ void	init_metadata(t_metadata *data, t_fd_list *fd_list, char **envp)
 {
 	data->padloper_envp = new_padloper_envp(envp, &(data->envp_size));
 	set_buildin_array(data);
-	
 }
 
 void	reset_metadata(t_metadata *data, t_fd_list *fd_list, char **envp)
