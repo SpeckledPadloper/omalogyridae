@@ -35,8 +35,8 @@ funtion()
 	else
 		echo 
 		printf $RED"nay output\n"$RESET
-		#echo Bash out: $RES1
-		#echo Mini out: $RES2
+		echo Bash out: $RES1
+		echo Mini out: $RES2
 	fi
 	
 	if [[ "$RETURN1" == "$RETURN2" ]]
@@ -94,6 +94,12 @@ error_fun()
 	echo
 }	
 
+
+
+funtion 'echo -n -n -n hallo'
+funtion 'echo'
+funtion 'echo hallo hallo -n'
+funtion 'echo -n hallo'
 funtion 'ls  -la | wc'
 funtion 'echo hoi | cat -e | cat -e | cat -e'
 funtion '< Makefile cat -e | cat -e'
