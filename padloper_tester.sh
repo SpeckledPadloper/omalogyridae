@@ -20,9 +20,9 @@ printascii()
 
 funtion()
 {
-	RES1=$(echo $@ | bash)
+	RES1=$(echo $@ | bash 2>/dev/null)
 	RETURN1=$?
-	RES2=$(echo $@ | ./minishell)
+	RES2=$(echo $@ | ./minishell 2>/dev/null)
 #	printascii "$RES1" "$RES2"
 	RETURN2=$?
 
@@ -35,14 +35,16 @@ funtion()
 	else
 		echo 
 		printf $RED"nay output\n"$RESET
-		echo Bash out: $RES1
-		echo Mini out: $RES2
+		#echo Bash out: $RES1
+		#echo Mini out: $RES2
 	fi
 	
 	if [[ "$RETURN1" == "$RETURN2" ]]
 	then
 		echo
-		printf $GREEN"yay exit_code\n"$RESET"yay retcode"
+		printf $GREEN"yay exit_code\n"$RESET
+		#echo Bash: $RETURN1
+		#echo Mini: $RETURN2
 	else
 		echo
 		printf $RED"nay exit_code\n"$RESET
@@ -61,7 +63,7 @@ error_fun()
 	RETURN2=$?
 
 	RES1=$(echo $@ | bash 2>&1 | cut -c 15-)
-	RES2=$(echo $@ | ./minishell 2>&1 | cut -c 12-)
+	RES2=$(echo $@ | ./minishell 2>&1 | tail -n 1 | cut -c 12-)
 	
 	if [[ "$RES1" == "$RES2" ]]
 	then
@@ -74,13 +76,15 @@ error_fun()
 		printf $RED"nay output\n"$RESET
 		#echo Bash out: $RES1
 		#echo Mini out: $RES2
-#		printascii "$RES1" "$RES2"
+		#printascii "$RES1" "$RES2"
 	fi
 
 	if [[ "$RETURN1" == "$RETURN2" ]]
 	then
 		echo
-		printf $GREEN"yay exit_code\n"$RESET"yay retcode"
+		printf $GREEN"yay exit_code\n"$RESET
+		#echo Bash: $RETURN1
+		#echo Mini: $RETURN2
 	else
 		echo
 		printf $RED"nay exit_code\n"$RESET
@@ -95,13 +99,19 @@ funtion 'echo hoi | cat -e | cat -e | cat -e'
 funtion '< Makefile cat -e | cat -e'
 funtion '< Makefile cat -e | cat -e | cat -e | cat -e | cat -e | cat -e | cat -e | cat -e | cat -e | cat -e | cat -e | cat -e | cat -e | cat -e | cat -e | cat -e | cat -e | cat -e | cat -e | cat -e'
 funtion 'export | grep PATH'
+funtion 'exit 500'
 
 echo ----------------errors-----------------
 
 error_fun 'lsfjslkj'
 error_fun '<k'
+error_fun '<a'
+error_fun './a'
 error_fun 'ls | wc > out_noright'
 error_fun 'cd dir_noright'
+error_fun 'cd Makefile'
+error_fun 'cd blabla'
 error_fun 'export 6'
 error_fun 'unset hoi='
 error_fun 'exit hoi'
+error_fun 'exit 89 978'

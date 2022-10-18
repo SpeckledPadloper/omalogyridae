@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/10/14 17:19:46 by lwiedijk      ########   odam.nl         */
+/*   Updated: 2022/10/18 15:20:21 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,14 +68,15 @@ void	padloper_cd(t_metadata *data, t_exec_list_sim *cmd_list)
 	2>&1 redirect stderr to stdout
 	2>out redirects stderr to a file named out
 
-	bash sends its promt to stderr
-
-	bash sends "exit" by exit to stderr 
+	
+	!done bash sends "exit" by exit to stderr 
 
 
 	echo! meerdere -n -n -n is 1 keer doen en de rest niet printen
 
 	min max int bij exit status 
+
+	export / unset with "invalid option", dus flag als eerste arg, 2 als exit code
 	_____________________________
 
 	cd without arg, hoeven we niet, en wat als Home is unset en alles? gewoon not supported doen?

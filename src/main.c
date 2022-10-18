@@ -6,7 +6,7 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/18 16:18:33 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/10/11 14:44:24 by lwiedijk      ########   odam.nl         */
+/*   Updated: 2022/10/18 15:20:37 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ int	main(int argc, char **argv, char **env)
 		//test_simple_command(ret);
 		executer(&data, ret);
 		printf("exitstatus: [%d]\n", data.exitstatus);
+		//exit(data.exitstatus);
 		//simple_cmd_clear(&ret);
 	}
 	free(prompt);
