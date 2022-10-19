@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/10/19 15:54:41 by lwiedijk      ########   odam.nl         */
+/*   Updated: 2022/10/19 19:32:57 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ char	**allocate_env(char **src, t_metadata *data, int add)
 	while (src[i])
 		i++;
 	i += add;
-	dst = (char **)malloc(sizeof(char *) * i + env_buffer + 1);
+	dst = (char **)malloc(sizeof(char *) * (i + env_buffer + 1));
 	if (!dst)
 		print_error_exit("malloc", errno, EXIT_FAILURE);
 	data->envp_size = i;

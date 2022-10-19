@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/10/19 16:08:12 by lwiedijk      ########   odam.nl         */
+/*   Updated: 2022/10/19 19:53:44 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	env_pointer_cpy(int envp_size, char **old, char **new)
 		new[i] = old[i];
 		i++;
 	}
-	//new[envp_size] = NULL;
+	new[envp_size] = NULL;
 }
 
 void	add_env(char **padloper_env, char *var, int pos)
@@ -37,7 +37,7 @@ void	add_env(char **padloper_env, char *var, int pos)
 	int	size;
 
 	size = ft_strlen(var);
-	padloper_env[pos] = (char *)malloc(sizeof(char) * size + 1);
+	padloper_env[pos] = (char *)malloc(sizeof(char) * (size + 1));
 	if (!padloper_env[pos])
 		print_error_exit("malloc", errno, EXIT_FAILURE);
 	ft_strcpy(padloper_env[pos], var);
