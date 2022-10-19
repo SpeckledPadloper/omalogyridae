@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/10/19 15:56:54 by lwiedijk      ########   odam.nl         */
+/*   Updated: 2022/10/19 16:39:20 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,25 @@
 #include "../hdr/structs.h"
 #include "../../libft/libft.h"
 
+void	populate_test_env(int envp_size, char **src, char **dst)
+{
+	int	i;
+	int	size;
+
+	i = 0;
+	while (i < envp_size)
+	{
+		size = ft_strlen(src[i]);
+		dst[i] = (char *)malloc(sizeof(char) * size + 1);
+		if (!dst[i])
+			print_error_exit("malloc", errno, EXIT_FAILURE);
+		ft_strcpy(dst[i], src[i]);
+		i++;
+	}
+	dst[i] = NULL;
+}
+
+
 void	add_new_var_to_env(t_metadata *data, t_exec_list_sim *cmd_list, int pos)
 {
 	char	**temp_env;
@@ -28,7 +47,8 @@ void	add_new_var_to_env(t_metadata *data, t_exec_list_sim *cmd_list, int pos)
 	{
 		temp_env = allocate_env(data->padloper_envp,
 			data, true);
-		env_pointer_cpy(data->envp_size, data->padloper_envp, temp_env);
+		populate_test_env(data->envp_size - 1, data->padloper_envp, temp_env);
+		//env_pointer_cpy(data->envp_size, data->padloper_envp, temp_env);
 		free(data->padloper_envp);
 		data->padloper_envp = temp_env;
 	}
