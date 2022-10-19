@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/10/13 16:06:46 by lwiedijk      ########   odam.nl         */
+/*   Updated: 2022/10/19 13:56:25 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,8 +45,8 @@ void	unset_var(t_metadata *data, int pos)
 	free(data->padloper_envp[pos]);
 	data->padloper_envp[pos]
 		= data->padloper_envp[data->envp_size - 1];
-	data->padloper_envp[data->envp_size - 1] = NULL;
 	data->envp_size--;
+	data->padloper_envp[data->envp_size] = NULL;
 	data->env_updated = true;
 }
 

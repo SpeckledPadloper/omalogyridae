@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/10/19 12:28:57 by lwiedijk      ########   odam.nl         */
+/*   Updated: 2022/10/19 15:56:54 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,12 +23,19 @@ void	add_new_var_to_env(t_metadata *data, t_exec_list_sim *cmd_list, int pos)
 {
 	char	**temp_env;
 
-	temp_env = allocate_env(data->padloper_envp,
-			data, false, true);
-	env_pointer_cpy(data->envp_size, data->padloper_envp, temp_env);
-	free(data->padloper_envp);
-	data->padloper_envp = temp_env;
-	add_env(data->padloper_envp, cmd_list->cmd[pos], data->envp_size - 1);
+	printf("size = %d, space = %d\n", data->envp_size, data->envp_space);
+	if (!(data->envp_space > data->envp_size))
+	{
+		temp_env = allocate_env(data->padloper_envp,
+			data, true);
+		env_pointer_cpy(data->envp_size, data->padloper_envp, temp_env);
+		free(data->padloper_envp);
+		data->padloper_envp = temp_env;
+	}
+	else
+		data->envp_size++;
+	printf("add env pos = %d\n", data->envp_size - 1);
+	add_data_env(data, cmd_list->cmd[pos], data->envp_size - 1);
 	data->padloper_envp[data->envp_size] = NULL;
 }
 
@@ -51,7 +58,7 @@ void	add_var(t_metadata *data, t_exec_list_sim *cmd_list)
 		if (pos)
 		{
 			if (env_has_value(cmd_list->cmd[i]))
-				add_env(data->padloper_envp, cmd_list->cmd[i], pos);
+				add_data_env(data, cmd_list->cmd[i], pos);
 			i++;
 			continue ;
 		}
@@ -74,7 +81,7 @@ void	padloper_export(t_metadata *data, t_exec_list_sim *cmd_list)
 		if (data->sorted_print_export)
 			free_2d_array(data->sorted_print_export);
 		data->sorted_print_export = allocate_env
-			(data->padloper_envp, data, false, false);
+			(data->padloper_envp, data, false);
 		populate_export(data->envp_size, data->padloper_envp,
 			data->sorted_print_export);
 		sort_env(data);

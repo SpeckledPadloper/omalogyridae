@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/10/19 09:43:58 by lwiedijk      ########   odam.nl         */
+/*   Updated: 2022/10/19 15:36:03 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,8 @@ void	padloper_cd(t_metadata *data, t_exec_list_sim *cmd_list)
 	!done min max int bij exit status 
 
 	export / unset with "invalid option", dus flag als eerste arg, 2 als exit code
+
+	echo -nnnnn ! 
 	_____________________________
 
 	cd without arg, hoeven we niet, en wat als Home is unset en alles? gewoon not supported doen?

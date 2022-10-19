@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/10/19 09:31:23 by lwiedijk      ########   odam.nl         */
+/*   Updated: 2022/10/19 13:51:54 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,6 @@ void	padloper_exit(t_metadata *data, t_exec_list_sim *cmd_list)
 	{
 		exitcode = 0;
 		exitcode = ft_atoi(cmd_list->cmd[1]);
-		printf("to high is: %d\n", exitcode);
 		data->exitstatus = exitcode;
 	}
 	exit(data->exitstatus);

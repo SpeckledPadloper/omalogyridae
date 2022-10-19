@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/10/13 15:19:03 by lwiedijk      ########   odam.nl         */
+/*   Updated: 2022/10/19 14:50:11 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +33,10 @@ void	padloper_env(t_metadata *data, t_exec_list_sim *cmd_list)
 	i = 0;
 	while (data->padloper_envp[i])
 	{
-		if (env_has_value(data->padloper_envp[i]))
-			printf("padlopers env: %s\n", data->padloper_envp[i]);
+		//if (env_has_value(data->padloper_envp[i]))
+			printf("padlopers env %d: %s\n", i, data->padloper_envp[i]);
 		i++;
 	}
+	printf("padlopers env %d: %s\n", i, data->padloper_envp[i]);
 	return ;
 }

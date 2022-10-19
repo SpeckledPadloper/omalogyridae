@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/10/19 13:16:00 by lwiedijk      ########   odam.nl         */
+/*   Updated: 2022/10/19 15:54:41 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,24 +48,27 @@ void	populate_env(int envp_size, char **src, char **dst, int *data_envp_size)
 	dst[i] = NULL;
 }
 
-char	**allocate_env(char **src, t_metadata *data, int remove, int add)
+char	**allocate_env(char **src, t_metadata *data, int add)
 {
 	char	**dst;
 	int		env_buffer;
 	int		i;
 
 	dst = NULL;
-	env_buffer = 10;
+	env_buffer = 0;
+	if (add)
+		env_buffer = 3;
 	i = 0;
 	while (src[i])
 		i++;
 	i += add;
-	i -= remove;
 	dst = (char **)malloc(sizeof(char *) * i + env_buffer + 1);
 	if (!dst)
 		print_error_exit("malloc", errno, EXIT_FAILURE);
 	data->envp_size = i;
-	data->envp_space = i + env_buffer;
+	if (add)
+		data->envp_space = i + env_buffer;
+	printf("in allocate: size = %d, i = %d, space = %d, envbuf = %d, add = %d\n", data->envp_size, i, data->envp_space, env_buffer, add);
 	return (dst);
 }
 
@@ -128,7 +131,7 @@ char	**new_padloper_envp(char **original_envp, t_metadata *data, int *envp_size)
 		missing_var++;
 	printf("missing var is %d\n", missing_var);
 	new_padloper_envp = allocate_env
-		(original_envp, data, false, missing_var);
+		(original_envp, data, missing_var);
 	printf("size befor populate %d\n", *envp_size);
 	populate_env(*envp_size - missing_var, original_envp, new_padloper_envp, envp_size);
 	printf("size after populate %d\n", *envp_size);
