@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/10/13 16:38:46 by lwiedijk      ########   odam.nl         */
+/*   Updated: 2022/10/19 12:28:57 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	add_new_var_to_env(t_metadata *data, t_exec_list_sim *cmd_list, int pos)
 	char	**temp_env;
 
 	temp_env = allocate_env(data->padloper_envp,
-			&(data->envp_size), false, true);
+			data, false, true);
 	env_pointer_cpy(data->envp_size, data->padloper_envp, temp_env);
 	free(data->padloper_envp);
 	data->padloper_envp = temp_env;
@@ -74,7 +74,7 @@ void	padloper_export(t_metadata *data, t_exec_list_sim *cmd_list)
 		if (data->sorted_print_export)
 			free_2d_array(data->sorted_print_export);
 		data->sorted_print_export = allocate_env
-			(data->padloper_envp, &(data->envp_size), false, false);
+			(data->padloper_envp, data, false, false);
 		populate_export(data->envp_size, data->padloper_envp,
 			data->sorted_print_export);
 		sort_env(data);

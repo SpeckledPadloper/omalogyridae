@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/10/13 17:07:38 by lwiedijk      ########   odam.nl         */
+/*   Updated: 2022/10/19 13:32:12 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ int	envcmp(char *s1, char *s2)
 		else
 			return (s1[i] - s2[i]);
 	}
-	return (0);
+	return (s1[i] - s2[i]);
 }
 
 int	has_var(char **array, char *var)

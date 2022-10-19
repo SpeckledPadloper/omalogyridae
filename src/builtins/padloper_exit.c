@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/10/19 09:01:11 by lwiedijk      ########   odam.nl         */
+/*   Updated: 2022/10/19 09:31:23 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,16 +18,17 @@
 #include "../hdr/structs.h"
 #include "../../libft/libft.h"
 
-bool	check_overflow(int plu_min, long long int result, const char *str, int i)
+bool	check_overflow(int plu_min, long long int result,
+			const char *str, int i)
 {
 	if (ft_strlen(str) > 19 + (plu_min == -1))
-		return true;
+		return (true);
 	if (plu_min == -1 && str[i] > '8')
-		return true;
+		return (true);
 	if (plu_min == 1 && str[i] > '7')
-		return true;
+		return (true);
 	else
-		return false;
+		return (false);
 }
 
 int	exit_atoi(const char *str, bool *overflow)
@@ -57,7 +58,6 @@ int	exit_atoi(const char *str, bool *overflow)
 	return (result * plu_min);
 }
 
-
 bool	var_not_numeric(char *var)
 {
 	int		i;
@@ -67,7 +67,7 @@ bool	var_not_numeric(char *var)
 	overflow = false;
 	if (var[0] == '+' || var[0] == '-')
 		i++;
-	while(var[i])
+	while (var[i])
 	{
 		if (!ft_isdigit(var[i]))
 			return (true);
@@ -81,7 +81,7 @@ bool	var_not_numeric(char *var)
 
 void	padloper_exit(t_metadata *data, t_exec_list_sim *cmd_list)
 {
-	int exitcode;
+	int	exitcode;
 
 	if (data->cmd_count == 1)
 		write(2, "exit\n", 5);

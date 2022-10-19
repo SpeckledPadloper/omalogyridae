@@ -6,7 +6,7 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/18 17:48:05 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/10/18 13:01:34 by lwiedijk      ########   odam.nl         */
+/*   Updated: 2022/10/19 11:24:20 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,6 +105,7 @@ typedef struct s_metadata
 	char		**sorted_print_export;
 	bool		env_updated;
 	int			envp_size;
+	int			envp_space;
 	int			child_count;
 	int			cmd_count;
 	pid_t		lastpid;
