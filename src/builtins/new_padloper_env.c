@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/10/19 19:32:57 by lwiedijk      ########   odam.nl         */
+/*   Updated: 2022/10/22 14:27:52 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,9 +31,7 @@ void	populate_env(int envp_size, char **src, char **dst, int *data_envp_size)
 	{
 		if (!env_has_value(src[j]))
 		{
-			printf("size befor populate envvalue %d -> %s\n", *data_envp_size, src[j]);
 			(*data_envp_size)--;
-			printf("size after populate envvalue %d -> %s\n", *data_envp_size, src[j]);
 			j++;
 			continue;
 		}
@@ -57,7 +55,7 @@ char	**allocate_env(char **src, t_metadata *data, int add)
 	dst = NULL;
 	env_buffer = 0;
 	if (add)
-		env_buffer = 3;
+		env_buffer = 10;
 	i = 0;
 	while (src[i])
 		i++;
@@ -68,7 +66,6 @@ char	**allocate_env(char **src, t_metadata *data, int add)
 	data->envp_size = i;
 	if (add)
 		data->envp_space = i + env_buffer;
-	printf("in allocate: size = %d, i = %d, space = %d, envbuf = %d, add = %d\n", data->envp_size, i, data->envp_space, env_buffer, add);
 	return (dst);
 }
 
@@ -129,12 +126,9 @@ char	**new_padloper_envp(char **original_envp, t_metadata *data, int *envp_size)
 		missing_var++;
 	if (!has_var(original_envp, "OLDPWD="))
 		missing_var++;
-	printf("missing var is %d\n", missing_var);
 	new_padloper_envp = allocate_env
 		(original_envp, data, missing_var);
-	printf("size befor populate %d\n", *envp_size);
 	populate_env(*envp_size - missing_var, original_envp, new_padloper_envp, envp_size);
-	printf("size after populate %d\n", *envp_size);
 	reset_oldpwd(new_padloper_envp, (*envp_size - missing_var));
 	if (!has_var(new_padloper_envp, "PWD="))
 		set_pwd(new_padloper_envp, ((*envp_size) - (missing_var - (missing_var == 3))));

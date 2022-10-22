@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/10/19 19:53:44 by lwiedijk      ########   odam.nl         */
+/*   Updated: 2022/10/22 14:33:59 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,17 +41,6 @@ void	add_env(char **padloper_env, char *var, int pos)
 	if (!padloper_env[pos])
 		print_error_exit("malloc", errno, EXIT_FAILURE);
 	ft_strcpy(padloper_env[pos], var);
-}
-
-void	add_data_env(t_metadata *data, char *var, int pos)
-{
-	int	size;
-
-	size = ft_strlen(var);
-	data->padloper_envp[pos] = (char *)malloc(sizeof(char) * size + 1);
-	if (!data->padloper_envp[pos])
-		print_error_exit("malloc", errno, EXIT_FAILURE);
-	ft_strcpy(data->padloper_envp[pos], var);
 }
 
 bool	env_has_value(char *var)

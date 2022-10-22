@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/10/19 15:56:14 by lwiedijk      ########   odam.nl         */
+/*   Updated: 2022/10/22 14:34:37 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,6 @@ void	padloper_exit(t_metadata *data, t_exec_list_sim *cmd_list);
 char	**allocate_env(char **src, t_metadata *data, int add_var);
 char    **allocate_export(char **src, int *envp_size, int remove, int add);
 void 	add_env(char **padloper_env, char *var, int pos);
-void	add_data_env(t_metadata *data, char *var, int pos);
 void	env_pointer_cpy(int envp_size, char **old, char **new);
 char	**new_padloper_envp(char **original_envp, t_metadata *data, int *envp_size);
 int		envcmp(char *s1, char *s2);
