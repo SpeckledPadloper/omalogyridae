@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/10/22 14:32:51 by lwiedijk      ########   odam.nl         */
+/*   Updated: 2022/10/22 14:37:47 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	add_new_var_to_env(t_metadata *data, t_exec_list_sim *cmd_list, int pos)
 	if (!(data->envp_space > data->envp_size))
 	{
 		temp_env = allocate_env(data->padloper_envp,
-			data, true);
+				data, true);
 		env_pointer_cpy(data->envp_size, data->padloper_envp, temp_env);
 		free(data->padloper_envp);
 		data->padloper_envp = temp_env;

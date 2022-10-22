@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/10/13 16:57:52 by lwiedijk      ########   odam.nl         */
+/*   Updated: 2022/10/22 14:41:39 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,19 @@ bool	export_var_not_valid(char *var)
 		i++;
 	}
 	return (false);
+}
+
+void	env_pointer_cpy(int envp_size, char **old, char **new)
+{
+	int	i;
+
+	i = 0;
+	while (i < envp_size)
+	{
+		new[i] = old[i];
+		i++;
+	}
+	new[envp_size] = NULL;
 }
 
 void	sort_env(t_metadata *data)

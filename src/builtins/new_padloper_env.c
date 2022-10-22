@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/10/22 14:27:52 by lwiedijk      ########   odam.nl         */
+/*   Updated: 2022/10/22 14:42:12 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,29 +44,6 @@ void	populate_env(int envp_size, char **src, char **dst, int *data_envp_size)
 		j++;
 	}
 	dst[i] = NULL;
-}
-
-char	**allocate_env(char **src, t_metadata *data, int add)
-{
-	char	**dst;
-	int		env_buffer;
-	int		i;
-
-	dst = NULL;
-	env_buffer = 0;
-	if (add)
-		env_buffer = 10;
-	i = 0;
-	while (src[i])
-		i++;
-	i += add;
-	dst = (char **)malloc(sizeof(char *) * (i + env_buffer + 1));
-	if (!dst)
-		print_error_exit("malloc", errno, EXIT_FAILURE);
-	data->envp_size = i;
-	if (add)
-		data->envp_space = i + env_buffer;
-	return (dst);
 }
 
 void	increment_shlvl(char **new_padloper_envp)

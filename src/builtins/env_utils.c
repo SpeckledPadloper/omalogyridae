@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/10/22 14:33:59 by lwiedijk      ########   odam.nl         */
+/*   Updated: 2022/10/22 14:42:21 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,19 +18,6 @@
 #include "../executer/hdr/executer.h"
 #include "../hdr/structs.h"
 #include "../../libft/libft.h"
-
-void	env_pointer_cpy(int envp_size, char **old, char **new)
-{
-	int	i;
-
-	i = 0;
-	while (i < envp_size)
-	{
-		new[i] = old[i];
-		i++;
-	}
-	new[envp_size] = NULL;
-}
 
 void	add_env(char **padloper_env, char *var, int pos)
 {
@@ -88,4 +75,27 @@ int	has_var(char **array, char *var)
 		i++;
 	}
 	return (0);
+}
+
+char	**allocate_env(char **src, t_metadata *data, int add)
+{
+	char	**dst;
+	int		env_buffer;
+	int		i;
+
+	dst = NULL;
+	env_buffer = 0;
+	if (add)
+		env_buffer = 10;
+	i = 0;
+	while (src[i])
+		i++;
+	i += add;
+	dst = (char **)malloc(sizeof(char *) * (i + env_buffer + 1));
+	if (!dst)
+		print_error_exit("malloc", errno, EXIT_FAILURE);
+	data->envp_size = i;
+	if (add)
+		data->envp_space = i + env_buffer;
+	return (dst);
 }
