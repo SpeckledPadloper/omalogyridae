@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/10/14 14:19:16 by lwiedijk      ########   odam.nl         */
+/*   Updated: 2022/10/22 14:55:07 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,8 +48,8 @@ char	*get_error_string(char *errno_string, int errnocopy)
 
 void	builtin_error(char *program, char *object, int errnum, t_metadata *data)
 {
-	char *print;
-	char *message;
+	char	*print;
+	char	*message;
 
 	data->exitstatus = EXIT_FAILURE;
 	message = get_error_string(message, errnum);
