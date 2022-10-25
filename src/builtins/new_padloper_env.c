@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/10/22 14:42:12 by lwiedijk      ########   odam.nl         */
+/*   Updated: 2022/10/25 11:30:17 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void	populate_env(int envp_size, char **src, char **dst, int *data_envp_size)
 		{
 			(*data_envp_size)--;
 			j++;
-			continue;
+			continue ;
 		}
 		size = ft_strlen(src[j]);
 		dst[i] = (char *)malloc(sizeof(char) * size + 1);
@@ -56,14 +56,18 @@ void	increment_shlvl(char **new_padloper_envp)
 	res = ft_atoi(&new_padloper_envp[i][6]);
 	res++;
 	res_str = ft_itoa(res);
+	if (!res_str)
+		print_error_exit("ft_itoa", ENOMEM, EXIT_FAILURE);
 	free(new_padloper_envp[i]);
 	new_padloper_envp[i] = ft_strjoin("SHLVL=", res_str);
+	if (!new_padloper_envp[i])
+		print_error_exit("ft_strjoin", ENOMEM, EXIT_FAILURE);
 	free(res_str);
 }
 
 void	reset_oldpwd(char **new_padloper_envp, int pos)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	i = has_var(new_padloper_envp, "OLDPWD=");
@@ -91,7 +95,8 @@ void	set_pwd(char **new_padloper_envp, int pos)
 	free(pwd_var);
 }
 
-char	**new_padloper_envp(char **original_envp, t_metadata *data, int *envp_size)
+char	**new_padloper_envp(char **original_envp,
+			t_metadata *data, int *envp_size)
 {
 	char	**new_padloper_envp;
 	int		missing_var;
@@ -105,10 +110,12 @@ char	**new_padloper_envp(char **original_envp, t_metadata *data, int *envp_size)
 		missing_var++;
 	new_padloper_envp = allocate_env
 		(original_envp, data, missing_var);
-	populate_env(*envp_size - missing_var, original_envp, new_padloper_envp, envp_size);
+	populate_env(*envp_size - missing_var, original_envp,
+		new_padloper_envp, envp_size);
 	reset_oldpwd(new_padloper_envp, (*envp_size - missing_var));
 	if (!has_var(new_padloper_envp, "PWD="))
-		set_pwd(new_padloper_envp, ((*envp_size) - (missing_var - (missing_var == 3))));
+		set_pwd(new_padloper_envp,
+			((*envp_size) - (missing_var - (missing_var == 3))));
 	if (has_var(new_padloper_envp, "SHLVL="))
 		increment_shlvl(new_padloper_envp);
 	else
@@ -116,4 +123,3 @@ char	**new_padloper_envp(char **original_envp, t_metadata *data, int *envp_size)
 	new_padloper_envp[*envp_size] = NULL;
 	return (new_padloper_envp);
 }
-	

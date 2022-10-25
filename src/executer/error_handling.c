@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/10/22 14:55:07 by lwiedijk      ########   odam.nl         */
+/*   Updated: 2022/10/25 09:35:27 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,12 @@ void	builtin_error(char *program, char *object, int errnum, t_metadata *data)
 	free(print);
 }
 
+void	fatal_error(void)
+{
+	write(STDERR_FILENO, "malloc fail in error\n", 21);
+	exit(EXIT_FAILURE);
+}
+
 void	print_error_exit(char *errorobject, int errnocopy, int exitcode)
 {
 	char	*print;
@@ -87,10 +93,7 @@ void	print_error_exit(char *errorobject, int errnocopy, int exitcode)
 	print = ft_strjoin_free(print, errno_string);
 	print = ft_strjoin_free(print, "\n");
 	if (!print)
-	{
-		write(STDERR_FILENO, "malloc fail in error\n", 21);
-		exit(EXIT_FAILURE);
-	}
+		fatal_error();
 	write(STDERR_FILENO, print, ft_strlen(print));
 	free(print);
 	// make function to free all before quit, parent quit at fatal error? 

@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/10/08 09:35:43 by lwiedijk      ########   odam.nl         */
+/*   Updated: 2022/10/25 11:32:43 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,10 +49,10 @@ static char	*build_path(char *cmd, char **env_path, int count)
 	{
 		path = ft_strjoin("/", cmd);
 		if (!path)
-			print_error_exit("malloc", errno, EXIT_FAILURE);
-		path = ft_strjoin_free(env_path[i], path);
+			print_error_exit("ft_strjoin", ENOMEM, EXIT_FAILURE);
+		path = ft_strjoin(env_path[i], path);
 		if (!path)
-			print_error_exit("malloc", errno, EXIT_FAILURE);
+			print_error_exit("ft_strjoin", ENOMEM, EXIT_FAILURE);
 		is_not_executable = access(path, F_OK | X_OK);
 		if (is_not_executable)
 		{
@@ -81,10 +81,10 @@ static char	**get_env_path_array(char **envp, int *count)
 		{
 			temp = ft_split(envp[i], '=');
 			if (!temp)
-				print_error_exit("malloc", errno, EXIT_FAILURE);
+				print_error_exit("ft_split", ENOMEM, EXIT_FAILURE);
 			env_path = ft_split_and_count(temp[1], ':', count);
 			if (!env_path)
-				print_error_exit("malloc", errno, EXIT_FAILURE);
+				print_error_exit("ft_split", ENOMEM, EXIT_FAILURE);
 			free_2d_array(temp);
 			break ;
 		}
@@ -131,6 +131,7 @@ char	*path_builder(t_metadata *data, char *cmd)
 		if (env_path == NULL)
 			print_error_exit(cmd, ERRNO_NO_SUCH_FILE, CMD_NOT_FOUND);
 		path = build_path(cmd, env_path, count);
+		free_2d_array(env_path);
 	}
 	if (!path)
 		print_error_exit(cmd, CNF, CMD_NOT_FOUND);
