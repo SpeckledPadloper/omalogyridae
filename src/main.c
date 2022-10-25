@@ -6,7 +6,7 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/18 16:18:33 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/10/25 14:19:04 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/10/25 15:51:32 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,9 +54,12 @@ int	main(int argc, char **argv, char **env)
 		free(input);
 		reset_metadata(&data, &fd_list, env);
 		ret = parce(head, &b_args->env);
-		test_simple_command(ret);
+		//test_simple_command(ret);
 		executer(&data, ret);
-		simple_cmd_clear(&ret);
+		//printf("exitstatus: [%d]\n", data.exitstatus);
+		//system("leaks minishell");
+		//exit(data.exitstatus);
+		//simple_cmd_clear(&ret);
 	}
 	free(prompt);
 	free(b_args);

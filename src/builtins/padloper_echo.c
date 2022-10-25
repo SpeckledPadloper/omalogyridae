@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/10/06 11:34:49 by lwiedijk      ########   odam.nl         */
+/*   Updated: 2022/10/18 16:18:45 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,15 +15,33 @@
 #include <stdlib.h>
 #include "../executer/hdr/executer.h"
 #include "../hdr/structs.h"
+#include "../../libft/libft.h"
 
 void	padloper_echo(t_metadata *data, t_exec_list_sim *cmd_list)
 {
-	if (!data || !cmd_list)
+	int		i;
+	bool	no_newline_flag;
+
+	i = 1;
+	no_newline_flag = false;
+	if (!cmd_list->cmd[1])
+		printf("\n");
+	while (cmd_list->cmd[i] && !ft_strcmp(cmd_list->cmd[i], "-n"))
 	{
-		fprintf(stderr, "Parameters are NULL");
-		exit(1);
+		no_newline_flag = true;
+		i++;
 	}
-	fprintf(stderr, "check echo really?\n");
-	write(STDOUT_FILENO, "echo go to pipe\n", 16);
-	exit(0);
+	while (cmd_list->cmd[i])
+	{
+		if (!cmd_list->cmd[i + 1])
+		{
+			printf("%s", cmd_list->cmd[i]);
+			if (!no_newline_flag)
+				printf("\n");
+		}
+		else
+			printf("%s ", cmd_list->cmd[i]);
+		i++;
+	}
+	return ;
 }

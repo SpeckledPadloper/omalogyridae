@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/10/06 11:39:19 by lwiedijk      ########   odam.nl         */
+/*   Updated: 2022/10/12 11:19:47 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,18 +21,23 @@
 #include <fcntl.h>
 #include <errno.h>
 
-void	check_run_buildin(t_metadata *data, t_exec_list_sim *cmd_list)
+bool	check_run_buildin(t_metadata *data, t_exec_list_sim *cmd_list)
 {
 	int i;
 
 	i = 0;
+	if (!(cmd_list->cmd))
+		return false;
 	while(i < BUILDIN_AMOUNT)
 	{
 		if (!(ft_strcmp(cmd_list->cmd[0], data->buildins[i])))
+		{
 			data->fn_buildins[i](data, cmd_list);
+			return true;
+		}
 		i++;
 	}
-	return ;
+	return false;
 }
 
 void	execute_cmd(t_metadata *data, t_exec_list_sim *cmd_list)
@@ -42,10 +47,13 @@ void	execute_cmd(t_metadata *data, t_exec_list_sim *cmd_list)
 	path = NULL;
 	open_necessary_infiles(data, cmd_list);
 	open_necessary_outfiles(data, cmd_list);
-	redirect_input(data, cmd_list); // cat | cat | ls
+	redirect_input(data, cmd_list);
 	redirect_output(data, cmd_list);
 	close_unused_fd(data, cmd_list);
-	check_run_buildin(data, cmd_list);
+	if (!(cmd_list->cmd))
+		exit(EXIT_SUCCESS);
+	if (check_run_buildin(data, cmd_list))
+		exit(data->exitstatus);
 	path = path_builder(data, cmd_list->cmd[0]);
 	execve(path, cmd_list->cmd, data->padloper_envp);
 	print_error_exit("execve", errno, EXIT_FAILURE);
@@ -54,7 +62,8 @@ void	execute_cmd(t_metadata *data, t_exec_list_sim *cmd_list)
 static void	fork_processes(t_metadata *data, t_exec_list_sim *cmd_list)
 {
 	if (data->cmd_count == 1 && cmd_list->cmd)
-		check_run_buildin(data, cmd_list);
+		if (check_run_buildin(data, cmd_list))
+			return ;
 	while (data->child_count < data->cmd_count)
 	{
 		data->fd_list->pipe_to_read = data->fd_list->pipe[0];
@@ -83,15 +92,16 @@ void	executer(t_metadata *meta_data, t_exec_list_sim *cmd_list)
 	int		status;
 	pid_t	wp;
 
+	status = 0;
 	meta_data->cmd_count = ft_sim_lstsize(cmd_list);
 	get_all_heredoc(meta_data, cmd_list);
 	if (!meta_data->cmd_count)
-		return ; // no exit, this is parent, handle next promt
-	/* er kan een node zijn zonder cmd, cat | < file | ls, dus data->cmd_count is geen goede case */
+		return ;
 	fork_processes(meta_data, cmd_list);
 	while (1)
 	{
 		wp = waitpid(-1, &status, 0);
+		//fprintf(stderr, "wp signal terminated?? [%d] with: [%d] exitstat [%d] \n", WIFSIGNALED(status), WTERMSIG(status), WEXITSTATUS(status));
 		if (wp == meta_data->lastpid)
 			meta_data->exitstatus = WEXITSTATUS(status);
 		else if (wp == -1)

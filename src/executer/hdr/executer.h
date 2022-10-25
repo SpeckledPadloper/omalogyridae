@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/10/06 13:51:56 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/10/25 14:14:43 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,6 @@
 # include "../../hdr/structs.h"
 
 # define MODE_RW_R_R 0644
-# define CNF_BUF_SIZE 18
-# define EXISTING_VAR_HAS_NO_VALUE -61
-# define EXPORTED_VAR_HAS_NO_VALUE 61
 
 /*-------------------------buildins-------------------------*/
 
@@ -32,9 +29,19 @@ void	padloper_unset(t_metadata *data, t_exec_list_sim *cmd_list);
 void	padloper_env(t_metadata *data, t_exec_list_sim *cmd_list);
 void	padloper_exit(t_metadata *data, t_exec_list_sim *cmd_list);
 
-char	**allocate_env(char **src, int *envp_size, int unset, int export);
-char	**new_padloper_envp(char **original_envp, int *envp_size);
+char	**allocate_env(char **src, t_metadata *data, int add_var);
+char    **allocate_export(char **src, int *envp_size, int remove, int add);
+void 	add_env(char **padloper_env, char *var, int pos);
+void	env_pointer_cpy(int envp_size, char **old, char **new);
+char	**new_padloper_envp(char **original_envp, t_metadata *data, int *envp_size);
 int		envcmp(char *s1, char *s2);
+bool	env_has_value(char *var);
+int 	has_var(char **array, char *var);
+
+bool	export_var_not_valid(char *var);
+void	populate_export(int size, char **src, char **dst);
+char	*export_strcpy(char *dest, char *src);
+void	sort_env(t_metadata *data);
 
 /*-------------------------executer-------------------------*/
 
@@ -65,6 +72,9 @@ void	free_2d_array(char **array);
 /*-------------------------error handling-------------------------*/
 
 void	print_error_exit(char *errorobject, int errnocopy, int exitcode);
+void	builtin_error(char *program, char *object, int errnum, t_metadata *data);
+void	error_too_many_arg(t_metadata *data);
+char	*get_error_string(char *errno_string, int errnocopy);
 
 /*-------------------------heredoc handling-------------------------*/
 

@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/10/06 11:39:55 by lwiedijk      ########   odam.nl         */
+/*   Updated: 2022/10/25 11:32:43 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,25 @@
 #include <strings.h>
 #include <string.h>
 #include <fcntl.h>
+#include <sys/stat.h>
 
 #include <errno.h>
 
-static char	*check_path(char *cmd, char **env_path, int count)
+bool	is_path(char *cmd)
+{
+	int	i;
+
+	i = 0;
+	while (cmd[i])
+	{
+		if (cmd[i] == '/')
+			return (true);
+		i++;
+	}
+	return (false);
+}
+
+static char	*build_path(char *cmd, char **env_path, int count)
 {
 	char	*path;
 	int		i;
@@ -34,10 +49,10 @@ static char	*check_path(char *cmd, char **env_path, int count)
 	{
 		path = ft_strjoin("/", cmd);
 		if (!path)
-			print_error_exit("malloc", errno, EXIT_FAILURE);
-		path = ft_strjoin_free(env_path[i], path);
+			print_error_exit("ft_strjoin", ENOMEM, EXIT_FAILURE);
+		path = ft_strjoin(env_path[i], path);
 		if (!path)
-			print_error_exit("malloc", errno, EXIT_FAILURE);
+			print_error_exit("ft_strjoin", ENOMEM, EXIT_FAILURE);
 		is_not_executable = access(path, F_OK | X_OK);
 		if (is_not_executable)
 		{
@@ -47,25 +62,6 @@ static char	*check_path(char *cmd, char **env_path, int count)
 		else
 			break ;
 		i++;
-	}
-	return (path);
-}
-
-static char	*check_absolute_path(t_metadata *data, char *path)
-{
-	int	is_not_executable;
-	int	file_does_not_exist;
-
-	if (!is_path(path))
-		print_error_exit(path, EMPTY, CMD_NOT_FOUND);
-	is_not_executable = access(path, F_OK | X_OK);
-	if (is_not_executable)
-	{
-		file_does_not_exist = access(path, F_OK);
-		if (file_does_not_exist)
-			print_error_exit(path, errno, CMD_NOT_FOUND);
-		else
-			print_error_exit(path, errno, CMD_CANT_EXE);
 	}
 	return (path);
 }
@@ -85,10 +81,10 @@ static char	**get_env_path_array(char **envp, int *count)
 		{
 			temp = ft_split(envp[i], '=');
 			if (!temp)
-				print_error_exit("malloc", errno, EXIT_FAILURE);
+				print_error_exit("ft_split", ENOMEM, EXIT_FAILURE);
 			env_path = ft_split_and_count(temp[1], ':', count);
 			if (!env_path)
-				print_error_exit("malloc", errno, EXIT_FAILURE);
+				print_error_exit("ft_split", ENOMEM, EXIT_FAILURE);
 			free_2d_array(temp);
 			break ;
 		}
@@ -97,20 +93,47 @@ static char	**get_env_path_array(char **envp, int *count)
 	return (env_path);
 }
 
+static char	*check_absolute_path(t_metadata *data, char *path)
+{
+	int			is_not_executable;
+	int			file_does_not_exist;
+	struct stat	check_dir;
+
+	if (!is_path(path))
+		return (NULL);
+	stat(path, &check_dir);
+	if (S_ISDIR(check_dir.st_mode))
+		print_error_exit(path, IS_DIR, CMD_CANT_EXE);
+	is_not_executable = access(path, F_OK | X_OK);
+	if (is_not_executable)
+	{
+		file_does_not_exist = access(path, F_OK);
+		if (file_does_not_exist)
+			print_error_exit(path, errno, CMD_NOT_FOUND);
+		else
+			print_error_exit(path, errno, CMD_CANT_EXE);
+	}
+	return (path);
+}
+
 char	*path_builder(t_metadata *data, char *cmd)
 {
 	char	*path;
 	char	**env_path;
 	int		count;
-	
+
 	count = 0;
 	path = NULL;
-	//check absolut path before everything want als unset path, absolut bin/ls werkt nog!
-	env_path = get_env_path_array(data->padloper_envp, &count);
-	if (env_path == NULL)
-		print_error_exit(cmd, ERRNO_NO_SUCH_FILE, CMD_NOT_FOUND);
-	path = check_path(cmd, env_path, count);
+	path = check_absolute_path(data, cmd);
 	if (!path)
-		path = check_absolute_path(data, cmd);
+	{
+		env_path = get_env_path_array(data->padloper_envp, &count);
+		if (env_path == NULL)
+			print_error_exit(cmd, ERRNO_NO_SUCH_FILE, CMD_NOT_FOUND);
+		path = build_path(cmd, env_path, count);
+		free_2d_array(env_path);
+	}
+	if (!path)
+		print_error_exit(cmd, CNF, CMD_NOT_FOUND);
 	return (path);
 }

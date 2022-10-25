@@ -6,7 +6,7 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/18 17:48:05 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/10/06 11:23:10 by lwiedijk      ########   odam.nl         */
+/*   Updated: 2022/10/25 11:33:52 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,15 @@ typedef enum e_file_flags
 
 typedef enum e_exit_error_code
 {
+	CNF = -1,
+	AR = -2,
+	IS_DIR = -3,
+	NOT_VALID = -4,
+	NOT_SUPPORTED = -5,
+	NOT_SUPPORTED_BOTH = -6,
+	NOT_NUMERIC = -7,
+	NOT_DIR = -8,
+	TOO_MANY = -9,
 	EMPTY = 0,
 	ERRNO_NO_SUCH_FILE = 2,
 	CMD_CANT_EXE = 126,
@@ -93,7 +102,10 @@ typedef struct s_metadata
 	char		*buildins[BUILDIN_AMOUNT];
 	void		(*fn_buildins[BUILDIN_AMOUNT])(struct s_metadata *, t_exec_list_sim *);
 	char		**padloper_envp;
+	char		**sorted_print_export;
+	bool		env_updated;
 	int			envp_size;
+	int			envp_space;
 	int			child_count;
 	int			cmd_count;
 	pid_t		lastpid;

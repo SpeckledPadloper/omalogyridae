@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/10/06 11:39:11 by lwiedijk      ########   odam.nl         */
+/*   Updated: 2022/10/07 09:47:57 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,20 +54,6 @@ void	free_3d_array(char ***cmd_array)
 		i++;
 	}
 	free(cmd_array);
-}
-
-bool	is_path(char *cmd)
-{
-	int	i;
-
-	i = 0;
-	while (cmd[i])
-	{
-		if (cmd[i] == '/')
-			return (true);
-		i++;
-	}
-	return (false);
 }
 
 void	close_and_check(int fd)

@@ -6,7 +6,7 @@
 /*   By: lwiedijk <lwiedijk@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/17 15:44:46 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2021/03/07 16:22:59 by lwiedijk      ########   odam.nl         */
+/*   Updated: 2022/10/11 11:05:40 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,18 +19,15 @@ char	*ft_strjoin_free(char *s1, char const *s2)
 	int		j;
 	char	*ptr;
 
+	if (!s1 || !s2)
+		return (NULL);
 	i = ft_strlen(s1);
 	j = ft_strlen(s2);
 	ptr = (char *)malloc((i + j + 1) * sizeof(char));
-	if (ptr == NULL)
+	if (!ptr)
 		return (NULL);
-	i = 0;
 	j = 0;
-	while (s1[i])
-	{
-		ptr[i] = s1[i];
-		i++;
-	}
+	ft_strlcpy(ptr, s1, i + 1);
 	while (s2[j])
 	{
 		ptr[i + j] = s2[j];

@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/10/06 15:44:18 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/10/25 15:52:09 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ void	get_all_heredoc(t_metadata *data, t_exec_list_sim *cmd_list)
 	i = 0;
 	while (i < data->cmd_count)
 	{
+		cmd_list->heredoc_pipe[0] = 0;
 		head = cmd_list->infile_list;
 		while (cmd_list->infile_list)
 		{

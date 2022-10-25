@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/10/06 11:35:30 by lwiedijk      ########   odam.nl         */
+/*   Updated: 2022/10/22 14:37:47 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,148 +14,81 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#include <errno.h>
 #include "../executer/hdr/executer.h"
 #include "../hdr/structs.h"
 #include "../../libft/libft.h"
 
-/*  
-
-wat unset betreft:
-houd een meta count bij n = number of strings in envp
-bij unset met parameter:
-strcmp tot aan unset, dan swop current i met n (naar laatste plaats),
-copyeer alles naar nieuwe array behalve laatste plaats
-update n naar n--
-
-bij export:
-update n naar n++;
-reallocate,
-
-sort by moving poitners ?
-alloceer alleen een 2d pointer array met pointers naar env array in gesorteerde volgorde?
-
-sort array
-
-*/
-
-int	envcmp(char *s1, char *s2)
+void	add_new_var_to_env(t_metadata *data, t_exec_list_sim *cmd_list, int pos)
 {
-	int	i;
+	char	**temp_env;
 
-	i = 0;
-	while (s1[i] != '=' || s2[i] != '=')
+	if (!(data->envp_space > data->envp_size))
 	{
-		if (s1[i] == s2[i])
-			i++;
-		else
-			return (s1[i] - s2[i]);
+		temp_env = allocate_env(data->padloper_envp,
+				data, true);
+		env_pointer_cpy(data->envp_size, data->padloper_envp, temp_env);
+		free(data->padloper_envp);
+		data->padloper_envp = temp_env;
 	}
-	return (0);
-}
-
-int varlen(char *str)
-{
-	int i;
-
-	i = 1;
-	while(str[i] != '=')
-		i++;
-	return(i);
+	else
+		data->envp_size++;
+	add_env(data->padloper_envp, cmd_list->cmd[pos], data->envp_size - 1);
+	data->padloper_envp[data->envp_size] = NULL;
 }
 
 void	add_var(t_metadata *data, t_exec_list_sim *cmd_list)
 {
-	char **temp_env;
-	bool found;
-	int i;
-	int j;
+	int		i;
+	int		pos;
 
 	i = 1;
-	j = 0;
-	// protect "not option with no '-' "
-	// behaviour with multiple arguments! 
-	// let op case dat variable al bestaat
-	while(cmd_list->cmd[i])
+	while (cmd_list->cmd[i])
 	{
-		printf("hallo cmd is : %s\n", cmd_list->cmd[i]);
-		j = 0;
-		found = false;
-		while(data->padloper_envp[j])
+		if (export_var_not_valid(cmd_list->cmd[i]))
 		{
-			if (!envcmp(data->padloper_envp[j], cmd_list->cmd[i])
-				|| envcmp(data->padloper_envp[j], cmd_list->cmd[i]) == EXISTING_VAR_HAS_NO_VALUE)
-			{
-				found = true;
-				data->padloper_envp[j] = cmd_list->cmd[i];
-				break ;
-			}
-			else if (envcmp(data->padloper_envp[j], cmd_list->cmd[i]) == EXPORTED_VAR_HAS_NO_VALUE)
-			{
-				found = true;
-				break ;
-			}
-			j++;
-		}
-		if (found)
-		{
+			builtin_error("export: `", cmd_list->cmd[i], NOT_VALID, data);
 			i++;
-			continue;
+			continue ;
 		}
-		printf("hallo add variable: %s\n", cmd_list->cmd[i]);
-		temp_env = allocate_env(data->padloper_envp, &(data->envp_size), false, true);
-		free(data->padloper_envp);
-		data->padloper_envp = temp_env;
-		data->padloper_envp[data->envp_size - 1] = cmd_list->cmd[i];
-		
+		data->env_updated = true;
+		pos = has_var(data->padloper_envp, cmd_list->cmd[i]);
+		if (pos)
+		{
+			if (env_has_value(cmd_list->cmd[i]))
+				add_env(data->padloper_envp, cmd_list->cmd[i], pos);
+			i++;
+			continue ;
+		}
+		add_new_var_to_env(data, cmd_list, i);
 		i++;
 	}
-	
 }
 
 void	padloper_export(t_metadata *data, t_exec_list_sim *cmd_list)
 {
-	char **sorted_env;
-	char *temp;
-	int i;
-	int j;
+	int	i;
 
-	i = 0;
 	if (cmd_list->cmd[1])
+	{
 		add_var(data, cmd_list);
-	sorted_env = (char **)malloc(sizeof(char*) * data->envp_size + 1);
-	while(i < data->envp_size)
-	{
-		sorted_env[i] = data->padloper_envp[i];
-		i++;
+		return ;
 	}
-	sorted_env[i] = NULL;
-	i = 0;
-	while(i < data->envp_size)
+	if (data->env_updated)
 	{
-		j = 1 + i;
-		while(j < data->envp_size)
-		{
-			if (envcmp(sorted_env[i], sorted_env[j]) > 0)
-			{
-				temp = sorted_env[j];
-				sorted_env[j] = sorted_env[i];
-				sorted_env[i] = temp;
-			}
-			j++;
-		}
-		i++;
+		if (data->sorted_print_export)
+			free_2d_array(data->sorted_print_export);
+		data->sorted_print_export = allocate_env
+			(data->padloper_envp, data, false);
+		populate_export(data->envp_size, data->padloper_envp,
+			data->sorted_print_export);
+		sort_env(data);
+		data->env_updated = false;
 	}
 	i = 0;
 	while (i < data->envp_size)
 	{
-		printf("declare -x %s\n", sorted_env[i]);
+		printf("declare -x %s\n", data->sorted_print_export[i]);
 		i++;
 	}
-	i = 0;
-	while (i < data->envp_size)
-	{
-		printf("original: %s\n", data->padloper_envp[i]);
-		i++;
-	}
-	exit(0);
 }
