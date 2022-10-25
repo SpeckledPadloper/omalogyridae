@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/04/18 11:03:49 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/10/05 16:46:54 by lwiedijk      ########   odam.nl         */
+/*   Updated: 2022/10/25 14:24:58 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,66 +61,73 @@ char	*do_special_char(t_line_nav *lnav)
 	return (token);
 }
 
-static void	fsm_block(t_line_nav *lnav, t_token **head, int *state, int *ps)
+static void	fsm_block(t_line_nav *lnav, t_token **head, int *ps, t_metadata *data)
 {
-	if (*state == STATE_START)
-		*state = fsm_start(lnav, head);
-	else if (*state == STATE_COMMON)
-		*state = fsm_common(lnav, head);
-	else if (*state == STATE_WS)
-		*state = fsm_whitespace(lnav, head);
-	else if (*state == STATE_SQUOTE)
-		*state = fsm_squote(lnav, head);
-	else if (*state == STATE_DQUOTE)
-		*state = fsm_dquote(lnav, head, ps);
-	else if (*state == STATE_EXPAND)
-		*state = fsm_expand(lnav, head, ps);
+	if (lnav->state == STATE_START)
+	{
+		printf("fmsblock\n");
+		lnav->state = fsm_start(lnav, head, data);
+	}
+	else if (lnav->state == STATE_COMMON)
+		lnav->state = fsm_common(lnav, head, data);
+	else if (lnav->state == STATE_WS)
+		lnav->state = fsm_whitespace(lnav, head, data);
+	else if (lnav->state == STATE_SQUOTE)
+		lnav->state = fsm_squote(lnav, head, data);
+	else if (lnav->state == STATE_DQUOTE)
+		lnav->state = fsm_dquote(lnav, head, ps, data);
+	else if (lnav->state == STATE_EXPAND)
+		lnav->state = fsm_expand(lnav, head, ps, data);
 }
 
-static void	end_of_input(t_token **head, t_line_nav *lnav, int state, int ps)
+static void	end_of_input(t_token **head, t_line_nav *lnav, int ps, t_metadata *data)
 {
-	if (state == STATE_SQUOTE || state == STATE_DQUOTE \
-		|| (state == STATE_EXPAND && ps == STATE_DQUOTE))
+	if (lnav->state == STATE_SQUOTE || lnav->state == STATE_DQUOTE \
+		|| (lnav->state == STATE_EXPAND && ps == STATE_DQUOTE))
 	{
 		write(2, SHLNAME, ft_strlen(SHLNAME));
-		write(2, ": unexpecter EOF while looking for matching '", 45);
-		if (state == STATE_SQUOTE)
+		if (lnav->state == STATE_SQUOTE)
 			write(2, "'", 1);
-		else if (state == STATE_DQUOTE || ps == STATE_DQUOTE)
+		else if (lnav->state == STATE_DQUOTE || ps == STATE_DQUOTE)
 			write(2, "\"", 1);
 		write(2, "'\n", 2);
 		if (*head != NULL)
 			tokenlst_clear(head);
 	}
-	else if (state == STATE_COMMON || state == STATE_EXPAND)
+	else if (lnav->state == STATE_COMMON || lnav->state == STATE_EXPAND)
 	{
 		lnav->i++;
 		lnav->count++;
-		add_token_to_list(head, allocate_token_value(lnav), 8, lnav);
+		add_token_to_list(head, allocate_token_value(lnav), lnav, data);
 	}
 }
 
-t_token	*lex(char *ret)
+void	init_lnav(t_line_nav *lnav, char *val)
+{
+	lnav->ret = val;
+	lnav->i = 0;
+	lnav->count = 0;
+	lnav->state = STATE_START;
+}
+
+t_token	*lex(char *ret, t_metadata *data)
 {
 	t_token		*head;
 	t_line_nav	lnav;
 	int			state;
 	static int	prev_state = -1;
 
-	lnav.ret = ret;
-	lnav.i = 0;
-	lnav.count = 0;
+	init_lnav(&lnav, ret);
 	head = NULL;
-	state = STATE_START;
 	while (lnav.ret[lnav.i])
 	{
 		if (is_token_separator(lnav.ret[lnav.i]))
-			fsm_block(&lnav, &head, &state, &prev_state);
-		else if (state <= STATE_WS || state == STATE_COMMON)
-			state = STATE_COMMON;
+			fsm_block(&lnav, &head, &prev_state, data);
+		else if (lnav.state <= STATE_WS || lnav.state == STATE_COMMON)
+			lnav.state = STATE_COMMON;
 		if (is_end_of_input(lnav.ret[lnav.i + 1]))
-			end_of_input(&head, &lnav, state, prev_state);
-		if (state == STATE_STXERROR)
+			end_of_input(&head, &lnav, prev_state, data);
+		if (lnav.state == STATE_STXERROR)
 		{
 			tokenlst_clear(&head);
 			break ;
@@ -129,11 +136,6 @@ t_token	*lex(char *ret)
 		lnav.count++;
 	}
 	if (head && tokenlst_last(head)->token_label <= PIPE)
-	{
-		syntax_error("newline");
-		tokenlst_clear(&head);
-	}
-	//test_lex(head);
-	//printf("\n");
+		syntax_error("newline", &head, data);
 	return (head);
 }

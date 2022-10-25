@@ -6,7 +6,7 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/18 16:18:33 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/10/06 15:45:21 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/10/25 14:19:04 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ int	main(int argc, char **argv, char **env)
 	{
 		input = readline(prompt);
 		add_history(input);
-		head = lex(input);
+		head = lex(input, &data);
 		if (head == NULL)
 			continue ;
 		free(input);
@@ -57,7 +57,6 @@ int	main(int argc, char **argv, char **env)
 		test_simple_command(ret);
 		executer(&data, ret);
 		simple_cmd_clear(&ret);
-		printf("finishes simple_cmd_clear\n");
 	}
 	free(prompt);
 	free(b_args);

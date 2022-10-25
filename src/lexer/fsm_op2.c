@@ -6,7 +6,7 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/16 20:28:42 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/09/29 15:45:08 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/10/25 14:09:56 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,10 @@
 #include "../hdr/structs.h"
 
 /*fsm_expand still needs to be normed*/
-int	fsm_expand(t_line_nav *lnav, t_token **head, int *prev_state)
+int	fsm_expand(t_line_nav *lnav, t_token **head, int *prev_state, t_metadata *data)
 {
-	add_token_to_list(head, allocate_token_value(lnav), STATE_EXPAND, lnav);
+	add_token_to_list(head, allocate_token_value(lnav), lnav, data);
 	lnav->count = -1;
-	//printf("\nstate_dquote = %d\nstate_previous = %d\n\n", STATE_DQUOTE, *prev_state);
 	if (*prev_state == STATE_DQUOTE)
 	{
 		if (lnav->ret[lnav->i] == '"')
@@ -43,7 +42,8 @@ int	fsm_expand(t_line_nav *lnav, t_token **head, int *prev_state)
 	}
 	else if (is_special_char(lnav->ret[lnav->i]))
 	{
-		add_token_to_list(head, do_special_char(lnav), -1, lnav);
+		lnav->state = -1;
+		add_token_to_list(head, do_special_char(lnav), lnav, data);
 		lnav->count = -1;
 		return (STATE_WS);
 	}
@@ -56,18 +56,19 @@ int	fsm_expand(t_line_nav *lnav, t_token **head, int *prev_state)
 	}
 }
 
-int	fsm_common(t_line_nav *lnav, t_token **head)
+int	fsm_common(t_line_nav *lnav, t_token **head, t_metadata *data)
 {
 	char	*token_value;
 
 	token_value = allocate_token_value(lnav);
-	add_token_to_list(head, token_value, STATE_COMMON, lnav);
+	add_token_to_list(head, token_value, lnav, data);
 	lnav->count = -1;
 	if (is_whitespace(lnav->ret[lnav->i]))
 		return (STATE_WS);
 	if (is_special_char(lnav->ret[lnav->i]))
 	{
-		add_token_to_list(head, do_special_char(lnav), -1, lnav);
+		lnav->state = -1;
+		add_token_to_list(head, do_special_char(lnav), lnav, data);
 		lnav->count = -1;
 		return (STATE_WS);
 	}

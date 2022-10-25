@@ -6,7 +6,7 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/29 14:49:02 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/10/06 18:23:16 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/10/17 14:38:18 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ void	stitch_tokens(t_token_section **sect, t_token **current)
 	char			*temp_str;
 	t_token_section	*temp_sect;
 
+	printf("%p\n", (*current));
 	temp = *current;
 	temp_str = malloc(sizeof(char));
 	temp_str[0] = '\0';
@@ -50,7 +51,6 @@ void	stitch_tokens(t_token_section **sect, t_token **current)
 		stitched_value = ft_strjoin(temp_str, temp->token_value);
 		free(temp_str);
 		temp_str = stitched_value;
-		printf("%d\n", temp->i);
 		if (temp->next && temp->next->i == temp->i)
 		{
 			temp_sect = (*sect)->next;
@@ -61,9 +61,12 @@ void	stitch_tokens(t_token_section **sect, t_token **current)
 		temp = temp->next;
 	}
 	temp = exp_new_token(stitched_value);
-	temp->token_label = (*current)->token_label;
-	temp->start_pos = (*current)->start_pos;
-	temp->i = (*current)->i;
+	if ((*current))
+	{
+		temp->token_label = (*current)->token_label;
+		temp->start_pos = (*current)->start_pos;
+		temp->i = (*current)->i;
+	}
 	tokenlst_clear(current);
 	(*current) = temp;
 }

@@ -6,7 +6,7 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/28 13:38:24 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/10/06 17:45:00 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/10/25 14:15:54 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@
 #include <stdio.h>
 #include "../tests/tests.h"
 
-t_token	*expand_to_one(char *env_var)
+t_token	*exp_to_one(char *env_var, int index)
 {
 	t_token		*expanded;
 	t_line_nav	lnav;
@@ -43,11 +43,12 @@ t_token	*expand_to_one(char *env_var)
 	lnav.ret = ft_strdup(env_var);
 	lnav.i = ft_strlen(lnav.ret);
 	lnav.count = lnav.i;
-	expanded = new_node(0, lnav.ret, DOUBLE_QUOTE, &lnav);
+	lnav.state = DOUBLE_QUOTE;
+	expanded = new_node(index, lnav.ret, &lnav);
 	return (expanded);
 }
 
-t_token	*expand_to_lst(t_token *current, char *env_var, bool isredir)
+t_token	*exp_to_lst(t_token *current, char *env_var, bool isredir)
 {
 	t_token		*expanded;
 	t_line_nav	lnav;
@@ -94,15 +95,19 @@ t_token	*expand_token(t_token *current, char ***env, bool quote, bool isrdir)
 		if (!ft_strncmp(&current->token_value[1], (*env)[cnt], len - 1))
 		{
 			if (quote == true)
-				ret = expand_to_one(ft_strchr((*env)[cnt], '=') + 1);
+				ret = exp_to_one(ft_strchr((*env)[cnt], '=') + 1, current->i);
 			else
-				ret = expand_to_lst(current, ft_strchr((*env)[cnt], '=') + 1, isrdir);
+				ret = exp_to_lst(current, ft_strchr((*env)[cnt], '=') + 1, isrdir);
 			return (ret);
 		}
 		cnt++;
 	}
-	current->token_label = RDIR_AMBIGUOUS;
-	return (current);
+	if (isrdir)
+	{
+		current->token_label = RDIR_AMBIGUOUS;
+		return (current);
+	}
+	return (exp_new_token(NULL));
 }
 
 void	expand_tokenlst(t_token_section **current, char ***env, bool isredir)
@@ -149,9 +154,7 @@ void	expand_section(t_token_section **head, char ***env, bool isredir)
 			continue ;
 		}
 		else
-		{
 			expand_tokenlst(&temp, env, isredir);
-		}
 		temp = temp->next;
 	}
 }

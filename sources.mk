@@ -11,7 +11,7 @@ src/executer/executer.c \
 src/executer/executer_utils.c \
 src/executer/file_handling.c \
 src/executer/heredoc_handling.c \
-src/executer/list_sim.c \
+src/executer/init_metadata.c \
 src/executer/path_builder.c \
 src/lexer/charchecks.c \
 src/lexer/fsm_op.c \
@@ -21,6 +21,7 @@ src/lexer/stx_error.c \
 src/main.c \
 src/parcer/expand.c \
 src/parcer/expand2.c \
+src/parcer/expandv2.c \
 src/parcer/parcer.c \
 src/parcer/separate.c \
 src/parcer/separation_utils.c \
@@ -35,7 +36,7 @@ src/utils/token_utils.c \
 src/utils/token_utils2.c \
 
 HDR		:= src/error/error.h \
-src/executer/executer.h \
+src/executer/hdr/executer.h \
 src/hdr/structs.h \
 src/lexer/hdr/charchecks.h \
 src/lexer/hdr/errors.h \

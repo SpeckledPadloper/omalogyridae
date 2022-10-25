@@ -6,18 +6,25 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/18 19:37:01 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/09/18 20:17:14 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/10/25 13:48:28 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <unistd.h>
 #include "../../libft/libft.h"
 #include "../hdr/structs.h"
+#include "../utils/hdr/token_utils.h"
+#include <stdbool.h>
 
-void	syntax_error(char *token)
+#include <stdio.h>
+
+bool	syntax_error(char *token, t_token **head, t_metadata *meta)
 {
+	meta->exitstatus = 258;
 	write(2, SHLNAME, ft_strlen(SHLNAME));
 	write(2, ": syntax error near unexpected token '", 38);
 	ft_putstr_fd(token, 2);
 	write(2, "'\n", 2);
+	tokenlst_clear(head);
+	return (false);
 }

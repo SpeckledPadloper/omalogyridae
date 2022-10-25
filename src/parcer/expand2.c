@@ -6,7 +6,7 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/29 13:29:52 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/10/06 17:57:10 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/10/17 14:23:36 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,18 +26,22 @@ void	link_expand_tokens(t_token **head, t_token **expand)
 		return ;
 	itterhead = *head;
 	itterexp = *expand;
-	if ((*head)->token_label == EXPAND)
+	if ((*head) && (*head)->token_label == EXPAND)
 	{
 		temp = (*head)->next;
 		free(*head);
-		(*head) = *expand;
-		*expand = (*expand)->next;
+		if ((*expand)->token_value == NULL)
+			(*head) = temp;
+		else
+		{
+			(*head) = *expand;
+			*expand = (*expand)->next;
+		}
 	}
 	while (itterhead->next)
 	{
 		if (itterhead->next->token_label == EXPAND)
 		{
-			printf("link expand tokens\n");
 			temp = itterhead->next->next;
 			free(itterhead->next);
 			itterhead->next = NULL;

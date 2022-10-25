@@ -6,7 +6,7 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/18 17:44:02 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/10/06 17:59:56 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/10/17 15:09:53 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ t_exec_list_sim	*parce(t_token *head, char ***env)
 		expand_variables(split, env);
 		//test_split_cmd_rdir(split);
 		stitch(&split);
-		//test_split_cmd_rdir(split);
+		// test_split_cmd_rdir(split);
 		simple_cmd_add_back(&simple_cmd, set_simple_command(split));
 		//free_cmd_rdir(&split);
 		temp = temp->next;

@@ -6,7 +6,7 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/14 12:29:38 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/09/28 20:41:50 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/10/25 13:42:21 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,15 +22,15 @@
 
 #include <stdio.h>
 
-t_token	*new_node(int index, char *value, int state, t_line_nav *lnav)
+t_token	*new_node(int index, char *value, t_line_nav *lnav)
 {
 	t_token	*new;
 
 	new = (t_token *)malloc(sizeof(t_token));
 	new->i = index;
-	if (state == STATE_SQUOTE)
+	if (lnav->state == STATE_SQUOTE)
 		new->token_label = SINGLE_QUOTE;
-	else if (state == STATE_DQUOTE)
+	else if (lnav->state == STATE_DQUOTE)
 		new->token_label = DOUBLE_QUOTE;
 	else
 		new->token_label = add_token_label(value[0], value[1]);
@@ -57,10 +57,7 @@ t_token	*tokenlst_last(t_token *lst)
 		return (NULL);
 	temp = lst;
 	while (temp->next != NULL)
-	{
-		// printf("this is fucking infinite innit?\n");
 		temp = temp->next;
-	}
 	return (temp);
 }
 
@@ -77,27 +74,22 @@ char	*allocate_token_value(t_line_nav *lnav)
 	return (token);
 }
 
-bool	add_token_to_list(t_token **head, char *val, int s, t_line_nav *lnav)
+bool	add_token_to_list(t_token **head, char *val, t_line_nav *lnav, t_metadata *data)
 {
-	static int	token_index = 0;
-	t_token		*node;
+	static unsigned int	token_index = 0;
+	t_token				*node;
 
 	if (!val || !head)
 		return (true);
-	if (*head == NULL && !ft_strncmp(val, "|", 2) && s != STATE_DQUOTE)
-	{
-		syntax_error(val);
-		return (false);
-	}
-	node = new_node(token_index, val, s, lnav);
+	if (*head == NULL && !ft_strncmp(val, "|", 2) \
+		&& lnav->state != STATE_DQUOTE)
+		return (syntax_error(val, head, data));
+	node = new_node(token_index, val, lnav);
 	if (*head && ((tokenlst_last(*head)->token_label < PIPE \
-		&& node->token_label <= PIPE) \
-		|| (tokenlst_last(*head)->token_label == PIPE \
-		&& node->token_label == PIPE)))
-	{
-		syntax_error(val);
-		return (false);
-	}
+			&& node->token_label <= PIPE) \
+			|| (tokenlst_last(*head)->token_label == PIPE \
+			&& node->token_label == PIPE)))
+		return (syntax_error(val, head, data));
 	token_index = token_index + 1;
 	if (!*head)
 		*head = node;
@@ -131,4 +123,3 @@ int	add_token_label(char current, char next_char)
 		token_label = NO_LABEL;
 	return (token_label);
 }
-

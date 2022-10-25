@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/09/29 16:48:20 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/10/25 14:08:51 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ typedef struct s_line_nav
 	char	*ret;
 	int		i;
 	int		count;
+	int		state;
 }	t_line_nav;
 
 bool		is_special_char(char current);
@@ -54,14 +55,7 @@ bool		is_closing_char(char current, int token_label);
 
 char		*do_special_char(t_line_nav *lnav);
 
-int			fsm_start(t_line_nav *lnav, t_token **head);
-int			fsm_whitespace(t_line_nav *lnav, t_token **head);
-int			fsm_squote(t_line_nav *lnav, t_token **head);
-int			fsm_dquote(t_line_nav *lnav, t_token **head, int *prev_state);
-int			fsm_expand(t_line_nav *lnav, t_token **head, int *prev_state);
-int			fsm_common(t_line_nav *lnav, t_token **head);
-
-t_token		*lex(char *ret);
+t_token		*lex(char *ret, t_metadata *data);
 t_base_args	*set_base_args(int argc, char **argv, char **env);
 
 #endif
