@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/10/22 14:34:37 by lwiedijk      ########   odam.nl         */
+/*   Updated: 2022/10/25 14:14:43 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,7 @@ void	free_2d_array(char **array);
 
 void	print_error_exit(char *errorobject, int errnocopy, int exitcode);
 void	builtin_error(char *program, char *object, int errnum, t_metadata *data);
+void	error_too_many_arg(t_metadata *data);
 char	*get_error_string(char *errno_string, int errnocopy);
 
 /*-------------------------heredoc handling-------------------------*/
