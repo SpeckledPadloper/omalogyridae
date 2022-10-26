@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/10/25 14:30:58 by lwiedijk      ########   odam.nl         */
+/*   Updated: 2022/10/26 14:19:20 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,8 @@ char	*get_error_string(char *errno_string, int errnocopy)
 		errno_string = ": options not supported";
 	else if (errnocopy == NOT_SUPPORTED_BOTH)
 		errno_string = ": options or arguments not supported";
+	else if (errnocopy == NO_PATH)
+		errno_string = ": path as argument is required";
 	return (errno_string);
 }
 
