@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/10/25 14:14:43 by lwiedijk      ########   odam.nl         */
+/*   Updated: 2022/10/26 09:54:47 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ bool	export_var_not_valid(char *var);
 void	populate_export(int size, char **src, char **dst);
 char	*export_strcpy(char *dest, char *src);
 void	sort_env(t_metadata *data);
+void	set_pwd(char **new_padloper_envp, int pos);
 
 /*-------------------------executer-------------------------*/
 
