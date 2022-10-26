@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/10/26 15:34:57 by lwiedijk      ########   odam.nl         */
+/*   Updated: 2022/10/26 19:50:33 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,11 +103,14 @@ void	create_oldpwd(char *oldpwd, t_metadata *data)
 	int		pos;
 
 	pos = has_var(data->padloper_envp, "OLDPWD");
-	free(data->padloper_envp[pos]);
-	oldpwd_var = ft_strjoin("OLDPWD=", oldpwd);
-	if (!oldpwd_var)
-		print_error_exit("ft_strjoin", ENOMEM, EXIT_FAILURE);
-	add_env(data->padloper_envp, oldpwd_var, pos);
+	if (pos)
+	{
+		free(data->padloper_envp[pos]);
+		oldpwd_var = ft_strjoin("OLDPWD=", oldpwd);
+		if (!oldpwd_var)
+			print_error_exit("ft_strjoin", ENOMEM, EXIT_FAILURE);
+		add_env(data->padloper_envp, oldpwd_var, pos);
+		free(oldpwd_var);
+	}
 	free(oldpwd);
-	free(oldpwd_var);
 }
