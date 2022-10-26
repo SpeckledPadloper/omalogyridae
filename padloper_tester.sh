@@ -74,8 +74,8 @@ error_fun()
 	else
 		echo 
 		printf $RED"nay output\n"$RESET
-		#echo Bash out: $RES1
-		#echo Mini out: $RES2
+		echo Bash out: $RES1
+		echo Mini out: $RES2
 		#printascii "$RES1" "$RES2"
 	fi
 

@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/10/25 11:30:17 by lwiedijk      ########   odam.nl         */
+/*   Updated: 2022/10/26 12:36:18 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ void	reset_oldpwd(char **new_padloper_envp, int pos)
 
 	i = 0;
 	i = has_var(new_padloper_envp, "OLDPWD=");
-	if (i)
+	if (i && env_has_value(new_padloper_envp[i]))
 	{
 		free(new_padloper_envp[i]);
 		add_env(new_padloper_envp, "OLDPWD", i);

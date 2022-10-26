@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/10/22 14:42:21 by lwiedijk      ########   odam.nl         */
+/*   Updated: 2022/10/26 12:04:00 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,15 @@ bool	env_has_value(char *var)
 	}
 	return (false);
 }
+/* 	
+	je compare moet kiezen tussen wel of geen verschill maken dus VAR en VAR=
+	geeft dat juist ja of nee terug. nu haal je dat door elkaar
+
+	return 0 onderdaan geeft VAR en VAR= als ja has var
+	return s1 - s2 geeft VAR en VAR= als nee has niet var
+
+	doe has_var && var_has value voor die case zou ik zeggen
+ */
 
 int	envcmp(char *s1, char *s2)
 {
@@ -60,7 +69,8 @@ int	envcmp(char *s1, char *s2)
 		else
 			return (s1[i] - s2[i]);
 	}
-	return (s1[i] - s2[i]);
+	return 0;
+	//return (s1[i] - s2[i]);
 }
 
 int	has_var(char **array, char *var)
