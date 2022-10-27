@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/10/26 21:18:27 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/10/27 13:13:11 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,23 +36,41 @@ static void	interrupt_handler(int sig)
 	}
 }
 
+void	do_parent_redirect(t_metadata *data, t_exec_list_sim *cmd_list)
+{
+	open_necessary_infiles_bi(data, cmd_list);
+	open_necessary_outfiles_bi(data, cmd_list);
+	redirect_output_bi(data, cmd_list);
+	close_unused_fd_bi(data, cmd_list);
+}
+
 bool	check_run_buildin(t_metadata *data, t_exec_list_sim *cmd_list)
 {
-	int i;
+	int	i;
+	int	reset_stdout;
 
 	i = 0;
+	reset_stdout = dup(STDOUT_FILENO);
+	if (reset_stdout == -1)
+		print_error_exit("dup", errno, EXIT_FAILURE);
 	if (!(cmd_list->cmd))
-		return false;
-	while(i < BUILDIN_AMOUNT)
+		return (false);
+	while (i < BUILDIN_AMOUNT)
 	{
 		if (!(ft_strcmp(cmd_list->cmd[0], data->buildins[i])))
 		{
-			data->fn_buildins[i](data, cmd_list);
-			return true;
+			if (data->cmd_count == 1)
+				do_parent_redirect(data, cmd_list);
+			if (data->exitstatus == EXIT_SUCCESS)
+				data->fn_buildins[i](data, cmd_list);
+			if (dup2(reset_stdout, STDOUT_FILENO) == -1)
+				print_error_exit("dup2", errno, EXIT_FAILURE);
+			close_and_check(reset_stdout);
+			return (true);
 		}
 		i++;
 	}
-	return false;
+	return (false);
 }
 
 void	execute_cmd(t_metadata *data, t_exec_list_sim *cmd_list)

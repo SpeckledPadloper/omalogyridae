@@ -6,7 +6,7 @@
 #    By: mteerlin <mteerlin@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2021/07/21 12:25:06 by mteerlin      #+#    #+#                  #
-#    Updated: 2022/10/13 16:16:15 by lwiedijk      ########   odam.nl          #
+#    Updated: 2022/10/27 11:26:23 by lwiedijk      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,6 +14,7 @@ NAME	= minishell
 
 VPATH	=	$(shell find src -type d) $(shell find libft -type d)
 SRC		:= src/builtins/padloper_cd.c \
+src/builtins/cd_update_pwd.c \
 src/builtins/padloper_echo.c \
 src/builtins/padloper_env.c \
 src/builtins/new_padloper_env.c \
@@ -27,7 +28,9 @@ src/error/error.c \
 src/executer/error_handling.c \
 src/executer/executer.c \
 src/executer/executer_utils.c \
-src/executer/file_handling.c \
+src/executer/file_handling_open.c \
+src/executer/file_handling_rdir.c \
+src/executer/file_handling_builtin.c \
 src/executer/heredoc_handling.c \
 src/executer/path_builder.c \
 src/executer/init_metadata.c \

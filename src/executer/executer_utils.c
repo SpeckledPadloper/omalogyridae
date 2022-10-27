@@ -6,10 +6,9 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/10/07 09:47:57 by lwiedijk      ########   odam.nl         */
+/*   Updated: 2022/10/27 11:42:21 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #include "hdr/executer.h"
 #include "../hdr/structs.h"
@@ -20,7 +19,6 @@
 #include <strings.h>
 #include <string.h>
 #include <fcntl.h>
-
 #include <errno.h>
 
 void	free_2d_array(char **array)
@@ -58,9 +56,11 @@ void	free_3d_array(char ***cmd_array)
 
 void	close_and_check(int fd)
 {
-	int	fail_check;
+	int		fail_check;
+	char	*str;
 
+	str = "close: close failed\n";
 	fail_check = close(fd);
 	if (fail_check == -1)
-		print_error_exit("close", errno, EMPTY);
+		write(2, str, ft_strlen(str));
 }

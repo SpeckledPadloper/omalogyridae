@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/10/25 14:30:58 by lwiedijk      ########   odam.nl         */
+/*   Updated: 2022/10/27 11:30:59 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,8 @@ char	*get_error_string(char *errno_string, int errnocopy)
 		errno_string = ": options not supported";
 	else if (errnocopy == NOT_SUPPORTED_BOTH)
 		errno_string = ": options or arguments not supported";
+	else if (errnocopy == NO_PATH)
+		errno_string = ": path as argument is required";
 	return (errno_string);
 }
 
@@ -55,7 +57,7 @@ static void	fatal_error(void)
 void	error_too_many_arg(t_metadata *data)
 {
 	char	*message;
-	
+
 	data->exitstatus = EXIT_FAILURE;
 	message = "minishell: exit: too many arguments\n";
 	write(STDERR_FILENO, message, ft_strlen(message));
@@ -76,7 +78,7 @@ void	builtin_error(char *program, char *object, int errnum, t_metadata *data)
 	print = ft_strjoin_free(print, object);
 	if (!print)
 		fatal_error();
-	if (errnum > 0)
+	if (errnum > 0 || errnum == AR)
 		print = ft_strjoin_free(print, ": ");
 	print = ft_strjoin_free(print, message);
 	if (!print)

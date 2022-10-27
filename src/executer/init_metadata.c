@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        ::::::::            */
+/*   init_metadata.c                                    :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
+/*   Updated: 2022/10/27 11:32:22 by lwiedijk      ########   odam.nl         */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "hdr/executer.h"
 #include "../hdr/structs.h"
 #include "../../libft/libft.h"
@@ -13,7 +25,7 @@
 int	ft_sim_lstsize(t_exec_list_sim *lst)
 {
 	t_exec_list_sim	*temp;
-	int		count;
+	int				count;
 
 	temp = lst;
 	count = 0;
