@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/10/27 09:56:46 by lwiedijk      ########   odam.nl         */
+/*   Updated: 2022/10/27 11:30:59 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ static void	fatal_error(void)
 void	error_too_many_arg(t_metadata *data)
 {
 	char	*message;
-	
+
 	data->exitstatus = EXIT_FAILURE;
 	message = "minishell: exit: too many arguments\n";
 	write(STDERR_FILENO, message, ft_strlen(message));

@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/10/27 11:18:04 by lwiedijk      ########   odam.nl         */
+/*   Updated: 2022/10/27 11:29:10 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ void	open_necessary_infiles_bi(t_metadata *data, t_exec_list_sim *cmd_list)
 	}
 }
 
-void	open_and_check_file(t_metadata *data, t_exec_list_sim *cmd_list)
+void	open_and_check_file_bi(t_metadata *data, t_exec_list_sim *cmd_list)
 {
 	if (cmd_list->outfile_list->mode == RDIR_SINGLE)
 	{
@@ -82,7 +82,7 @@ void	open_necessary_outfiles_bi(t_metadata *data, t_exec_list_sim *cmd_list)
 		if (cmd_list->outfile_list->mode == RDIR_AMBIGUOUS)
 			builtin_error
 				("", cmd_list->outfile_list->filename, AR, data);
-		open_and_check_file(data, cmd_list);
+		open_and_check_file_bi(data, cmd_list);
 		if (cmd_list->outfile_list->next && data->fd_list->fd_out)
 		{
 			close_and_check(data->fd_list->fd_out);

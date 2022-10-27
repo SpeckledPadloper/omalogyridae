@@ -6,7 +6,7 @@
 #    By: mteerlin <mteerlin@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2021/07/21 12:25:06 by mteerlin      #+#    #+#                  #
-#    Updated: 2022/10/27 09:48:53 by lwiedijk      ########   odam.nl          #
+#    Updated: 2022/10/27 11:26:23 by lwiedijk      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,7 +28,8 @@ src/error/error.c \
 src/executer/error_handling.c \
 src/executer/executer.c \
 src/executer/executer_utils.c \
-src/executer/file_handling.c \
+src/executer/file_handling_open.c \
+src/executer/file_handling_rdir.c \
 src/executer/file_handling_builtin.c \
 src/executer/heredoc_handling.c \
 src/executer/path_builder.c \
