@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/10/27 10:52:08 by lwiedijk      ########   odam.nl         */
+/*   Updated: 2022/10/27 11:18:04 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,32 @@ void	open_necessary_infiles_bi(t_metadata *data, t_exec_list_sim *cmd_list)
 	}
 }
 
+void	open_and_check_file(t_metadata *data, t_exec_list_sim *cmd_list)
+{
+	if (cmd_list->outfile_list->mode == RDIR_SINGLE)
+	{
+		data->fd_list->fd_out = open(cmd_list->outfile_list->filename,
+				O_CREAT | O_WRONLY | O_TRUNC, MODE_RW_R_R);
+		if (data->fd_list->fd_out < 0)
+		{
+			builtin_error
+				("", cmd_list->outfile_list->filename, errno, data);
+			data->fd_list->fd_out = 0;
+		}
+	}
+	if (cmd_list->outfile_list->mode == RDIR_DOUBLE)
+	{
+		data->fd_list->fd_out = open(cmd_list->outfile_list->filename,
+				O_CREAT | O_WRONLY | O_APPEND, MODE_RW_R_R);
+		if (data->fd_list->fd_out < 0)
+		{
+			builtin_error
+				("", cmd_list->outfile_list->filename, errno, data);
+			data->fd_list->fd_out = 0;
+		}
+	}
+}
+
 void	open_necessary_outfiles_bi(t_metadata *data, t_exec_list_sim *cmd_list)
 {
 	while (cmd_list->outfile_list)
@@ -56,28 +82,7 @@ void	open_necessary_outfiles_bi(t_metadata *data, t_exec_list_sim *cmd_list)
 		if (cmd_list->outfile_list->mode == RDIR_AMBIGUOUS)
 			builtin_error
 				("", cmd_list->outfile_list->filename, AR, data);
-		if (cmd_list->outfile_list->mode == RDIR_SINGLE)
-		{
-			data->fd_list->fd_out = open(cmd_list->outfile_list->filename,
-					O_CREAT | O_WRONLY | O_TRUNC, MODE_RW_R_R);
-			if (data->fd_list->fd_out < 0)
-			{
-				builtin_error
-					("", cmd_list->outfile_list->filename, errno, data);
-				data->fd_list->fd_out = 0;
-			}
-		}
-		if (cmd_list->outfile_list->mode == RDIR_DOUBLE)
-		{
-			data->fd_list->fd_out = open(cmd_list->outfile_list->filename,
-					O_CREAT | O_WRONLY | O_APPEND, MODE_RW_R_R);
-			if (data->fd_list->fd_out < 0)
-			{
-				builtin_error
-					("", cmd_list->outfile_list->filename, errno, data);
-				data->fd_list->fd_out = 0;
-			}
-		}
+		open_and_check_file(data, cmd_list);
 		if (cmd_list->outfile_list->next && data->fd_list->fd_out)
 		{
 			close_and_check(data->fd_list->fd_out);
