@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/10/13 09:18:59 by lwiedijk      ########   odam.nl         */
+/*   Updated: 2022/10/27 11:48:09 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 
 void	padloper_pwd(t_metadata *data, t_exec_list_sim *cmd_list)
 {
-	char buf[PATH_MAX];
+	char	buf[PATH_MAX];
 
 	if (cmd_list->cmd[1] && cmd_list->cmd[1][1] && cmd_list->cmd[1][0] == '-')
 	{
@@ -28,7 +28,7 @@ void	padloper_pwd(t_metadata *data, t_exec_list_sim *cmd_list)
 			cmd_list->cmd[1][2] = '\0';
 		builtin_error("pwd: ", cmd_list->cmd[1], NOT_SUPPORTED, data);
 	}
-	else 
+	else
 	{
 		if (!getcwd(buf, sizeof(buf)))
 			print_error_exit("getcwd", errno, EXIT_FAILURE);

@@ -6,10 +6,9 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/10/27 10:42:00 by lwiedijk      ########   odam.nl         */
+/*   Updated: 2022/10/27 11:42:21 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #include "hdr/executer.h"
 #include "../hdr/structs.h"
@@ -20,7 +19,6 @@
 #include <strings.h>
 #include <string.h>
 #include <fcntl.h>
-
 #include <errno.h>
 
 void	free_2d_array(char **array)

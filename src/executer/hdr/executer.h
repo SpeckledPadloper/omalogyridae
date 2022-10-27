@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/10/27 10:32:22 by lwiedijk      ########   odam.nl         */
+/*   Updated: 2022/10/27 11:38:31 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,13 +30,14 @@ void	padloper_env(t_metadata *data, t_exec_list_sim *cmd_list);
 void	padloper_exit(t_metadata *data, t_exec_list_sim *cmd_list);
 
 char	**allocate_env(char **src, t_metadata *data, int add_var);
-char    **allocate_export(char **src, int *envp_size, int remove, int add);
-void 	add_env(char **padloper_env, char *var, int pos);
+char	**allocate_export(char **src, int *envp_size, int remove, int add);
+void	add_env(char **padloper_env, char *var, int pos);
 void	env_pointer_cpy(int envp_size, char **old, char **new);
-char	**new_padloper_envp(char **original_envp, t_metadata *data, int *envp_size);
+char	**new_padloper_envp(char **original_envp,
+			t_metadata *data, int *envp_size);
 int		envcmp(char *s1, char *s2);
 bool	env_has_value(char *var);
-int 	has_var(char **array, char *var);
+int		has_var(char **array, char *var);
 
 bool	export_var_not_valid(char *var);
 void	populate_export(int size, char **src, char **dst);
@@ -81,7 +82,8 @@ void	free_2d_array(char **array);
 /*-------------------------error handling-------------------------*/
 
 void	print_error_exit(char *errorobject, int errnocopy, int exitcode);
-void	builtin_error(char *program, char *object, int errnum, t_metadata *data);
+void	builtin_error(char *program, char *object,
+			int errnum, t_metadata *data);
 void	error_too_many_arg(t_metadata *data);
 char	*get_error_string(char *errno_string, int errnocopy);
 
