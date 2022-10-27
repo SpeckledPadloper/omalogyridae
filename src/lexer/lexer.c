@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/04/18 11:03:49 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/10/25 14:24:58 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/10/26 14:35:46 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,10 +64,7 @@ char	*do_special_char(t_line_nav *lnav)
 static void	fsm_block(t_line_nav *lnav, t_token **head, int *ps, t_metadata *data)
 {
 	if (lnav->state == STATE_START)
-	{
-		printf("fmsblock\n");
 		lnav->state = fsm_start(lnav, head, data);
-	}
 	else if (lnav->state == STATE_COMMON)
 		lnav->state = fsm_common(lnav, head, data);
 	else if (lnav->state == STATE_WS)

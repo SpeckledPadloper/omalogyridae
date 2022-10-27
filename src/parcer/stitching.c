@@ -6,7 +6,7 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/29 14:49:02 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/10/17 14:38:18 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/10/25 15:55:53 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void	stitch_tokens(t_token_section **sect, t_token **current)
 	char			*temp_str;
 	t_token_section	*temp_sect;
 
-	printf("%p\n", (*current));
+	// printf("%p\n", (*current));
 	temp = *current;
 	temp_str = malloc(sizeof(char));
 	temp_str[0] = '\0';
@@ -78,7 +78,7 @@ void	stitch_section(t_token_section **current)
 	temp = *current;
 	while (temp)
 	{
-		printf("%p\n", temp);
+		// printf("%p\n", temp);
 		stitch_tokens(&temp, &temp->head);
 		temp = temp->next;
 	}

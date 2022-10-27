@@ -6,7 +6,7 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/14 12:48:41 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/10/25 14:06:39 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/10/26 13:40:07 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,12 @@
 int	fsm_start(t_line_nav *lnav, t_token **head, t_metadata *data)
 {
 	if (is_whitespace(lnav->ret[lnav->i]))
+	{
+		lnav->count = -1;
 		return (STATE_WS);
+	}
 	else if (is_special_char(lnav->ret[lnav->i]))
-	{	
-		printf("add token to list\n");
+	{
 		lnav->state = -1;
 		if (!add_token_to_list(head, do_special_char(lnav), lnav, data))
 			return (STATE_STXERROR);
@@ -31,15 +33,9 @@ int	fsm_start(t_line_nav *lnav, t_token **head, t_metadata *data)
 		return (STATE_WS);
 	}
 	else if (lnav->ret[lnav->i] == '\'')
-	{
-		lnav->count = 0;
 		return (STATE_SQUOTE);
-	}
 	else if (lnav->ret[lnav->i] == '"')
-	{
-		lnav->count = 0;
 		return (STATE_DQUOTE);
-	}
 	else if (lnav->ret[lnav->i] == '$')
 		return (STATE_EXPAND);
 	else

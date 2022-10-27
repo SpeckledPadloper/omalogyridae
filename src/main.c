@@ -6,7 +6,7 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/18 16:18:33 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/10/25 15:51:32 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/10/26 21:03:01 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,35 @@
 #include "utils/hdr/simple_cmd_utils.h"
 #include "tests/tests.h"
 
+#include <sys/wait.h>
+#include <signal.h>
+#include <term.h>
+
+static char	*input_eof(void)
+{
+	char	*ret;
+
+	ret = ft_strdup("exit");
+	if (ret == NULL)
+		exit(EXIT_FAILURE);
+	return (ret);
+}
+
+static void	signal_handler(int sig)
+{
+	char	*prompt;
+
+	if (sig == SIGINT)
+		return ;
+	else if (sig == SIGQUIT)
+		return ;
+}
+
+static void	leaksatexit(void)
+{
+	system("leaks minishell");
+}
+
 int	main(int argc, char **argv, char **env)
 {
 	t_token		*head;
@@ -40,13 +69,22 @@ int	main(int argc, char **argv, char **env)
 	t_exec_list_sim *ret;
 	char		*prompt;
 
+	// atexit(&leaksatexit);
 	init_metadata(&data, &fd_list, env);
 	b_args = set_base_args(argc, argv, env);
 	input = "";
 	prompt = ft_strjoin(SHLNAME, "> ");
+	if (!prompt)
+		exit(EXIT_FAILURE);
+	signal(SIGINT, &signal_handler);
+	signal(SIGQUIT, &signal_handler);
+	kill(data.lastpid, SIGQUIT);
+	// kill(data.lastpid, SIGINT);
 	while (input != NULL)
 	{
 		input = readline(prompt);
+		if (input == NULL)
+			input = input_eof();
 		add_history(input);
 		head = lex(input, &data);
 		if (head == NULL)
@@ -56,10 +94,10 @@ int	main(int argc, char **argv, char **env)
 		ret = parce(head, &b_args->env);
 		//test_simple_command(ret);
 		executer(&data, ret);
-		//printf("exitstatus: [%d]\n", data.exitstatus);
+		// printf("exitstatus: [%d]\n", data.exitstatus);
 		//system("leaks minishell");
-		//exit(data.exitstatus);
-		//simple_cmd_clear(&ret);
+		// exit(data.exitstatus);
+		simple_cmd_clear(&ret);
 	}
 	free(prompt);
 	free(b_args);
