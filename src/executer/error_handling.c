@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/10/26 14:19:20 by lwiedijk      ########   odam.nl         */
+/*   Updated: 2022/10/27 09:56:46 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ void	builtin_error(char *program, char *object, int errnum, t_metadata *data)
 	print = ft_strjoin_free(print, object);
 	if (!print)
 		fatal_error();
-	if (errnum > 0)
+	if (errnum > 0 || errnum == AR)
 		print = ft_strjoin_free(print, ": ");
 	print = ft_strjoin_free(print, message);
 	if (!print)

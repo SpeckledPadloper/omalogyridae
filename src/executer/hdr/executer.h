@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/10/26 15:34:32 by lwiedijk      ########   odam.nl         */
+/*   Updated: 2022/10/27 10:32:22 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,11 @@ void	set_pwd(char **new_padloper_envp, int pos);
 
 void	create_oldpwd(char *oldpwd, t_metadata *data);
 bool	set_pwd_and_oldpwd(t_metadata *data, char *oldpwd);
+
+void	open_necessary_infiles_bi(t_metadata *data, t_exec_list_sim *cmd_list);
+void	open_necessary_outfiles_bi(t_metadata *data, t_exec_list_sim *cmd_list);
+void	redirect_output_bi(t_metadata *data, t_exec_list_sim *cmd_list);
+void	close_unused_fd_bi(t_metadata *data, t_exec_list_sim *cmd_list);
 
 /*-------------------------executer-------------------------*/
 
