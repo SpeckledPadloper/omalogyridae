@@ -6,7 +6,7 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/19 14:24:48 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/10/19 15:58:18 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/10/27 15:34:24 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ void	expand_cmdlst(t_token_section *head, char ***env)
 	itter = head;
 	isexp = false;
 	expanded = expand_cmdtokenslst(itter->head, env);
-	if (ft_strncmp(expanded->head->token_value, "export", 7);
+	if (ft_strncmp(expanded->head->token_value, "export", 7)
 		isexp = true;
 	while (itter && itter->head)
 	{

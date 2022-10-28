@@ -1,4 +1,8 @@
-SRC		:= src/builtins/padloper_cd.c \
+SRC		:= src/builtins/cd_update_pwd.c \
+src/builtins/env_utils.c \
+src/builtins/export_utils.c \
+src/builtins/new_padloper_env.c \
+src/builtins/padloper_cd.c \
 src/builtins/padloper_echo.c \
 src/builtins/padloper_env.c \
 src/builtins/padloper_exit.c \
@@ -9,7 +13,9 @@ src/error/error.c \
 src/executer/error_handling.c \
 src/executer/executer.c \
 src/executer/executer_utils.c \
-src/executer/file_handling.c \
+src/executer/file_handling_builtin.c \
+src/executer/file_handling_open.c \
+src/executer/file_handling_rdir.c \
 src/executer/heredoc_handling.c \
 src/executer/init_metadata.c \
 src/executer/path_builder.c \
@@ -27,6 +33,7 @@ src/parcer/separate.c \
 src/parcer/separation_utils.c \
 src/parcer/simple_cmd.c \
 src/parcer/stitching.c \
+src/signals/signals.c \
 src/tests/tests.c \
 src/utils/filelst_utils.c \
 src/utils/simple_cmd_utils.c \
@@ -45,6 +52,7 @@ src/lexer/hdr/lexer.h \
 src/parcer/hdr/expand.h \
 src/parcer/hdr/parcer.h \
 src/parcer/hdr/separate.h \
+src/signals/hdr/sigpadloper.h \
 src/tests/tests.h \
 src/utils/hdr/filelst_utils.h \
 src/utils/hdr/simple_cmd_utils.h \

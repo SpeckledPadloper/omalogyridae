@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/10/27 13:13:11 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/10/28 14:52:33 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,20 +21,7 @@
 #include <fcntl.h>
 #include <errno.h>
 #include <signal.h>
-
-static void	interrupt_handler(int sig)
-{
-	int	status;
-
-	status = 0;
-	write(1, "signal found in child\n", 23);
-	if (sig == SIGQUIT)
-	{
-		ft_putstr_fd("Quit: ", 1);
-		ft_putnbr_fd(sig, 1);
-		ft_putchar_fd('\n', 1);
-	}
-}
+#include "../signals/hdr/sigpadloper.h"
 
 void	do_parent_redirect(t_metadata *data, t_exec_list_sim *cmd_list)
 {
@@ -80,10 +67,7 @@ void	execute_cmd(t_metadata *data, t_exec_list_sim *cmd_list)
 
 	path = NULL;
 	status = 0;
-	signal(SIGQUIT, &interrupt_handler);
-	printf("%d\n", WTERMSIG(status));
-	if (WTERMSIG(status) == SIGINT || WTERMSIG(status) == SIGQUIT)
-		exit(128 + WTERMSIG(status));
+	sig_setup(PROC_CHLD);
 	open_necessary_infiles(data, cmd_list);
 	open_necessary_outfiles(data, cmd_list);
 	redirect_input(data, cmd_list);
@@ -140,7 +124,8 @@ void	executer(t_metadata *meta_data, t_exec_list_sim *cmd_list)
 	while (1)
 	{
 		wp = waitpid(-1, &status, 0);
-		// fprintf(stderr, "wp signal terminated?? [%d] with: [%d] exitstat [%d] \n", WIFSIGNALED(status), WTERMSIG(status), WEXITSTATUS(status));
+		change_tcattr(PROC_PARNT);
+		fprintf(stderr, "wp signal terminated?? [%d] with: [%d] exitstat [%d] \n", WIFSIGNALED(status), WTERMSIG(status), WEXITSTATUS(status));
 		if (WIFSIGNALED(status))
 		{
 			meta_data->exitstatus = 128 + WTERMSIG(status);
