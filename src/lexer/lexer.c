@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/04/18 11:03:49 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/10/26 14:35:46 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/10/31 14:55:45 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,7 +123,10 @@ t_token	*lex(char *ret, t_metadata *data)
 		else if (lnav.state <= STATE_WS || lnav.state == STATE_COMMON)
 			lnav.state = STATE_COMMON;
 		if (is_end_of_input(lnav.ret[lnav.i + 1]))
+		{
 			end_of_input(&head, &lnav, prev_state, data);
+			break ;
+		}
 		if (lnav.state == STATE_STXERROR)
 		{
 			tokenlst_clear(&head);
