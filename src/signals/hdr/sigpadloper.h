@@ -6,7 +6,7 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/27 13:59:04 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/10/28 13:58:07 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/10/31 13:14:05 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,5 +22,6 @@ typedef enum e_process_state
 
 void	change_tcattr(int state);
 void	sig_setup(int state);
+int		sig_exit(int status);
 
 #endif

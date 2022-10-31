@@ -6,7 +6,7 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/26 14:05:26 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/10/28 14:36:07 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/10/31 13:19:11 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 #include <unistd.h>
 #include "../hdr/structs.h"
 #include <termios.h>
+#include <stdlib.h>
 
 /*
 
@@ -46,9 +47,18 @@ static void	parent_sighandle(int sig)
 
 static void	quit_handle(int sig)
 {
-	ft_putstr_fd("Quit: ", 2);
-	ft_putnbr_fd(sig, 2);
-	ft_putchar_fd('\n', 2);
+	exit(128 + sig);
+}
+
+int	sig_exit(int status)
+{
+	if (WTERMSIG(status) == SIGQUIT)
+	{
+		ft_putstr_fd("Quit: ", 2);
+		ft_putnbr_fd(SIGQUIT, 2);
+		ft_putchar_fd('\n', 2);
+	}
+	return (128 + WTERMSIG(status));
 }
 
 void	change_tcattr(int state)
@@ -56,11 +66,16 @@ void	change_tcattr(int state)
 	struct termios	term;
 
 	tcgetattr(2, &term);
-	term.c_lflag &= ~ISIG;
 	if (state == PROC_PARNT)
+	{
+		term.c_lflag &= ~ISIG;
 		term.c_lflag &= ~ECHOCTL;
+	}
 	if (state == PROC_CHLD)
+	{
+		term.c_lflag |= ISIG;
 		term.c_lflag |= ECHOCTL;
+	}
 	tcsetattr(2, TCSANOW, &term);
 }
 
@@ -76,7 +91,6 @@ void	sig_setup(int state)
 	}
 	if (state == PROC_CHLD)
 	{
-		printf("sig_setup child process\n");
 		signal(SIGQUIT, &quit_handle);
 		signal(SIGINT, SIG_DFL);
 	}
