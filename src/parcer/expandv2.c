@@ -6,7 +6,7 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/19 14:24:48 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/10/27 15:34:24 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/10/31 19:51:30 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ static t_token	*expand_cmdtoken(t_token *current, char ***env)
 	t_token	*ret;
 
 	idx = 0;
-	len = ft_strlen(current->token_value)
+	len = ft_strlen(current->token_value);
 	while ((*env)[idx])
 	{
 		if (!ft_strncmp(&current->token_value, (*env)[idx], len))
@@ -68,7 +68,7 @@ static t_token_section	*expand_cmdtokenlst(t_token *head, char ***env)
 		sep = set_separation_limit(itter);
 		quote = set_quote_state(quote, itter, sep);
 		if (itter->token_label == EXPAND)
-			exp_token_add_back(&expandlst, expand_cmdtoken(itter, env, quote));
+			token_add_back(&expandlst, expand_cmdtoken(itter, env, quote));
 		if (itter)
 			itter = itter->next;
 	}

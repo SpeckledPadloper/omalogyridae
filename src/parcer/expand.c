@@ -6,7 +6,7 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/28 13:38:24 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/10/25 14:15:54 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/10/31 20:31:39 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ t_token	*exp_to_lst(t_token *current, char *env_var, bool isredir)
 		{
 			new = exp_new_token(allocate_token_value(&lnav));
 			new->i = current->i;
-			exp_token_add_back(&expanded, new);
+			token_add_back(&expanded, new);
 			lnav.count = -1;
 			while (is_whitespace(lnav.ret[lnav.i + 1]))
 				lnav.i++;
@@ -76,13 +76,14 @@ t_token	*exp_to_lst(t_token *current, char *env_var, bool isredir)
 	}
 	new = exp_new_token(allocate_token_value(&lnav));
 	new->i = current->i;
-	exp_token_add_back(&expanded, new);
+	token_add_back(&expanded, new);
 	if (isredir && expanded->next)
 		expanded->token_label = RDIR_AMBIGUOUS;
 	return (expanded);
 }
 
-t_token	*expand_token(t_token *current, char ***env, bool quote, bool isrdir)
+t_token	*expand_token(t_token *current, char ***env, \
+						t_expflag *exflag, t_metadata *data)
 {
 	int		len;
 	int		cnt;
@@ -90,19 +91,21 @@ t_token	*expand_token(t_token *current, char ***env, bool quote, bool isrdir)
 
 	cnt = 0;
 	len = ft_strlen(current->token_value);
+	if (current->token_value[1] == '?')
+		return (exp_to_one(ft_itoa(data->exitstatus), current->i));
 	while ((*env)[cnt])
 	{
 		if (!ft_strncmp(&current->token_value[1], (*env)[cnt], len - 1))
 		{
-			if (quote == true)
+			if (exflag->quote == true)
 				ret = exp_to_one(ft_strchr((*env)[cnt], '=') + 1, current->i);
 			else
-				ret = exp_to_lst(current, ft_strchr((*env)[cnt], '=') + 1, isrdir);
+				ret = exp_to_lst(current, ft_strchr((*env)[cnt], '=') + 1, exflag->isredir);
 			return (ret);
 		}
 		cnt++;
 	}
-	if (isrdir)
+	if (exflag->isredir)
 	{
 		current->token_label = RDIR_AMBIGUOUS;
 		return (current);
@@ -110,26 +113,28 @@ t_token	*expand_token(t_token *current, char ***env, bool quote, bool isrdir)
 	return (exp_new_token(NULL));
 }
 
-void	expand_tokenlst(t_token_section **current, char ***env, bool isredir)
+void	expand_tokenlst(t_token_section **current, char ***env, \
+						bool rdir, t_metadata *data)
 {
-	t_token	*itter;
-	t_token	*expandlst;
-	bool	quote;
-	int		sep;
+	t_token		*itter;
+	t_token		*expandlst;
+	t_expflag	exflag;
+	int			sep;
 
 	itter = (*current)->head;
-	quote = false;
+	exflag.quote = false;
+	exflag.isredir = rdir;
 	expandlst = NULL;
 	while (itter)
 	{
 		sep = set_separation_limit(itter);
-		quote = set_quote_state(quote, itter, sep);
+		exflag.quote = set_quote_state(exflag.quote, itter, sep);
 		if (itter->token_label == EXPAND)
-			exp_token_add_back(&expandlst, expand_token(itter, env, quote, isredir));
+			token_add_back(&expandlst, expand_token(itter, env, &exflag, data));
 		if (itter)
 			itter = itter->next;
 	}
-	if (isredir && is_ambiguous_rdir(expandlst))
+	if (exflag.isredir && is_ambiguous_rdir(expandlst))
 	{
 		tokenlst_clear(&expandlst);
 		(*current)->head->token_label = RDIR_AMBIGUOUS;
@@ -138,7 +143,8 @@ void	expand_tokenlst(t_token_section **current, char ***env, bool isredir)
 	link_expand_tokens(&(*current)->head, &expandlst);
 }
 
-void	expand_section(t_token_section **head, char ***env, bool isredir)
+void	expand_section(t_token_section **head, char ***env, \
+						bool rdir, t_metadata *data)
 {
 	t_token_section	*temp;
 
@@ -154,7 +160,7 @@ void	expand_section(t_token_section **head, char ***env, bool isredir)
 			continue ;
 		}
 		else
-			expand_tokenlst(&temp, env, isredir);
+			expand_tokenlst(&temp, env, rdir, data);
 		temp = temp->next;
 	}
 }

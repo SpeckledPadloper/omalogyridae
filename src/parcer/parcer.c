@@ -6,7 +6,7 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/18 17:44:02 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/10/17 15:09:53 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/10/31 20:08:23 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,14 +23,15 @@
 #include <stdio.h>
 #include <unistd.h>
 
-void	expand_variables(t_split_cmd_rdir *head, char ***env)
+static void	expand_variables(t_split_cmd_rdir *head, \
+							char ***env, t_metadata *data)
 {
-	expand_section(&head->cmd_head, env, false);
-	expand_section(&head->in_head, env, true);
-	expand_section(&head->out_head, env, true);
+	expand_section(&head->cmd_head, env, false, data);
+	expand_section(&head->in_head, env, true, data);
+	expand_section(&head->out_head, env, true, data);
 }
 
-t_exec_list_sim	*parce(t_token *head, char ***env)
+t_exec_list_sim	*parce(t_token *head, char ***env, t_metadata *data)
 {
 	t_token_section		*first;
 	t_token_section		*temp;
@@ -46,7 +47,7 @@ t_exec_list_sim	*parce(t_token *head, char ***env)
 	{
 		split = split_cmd_rdir(temp);
 		//test_split_cmd_rdir(split);
-		expand_variables(split, env);
+		expand_variables(split, env, data);
 		//test_split_cmd_rdir(split);
 		stitch(&split);
 		// test_split_cmd_rdir(split);

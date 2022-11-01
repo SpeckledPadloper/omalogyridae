@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/10/25 14:08:51 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/10/31 16:07:16 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ typedef struct s_line_nav
 	int		i;
 	int		count;
 	int		state;
+	int		prev_state;
 }	t_line_nav;
 
 bool		is_special_char(char current);

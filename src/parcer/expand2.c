@@ -6,7 +6,7 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/29 13:29:52 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/10/17 14:23:36 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/10/31 19:51:31 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,8 +45,8 @@ void	link_expand_tokens(t_token **head, t_token **expand)
 			temp = itterhead->next->next;
 			free(itterhead->next);
 			itterhead->next = NULL;
-			exp_token_add_back(&itterexp, temp);
-			exp_token_add_back(head, itterexp);
+			token_add_back(&itterexp, temp);
+			token_add_back(head, itterexp);
 			itterexp = itterexp->next;
 		}
 		if (itterhead)

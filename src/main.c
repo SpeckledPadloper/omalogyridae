@@ -6,7 +6,7 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/18 16:18:33 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/10/28 14:03:42 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/11/01 13:48:56 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,6 @@ int	main(int argc, char **argv, char **env)
 {
 	t_token		*head;
 	char		*input;
-	t_base_args	*b_args;
 	t_metadata	data;
 	t_fd_list	fd_list;
 	t_exec_list_sim *ret;
@@ -72,36 +71,40 @@ int	main(int argc, char **argv, char **env)
 	struct termios	term;
 
 	status = 0;
-	// atexit(&leaksatexit);
 	sig_setup(PROC_PARNT);
-	if (WTERMSIG(status) == SIGINT)
-		data.exitstatus = 1;
 	init_metadata(&data, &fd_list, env);
-	b_args = set_base_args(argc, argv, env);
+	printf("exitstatus: [%d]\n", data.exitstatus);
 	input = "";
 	prompt = ft_strjoin(SHLNAME, "> ");
 	if (!prompt)
 		exit(EXIT_FAILURE);
 	while (input != NULL)
 	{
+		if (WTERMSIG(status) == SIGINT)
+			data.exitstatus = 1;
 		input = readline(prompt);
 		if (input == NULL)
 			input = input_eof();
-		add_history(input);
+		if (input[0] != '\n')
+			add_history(input);
 		head = lex(input, &data);
 		if (head == NULL)
 			continue ;
 		free(input);
+		ret = parce(head, &data.padloper_envp, &data);
+		if (!ret->cmd[0] && !ret->infile_list && !ret->outfile_list )
+		{
+			simple_cmd_clear(&ret);
+			continue ;
+		}
 		reset_metadata(&data, &fd_list, env);
-		ret = parce(head, &b_args->env);
-		//test_simple_command(ret);
+		// test_simple_command(ret);
 		executer(&data, ret);
-		printf("exitstatus: [%d]\n", data.exitstatus);
+		// printf("exitstatus: [%d]\n", data.exitstatus);
 		// system("leaks minishell");
 		// exit(data.exitstatus);
 		simple_cmd_clear(&ret);
 	}
 	free(prompt);
-	free(b_args);
 	return (data.exitstatus);
 }

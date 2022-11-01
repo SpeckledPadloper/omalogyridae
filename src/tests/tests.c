@@ -6,7 +6,7 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/20 15:28:53 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/10/17 14:53:05 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/10/31 17:30:47 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,12 @@ void	test_lex(t_token *head)
 {
 	t_token		*itter;
 
+	printf("\ttest_lext\n");
 	if (!head)
+	{
+		printf("(null)\n");
 		return ;
+	}
 	itter = head;
 	while (itter != NULL)
 	{

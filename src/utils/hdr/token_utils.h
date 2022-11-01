@@ -6,7 +6,7 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/14 12:31:24 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/10/25 13:46:01 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/10/31 19:50:52 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,6 @@ void			clear_section(t_token_section	**head);
 t_token_section	*cmdlst_split(t_token **head);
 t_token_section	*rdirlst_split(t_token **head, int f1, int f2);
 t_token			*exp_new_token(char *value);
-void			exp_token_add_back(t_token **head, t_token *new);
+void			token_add_back(t_token **head, t_token *new);
 
 #endif
