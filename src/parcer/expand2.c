@@ -6,7 +6,7 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/29 13:29:52 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/10/31 19:51:31 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/11/02 20:02:50 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,42 +14,53 @@
 #include "../utils/hdr/token_utils.h"
 #include <stdbool.h>
 #include <stdlib.h>
+
 #include <stdio.h>
+#include "../tests/tests.h"
 
 void	link_expand_tokens(t_token **head, t_token **expand)
 {
 	t_token	*itterhead;
 	t_token	*itterexp;
 	t_token	*temp;
+	t_token	*temp2;
 
-	if (!head || !expand)
+	if (!head || !expand || !(*expand))
 		return ;
-	itterhead = *head;
-	itterexp = *expand;
 	if ((*head) && (*head)->token_label == EXPAND)
 	{
-		temp = (*head)->next;
-		free(*head);
+		printf("\nlink_expand_tokens\n");
 		if ((*expand)->token_value == NULL)
-			(*head) = temp;
+			(*head) = (*head)->next;
 		else
 		{
-			(*head) = *expand;
-			*expand = (*expand)->next;
+			temp = (*head)->next;
+			temp2 = (*expand)->next;
+			if ((*head)->token_value)
+				free((*head)->token_value);
+			free(*head);
+			(*head) = (*expand);
+			(*head)->next = temp;
+			(*expand) = temp2;
 		}
 	}
-	while (itterhead->next)
+	itterhead = *head;
+	itterexp = *expand;
+	while (itterhead && itterhead->next)
 	{
 		if (itterhead->next->token_label == EXPAND)
 		{
 			temp = itterhead->next->next;
+			if (itterhead->next->token_value)
+				free(itterhead->next->token_value);
 			free(itterhead->next);
-			itterhead->next = NULL;
-			token_add_back(&itterexp, temp);
-			token_add_back(head, itterexp);
-			itterexp = itterexp->next;
+			itterhead->next = itterexp;
+			if (!itterexp)
+				break ;
+			temp2 = itterexp->next;
+			itterhead->next->next = temp;
+			itterexp = temp2;
 		}
-		if (itterhead)
-			itterhead = itterhead->next;
+		itterhead = itterhead->next;
 	}
 }

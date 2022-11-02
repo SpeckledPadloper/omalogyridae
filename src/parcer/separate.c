@@ -6,7 +6,7 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/21 18:02:50 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/09/29 17:21:32 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/11/01 19:35:56 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,8 +97,8 @@ t_split_cmd_rdir	*split_cmd_rdir(t_token_section *current)
 		else
 			state = add_command_list(&cmd_io->head, &temp);
 	}
-	split->cmd_head = cmdlst_split(&cmd_io->head);
+	split->cmd_head = cmd_io->head;
 	split->in_head = rdirlst_split(&cmd_io->next->head, LESS, LESSLESS);
-	split->out_head = rdirlst_split(&cmd_io->next->next->head, GREAT, GREATGREAT);
+	split->out_head = rdirlst_split(&cmd_io->next->next->head, GREAT, 3);
 	return (split);
 }

@@ -6,7 +6,7 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/01 14:33:10 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/10/06 15:38:55 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/11/02 14:28:12 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,16 +20,30 @@
 #include <stdio.h>
 #include "../tests/tests.h"
 
-static char	**set_commands(t_token_section *head)
+static int	tokenlst_len(t_token *head)
+{
+	t_token	*itter;
+	int		len;
+
+	itter = head;
+	while (itter)
+	{
+		len++;
+		itter = itter->next;
+	}
+	return (len);
+}
+
+static char	**set_commands(t_token *head)
 {
 	char			**ret;
 	int				len;
-	t_token_section	*temp;
+	t_token			*temp;
 	int				cnt;
 
 	if (head == NULL)
 		return (NULL);
-	len = token_section_len(head);
+	len = tokenlst_len(head);
 	ret = malloc(sizeof(char *) * (len + 1));
 	if (!ret)
 		exit(EXIT_FAILURE);
@@ -37,7 +51,7 @@ static char	**set_commands(t_token_section *head)
 	cnt = 0;
 	while (temp && cnt < len)
 	{
-		ret[cnt] = ft_strdup(temp->head->token_value);
+		ret[cnt] = ft_strdup(temp->token_value);
 		cnt++;
 		temp = temp->next;
 	}

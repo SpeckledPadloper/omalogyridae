@@ -6,7 +6,7 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/26 19:38:46 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/10/01 19:59:44 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/11/02 20:05:44 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,6 @@ void	free_cmd_rdir(t_split_cmd_rdir	**split)
 {
 	if (!split || !(*split))
 		return ;
-	clear_section(&(*split)->cmd_head);
 	clear_section(&(*split)->in_head);
 	clear_section(&(*split)->out_head);
 	free(*split);

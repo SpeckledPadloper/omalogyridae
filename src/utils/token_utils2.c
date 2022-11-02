@@ -6,7 +6,7 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/18 16:19:49 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/10/31 19:50:43 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/11/02 17:21:11 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	tokenlst_clear(t_token **head)
 {
 	t_token	*temp;
 
-	if (head == NULL || *head == NULL)
+	if (head == NULL)
 		return ;
 	while (*head)
 	{

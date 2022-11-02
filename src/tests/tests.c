@@ -6,7 +6,7 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/20 15:28:53 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/10/31 17:30:47 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/11/02 14:58:55 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 void	test_lex(t_token *head)
 {
 	t_token		*itter;
+	size_t		len;
 
 	printf("\ttest_lext\n");
 	if (!head)
@@ -26,9 +27,12 @@ void	test_lex(t_token *head)
 		return ;
 	}
 	itter = head;
+	len = 0;
 	while (itter != NULL)
 	{
-		printf("token = %s\t| token_label = %d\t| token_index = %d\t| token_start = %d\t| token_end = %d\t| token_len = %zu\n", itter->token_value, itter->token_label, itter->i, itter->start_pos, itter->end_pos, ft_strlen(itter->token_value));
+		if (itter->token_value)
+			len = ft_strlen(itter->token_value);
+		printf("token = %s\t| token_label = %d\t| token_index = %d\t| token_start = %d\t| token_end = %d\t| token_len = %zu\n", itter->token_value, itter->token_label, itter->i, itter->start_pos, itter->end_pos, len);
 		itter = itter->next;
 	}
 	printf("\ttest_lex completed\n");
@@ -57,7 +61,7 @@ void	test_split(t_token_section *first)
 void	test_split_cmd_rdir(t_split_cmd_rdir *split)
 {
 	printf("\tCOMMAND LIST:\n");
-	test_split(split->cmd_head);
+	test_lex(split->cmd_head);
 	printf("\n\n\tREDIRECT IN LIST:\n");
 	test_split(split->in_head);
 	printf("\n\n\tREDIRECT OUT LIST:\n");

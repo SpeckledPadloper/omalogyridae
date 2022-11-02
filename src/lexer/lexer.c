@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/04/18 11:03:49 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/11/01 13:48:41 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/11/01 17:09:37 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,8 @@ void	init_lnav(t_line_nav *lnav, char *val)
 
 int	determine_lex_action(t_token **head, t_line_nav *lnav, t_metadata *data)
 {
-	if (lnav->state == STATE_EXPAND && !ft_isalnum(lnav->ret[lnav->i]))
+	if (lnav->state == STATE_EXPAND && \
+		(!ft_isalnum(lnav->ret[lnav->i]) && !(lnav->ret[lnav->i] == '_')))
 		fsm_block(lnav, head, data);
 	else if (is_token_separator(lnav->ret[lnav->i]))
 		fsm_block(lnav, head, data);

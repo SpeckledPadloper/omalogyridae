@@ -6,7 +6,7 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/18 16:18:33 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/11/01 13:48:56 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/11/02 20:09:44 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,11 +88,11 @@ int	main(int argc, char **argv, char **env)
 		if (input[0] != '\n')
 			add_history(input);
 		head = lex(input, &data);
+		free(input);
 		if (head == NULL)
 			continue ;
-		free(input);
 		ret = parce(head, &data.padloper_envp, &data);
-		if (!ret->cmd[0] && !ret->infile_list && !ret->outfile_list )
+		if ((ret->cmd && !ret->cmd[0]) && !ret->infile_list && !ret->outfile_list )
 		{
 			simple_cmd_clear(&ret);
 			continue ;
