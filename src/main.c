@@ -6,7 +6,7 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/18 16:18:33 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/10/27 13:12:14 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/10/27 14:13:29 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,14 +44,27 @@ static char	*input_eof(void)
 	return (ret);
 }
 
-static void	signal_handler(int sig)
-{
-	char	*prompt;
+//static void	signal_handler(int sig)
+//{
+//	char	*prompt;
+//
+//	if (sig == SIGINT)
+//		return ;
+//	else if (sig == SIGQUIT)
+//		return ;
+//}
 
+void	signal_handler(int sig)
+{
 	if (sig == SIGINT)
-		return ;
-	else if (sig == SIGQUIT)
-		return ;
+	{
+		ft_putendl_fd("\b\b  ", STDOUT_FILENO);
+		write(1, "speckeldStuff: ", 15);
+	}
+	if (sig == SIGQUIT)
+	{
+		ft_putstr_fd("\b\b  \b\b", STDOUT_FILENO);
+	}
 }
 
 static void	leaksatexit(void)
@@ -67,22 +80,17 @@ int	main(int argc, char **argv, char **env)
 	t_metadata	data;
 	t_fd_list	fd_list;
 	t_exec_list_sim *ret;
-	char		*prompt;
 
 	// atexit(&leaksatexit);
 	init_metadata(&data, &fd_list, env);
-	b_args = set_base_args(argc, argv, env);
 	input = "";
-	prompt = ft_strjoin(SHLNAME, "> ");
-	if (!prompt)
-		exit(EXIT_FAILURE);
 	signal(SIGINT, &signal_handler);
 	signal(SIGQUIT, &signal_handler);
 	kill(data.lastpid, SIGQUIT);
 	// kill(data.lastpid, SIGINT);
 	while (input != NULL)
 	{
-		input = readline(prompt);
+		input = readline(SHLPROM);
 		if (input == NULL)
 			input = input_eof();
 		add_history(input);
@@ -99,7 +107,5 @@ int	main(int argc, char **argv, char **env)
 		// exit(data.exitstatus);
 		simple_cmd_clear(&ret);
 	}
-	free(prompt);
-	free(b_args);
 	return (data.exitstatus);
 }

@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/10/27 13:13:11 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/10/27 14:17:31 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ void	execute_cmd(t_metadata *data, t_exec_list_sim *cmd_list)
 	path = NULL;
 	status = 0;
 	signal(SIGQUIT, &interrupt_handler);
-	printf("%d\n", WTERMSIG(status));
+	//printf("%d\n", WTERMSIG(status));
 	if (WTERMSIG(status) == SIGINT || WTERMSIG(status) == SIGQUIT)
 		exit(128 + WTERMSIG(status));
 	open_necessary_infiles(data, cmd_list);

@@ -6,13 +6,15 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/18 17:48:05 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/10/26 14:19:47 by lwiedijk      ########   odam.nl         */
+/*   Updated: 2022/10/27 14:10:39 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef STRUCTS_H
 # define STRUCTS_H
 # define SHLNAME "SpeckledPadloper"
+# define SHLPROM "SpeckledPadloper> "
+# define SHLERR "SpeckledPadloper: "
 # define BUILDIN_AMOUNT 7 // BUILTIN_AMOUNT
 # include <stdbool.h>
 # include <unistd.h>

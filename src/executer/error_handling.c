@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/10/27 11:30:59 by lwiedijk      ########   odam.nl         */
+/*   Updated: 2022/10/27 14:12:11 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ void	builtin_error(char *program, char *object, int errnum, t_metadata *data)
 	data->exitstatus = EXIT_FAILURE;
 	message = get_error_string(message, errnum);
 	print = NULL;
-	print = ft_strjoin("minishell: ", program);
+	print = ft_strjoin(SHLERR, program);
 	if (!print)
 		fatal_error();
 	print = ft_strjoin_free(print, object);
@@ -97,7 +97,7 @@ void	print_error_exit(char *errorobject, int errnocopy, int exitcode)
 
 	print = NULL;
 	errno_string = get_error_string(errno_string, errnocopy);
-	print = ft_strjoin("minishell: ", errorobject);
+	print = ft_strjoin(SHLERR, errorobject);
 	if (!print)
 		fatal_error();
 	print = ft_strjoin_free(print, ": ");
