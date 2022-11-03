@@ -6,7 +6,7 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/26 14:05:26 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/10/31 17:34:06 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/11/03 13:34:59 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,9 +37,9 @@ if == 3
 
 */
 
-static void	parent_sighandle(int sig)
+static void	empty_sighandle(int sig)
 {
-	write(2, "\n", 1);
+	write(1, "\n", 1);
 	rl_on_new_line();
 	rl_replace_line("", 0);
 	rl_redisplay();
@@ -86,8 +86,9 @@ void	sig_setup(int state)
 	change_tcattr(state);
 	if (state == PROC_PARNT)
 	{
-		signal(SIGINT, &parent_sighandle);
+		signal(SIGINT, &empty_sighandle);
 		signal(SIGQUIT, SIG_IGN);
+		signal(SIGCHLD, SIG_IGN);
 	}
 	if (state == PROC_CHLD)
 	{

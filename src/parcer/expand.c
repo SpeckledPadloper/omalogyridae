@@ -6,7 +6,7 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/28 13:38:24 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/11/03 12:26:27 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/11/03 13:07:48 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,7 +140,6 @@ void	expand_tokenlst(t_token_section **current, char ***env, \
 		(*current)->head->token_label = RDIR_AMBIGUOUS;
 		return ;
 	}
-	// test_lex(expandlst);
 	link_expand_tokens(&(*current)->head, &expandlst);
 }
 

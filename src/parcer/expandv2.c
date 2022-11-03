@@ -6,7 +6,7 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/19 14:24:48 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/11/02 17:46:15 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/11/03 12:36:29 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,10 +92,7 @@ t_token	*expand_tokenlst(t_token *head, char ***env, bool rd, t_metadata *data)
 		if (itter)
 			itter = itter->next;
 	}
-	test_lex(head);
-	test_lex(expandtoken);
 	link_expand_tokens(&head, &expandlst);
-	test_lex(head);
 	return (head);
 }
 
