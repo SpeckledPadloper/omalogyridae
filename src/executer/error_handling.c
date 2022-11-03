@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/10/27 11:30:59 by lwiedijk      ########   odam.nl         */
+/*   Updated: 2022/11/03 13:51:56 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ char	*get_error_string(char *errno_string, int errnocopy)
 
 static void	fatal_error(void)
 {
-	write(STDERR_FILENO, "minishell: ft_strjoin: Out of memory\n", 37);
+	write(STDERR_FILENO, "SpeckledPadloper: ft_strjoin: Out of memory\n", 37);
 	exit(EXIT_FAILURE);
 }
 
@@ -59,7 +59,7 @@ void	error_too_many_arg(t_metadata *data)
 	char	*message;
 
 	data->exitstatus = EXIT_FAILURE;
-	message = "minishell: exit: too many arguments\n";
+	message = "SpeckledPadloper: exit: too many arguments\n";
 	write(STDERR_FILENO, message, ft_strlen(message));
 	return ;
 }
@@ -72,7 +72,7 @@ void	builtin_error(char *program, char *object, int errnum, t_metadata *data)
 	data->exitstatus = EXIT_FAILURE;
 	message = get_error_string(message, errnum);
 	print = NULL;
-	print = ft_strjoin("minishell: ", program);
+	print = ft_strjoin(SHLERR, program);
 	if (!print)
 		fatal_error();
 	print = ft_strjoin_free(print, object);
@@ -97,7 +97,7 @@ void	print_error_exit(char *errorobject, int errnocopy, int exitcode)
 
 	print = NULL;
 	errno_string = get_error_string(errno_string, errnocopy);
-	print = ft_strjoin("minishell: ", errorobject);
+	print = ft_strjoin(SHLERR, errorobject);
 	if (!print)
 		fatal_error();
 	print = ft_strjoin_free(print, ": ");

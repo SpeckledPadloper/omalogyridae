@@ -6,7 +6,7 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/18 16:18:33 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/11/03 12:29:26 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/11/03 13:48:57 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,14 +75,11 @@ int	main(int argc, char **argv, char **env)
 	init_metadata(&data, &fd_list, env);
 	printf("exitstatus: [%d]\n", data.exitstatus);
 	input = "";
-	prompt = ft_strjoin(SHLNAME, "> ");
-	if (!prompt)
-		exit(EXIT_FAILURE);
 	while (input != NULL)
 	{
 		if (WTERMSIG(status) == SIGINT)
 			data.exitstatus = 1;
-		input = readline(prompt);
+		input = readline(SHLPROM);
 		if (input == NULL)
 			input = input_eof();
 		if (input[0] != '\n')
@@ -105,6 +102,5 @@ int	main(int argc, char **argv, char **env)
 		// exit(data.exitstatus);
 		simple_cmd_clear(&ret);
 	}
-	free(prompt);
 	return (data.exitstatus);
 }
