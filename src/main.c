@@ -6,7 +6,7 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/18 16:18:33 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/11/03 13:48:57 by lwiedijk      ########   odam.nl         */
+/*   Updated: 2022/11/03 14:12:53 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ int	main(int argc, char **argv, char **env)
 	status = 0;
 	sig_setup(PROC_PARNT);
 	init_metadata(&data, &fd_list, env);
-	printf("exitstatus: [%d]\n", data.exitstatus);
+	//printf("exitstatus: [%d]\n", data.exitstatus);
 	input = "";
 	while (input != NULL)
 	{
@@ -97,9 +97,9 @@ int	main(int argc, char **argv, char **env)
 		}
 		// test_simple_command(ret);
 		executer(&data, ret);
-		// printf("exitstatus: [%d]\n", data.exitstatus);
+		printf("exitstatus: [%d]\n", data.exitstatus);
 		// system("leaks minishell");
-		// exit(data.exitstatus);
+		//exit(data.exitstatus);
 		simple_cmd_clear(&ret);
 	}
 	return (data.exitstatus);

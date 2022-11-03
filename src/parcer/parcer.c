@@ -6,7 +6,7 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/18 17:44:02 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/11/03 12:28:59 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/11/03 13:58:59 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,8 +57,8 @@ t_exec_list_sim	*parce(t_token *head, char ***env, t_metadata *data)
 		free(split);
 		temp = temp->next;
 	}
-	printf("\n\n\n");
-	test_simple_command(simple_cmd);
-	printf("\n\n\n");
+	//printf("\n\n\n");
+	//test_simple_command(simple_cmd);
+	//printf("\n\n\n");
 	return (simple_cmd);
 }

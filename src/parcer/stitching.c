@@ -6,7 +6,7 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/29 14:49:02 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/11/02 20:43:00 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/11/03 13:57:27 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ void	stitch(t_split_cmd_rdir **current)
 		itter = cmd_split;
 		while (itter)
 		{
-			test_lex(itter->head);
+			//test_lex(itter->head);
 			token_add_back(&cmd_new, itter->head);
 			itter = itter->next;
 		}
