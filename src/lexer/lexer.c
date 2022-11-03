@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/04/18 11:03:49 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/11/01 17:09:37 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/11/03 16:01:30 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@
 #include "hdr/charchecks.h"
 #include "../hdr/structs.h"
 #include "hdr/errors.h"
+#include "../utils/hdr/line_navigation.h"
 
 #include "../tests/tests.h" //for testing, remove before handin.
 
@@ -91,15 +92,6 @@ static void	end_of_input(t_token **head, t_line_nav *lnav, t_metadata *data)
 		add_token_to_list(head, NULL, lnav, data);
 }
 
-void	init_lnav(t_line_nav *lnav, char *val)
-{
-	lnav->ret = val;
-	lnav->i = 0;
-	lnav->count = 0;
-	lnav->state = STATE_START;
-	lnav->prev_state = -1;
-}
-
 int	determine_lex_action(t_token **head, t_line_nav *lnav, t_metadata *data)
 {
 	if (lnav->state == STATE_EXPAND && \
@@ -136,8 +128,8 @@ t_token	*lex(char *ret, t_metadata *data)
 		lnav.i++;
 		lnav.count++;
 	}
-	// test_lex(head);
 	if (head && tokenlst_last(head)->token_label <= PIPE)
 		syntax_error("newline", &head, data);
+	test_lex(head);
 	return (head);
 }

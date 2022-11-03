@@ -6,7 +6,7 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/29 13:29:52 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/11/02 20:02:50 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/11/03 14:08:02 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@ void	link_expand_tokens(t_token **head, t_token **expand)
 		return ;
 	if ((*head) && (*head)->token_label == EXPAND)
 	{
-		printf("\nlink_expand_tokens\n");
 		if ((*expand)->token_value == NULL)
 			(*head) = (*head)->next;
 		else

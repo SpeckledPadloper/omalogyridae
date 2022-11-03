@@ -6,7 +6,7 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/18 16:18:33 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/11/03 13:54:10 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/11/03 14:17:57 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,14 +75,11 @@ int	main(int argc, char **argv, char **env)
 	init_metadata(&data, &fd_list, env);
 	printf("exitstatus: [%d]\n", data.exitstatus);
 	input = "";
-	prompt = ft_strjoin(SHLNAME, "> ");
-	if (!prompt)
-		exit(EXIT_FAILURE);
 	while (input != NULL)
 	{
 		if (WTERMSIG(status) == SIGINT)
 			data.exitstatus = 1;
-		input = readline(prompt);
+		input = readline(SHLPROM);
 		if (input == NULL)
 			input = input_eof();
 		if (input[0] != '\n')
@@ -100,10 +97,9 @@ int	main(int argc, char **argv, char **env)
 		}
 		// test_simple_command(ret);
 		executer(&data, ret);
-		// printf("exitstatus: [%d]\n", data.exitstatus);
+		printf("exitstatus: [%d]\n", data.exitstatus);
 		// system("leaks minishell");
 		simple_cmd_clear(&ret);
 	}
-	free(prompt);
 	return (data.exitstatus);
 }

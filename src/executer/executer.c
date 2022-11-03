@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/11/03 13:35:32 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/11/03 14:44:25 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,7 +127,7 @@ void	executer(t_metadata *meta_data, t_exec_list_sim *cmd_list)
 		wp = waitpid(-1, &status, 0);
 		change_tcattr(PROC_PARNT);
 		// fprintf(stderr, "wp signal terminated?? [%d] with: [%d] exitstat [%d] \n", WIFSIGNALED(status), WTERMSIG(status), WEXITSTATUS(status));
-		if (WIFSIGNALED(status))
+		if (WIFSIGNALED(status) && (WTERMSIG(status) == SIGINT || WTERMSIG(status) == SIGQUIT))
 		{
 			meta_data->exitstatus = sig_exit(status);
 			break ;

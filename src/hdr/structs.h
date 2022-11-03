@@ -6,14 +6,16 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/18 17:48:05 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/11/01 19:35:03 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/11/03 15:05:09 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef STRUCTS_H
 # define STRUCTS_H
 # define SHLNAME "SpeckledPadloper"
-# define BUILDIN_AMOUNT 7 // BUILTIN_AMOUNT
+# define SHLPROM "SpeckledPadloper> "
+# define SHLERR "SpeckledPadloper: "
+# define BUILDIN_AMOUNT 7
 # include <stdbool.h>
 # include <unistd.h>
 
@@ -42,12 +44,14 @@ typedef enum e_exit_error_code
 	CMD_NOT_FOUND = 127,
 }				t_exit_error_code;
 
-typedef struct s_base_args
+typedef struct s_line_nav
 {
-	int		argc;
-	char	**argv;
-	char	**env;
-}	t_base_args;
+	char	*ret;
+	int		i;
+	int		count;
+	int		state;
+	int		prev_state;
+}	t_line_nav;
 
 typedef struct s_token
 {

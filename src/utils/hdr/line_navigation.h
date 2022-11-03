@@ -1,27 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   sigpadloper.h                                      :+:    :+:            */
+/*   line_navigation.h                                  :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2022/10/27 13:59:04 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/11/03 14:27:53 by mteerlin      ########   odam.nl         */
+/*   Created: 2022/11/03 15:11:50 by mteerlin      #+#    #+#                 */
+/*   Updated: 2022/11/03 16:02:04 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef SIGPADLOPER_H
-# define SIGPADLOPER_H
+#ifndef LINE_NAVIGATION_H
+# define LINE_NAVIGATION_H
 # include "../../hdr/structs.h"
 
-typedef enum e_process_state
-{
-	PROC_PARNT = 1,
-	PROC_CHLD = 2
-}	t_process_state;
-
-void	change_tcattr(int state);
-void	sig_setup(int state);
-int		sig_exit(int status);
+void	init_lnav(t_line_nav *lnav, char *val);
 
 #endif

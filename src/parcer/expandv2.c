@@ -6,7 +6,7 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/19 14:24:48 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/11/03 12:36:29 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/11/03 14:19:21 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,6 @@ t_token	*expand_tokenlst(t_token *head, char ***env, bool rd, t_metadata *data)
 	expandlst = NULL;
 	while (itter)
 	{
-		printf("%s\n", itter->token_value);
 		if (itter->token_label == EXPAND)
 		{
 			expandtoken = expand_token(itter, env, data);
@@ -106,6 +105,7 @@ void	expand_iolst(t_token_section **head, char ***env, t_metadata *data)
 	itter = (*head);
 	while (itter)
 	{
+		printf("segfault finder\n");
 		if (itter->head && itter->head->start_pos == -1)
 		{
 			itter->head->token_label = RDIR_DOUBLE;

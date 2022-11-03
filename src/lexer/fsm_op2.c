@@ -6,7 +6,7 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/16 20:28:42 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/11/03 12:16:43 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/11/03 14:12:00 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int	set_state_expand(t_line_nav *lnav, t_token **head, t_metadata *data)
 	if (lnav->ret[lnav->i + 1] == '?')
 	{
 		lnav->i += 2;
-		lnav->count += 1;
+		lnav->count += 2;
 		add_token_to_list(head, allocate_token_value(lnav), lnav, data);
 		lnav->count = 0;
 		if (lnav->prev_state == STATE_DQUOTE)
@@ -66,11 +66,12 @@ int	fsm_expand(t_line_nav *lnav, t_token **head, t_metadata *data)
 	char	*token_value;
 
 	add_token_to_list(head, allocate_token_value(lnav), lnav, data);
-	lnav->count = 0;
+	lnav->count = -1;
 	if (lnav->prev_state == STATE_DQUOTE)
 	{
 		if (lnav->ret[lnav->i] == '"')
 		{
+			lnav->count = 0;
 			token_value = allocate_token_value(lnav);
 			if (token_value == NULL)
 				token_value = ft_strdup("\0");

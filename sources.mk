@@ -25,7 +25,6 @@ src/lexer/fsm_op2.c \
 src/lexer/lexer.c \
 src/lexer/stx_error.c \
 src/main.c \
-src/parcer/expand.c \
 src/parcer/expand2.c \
 src/parcer/expandv2.c \
 src/parcer/parcer.c \
@@ -36,6 +35,7 @@ src/parcer/stitching.c \
 src/signals/signals.c \
 src/tests/tests.c \
 src/utils/filelst_utils.c \
+src/utils/line_navigation.c \
 src/utils/simple_cmd_utils.c \
 src/utils/token_section_utils.c \
 src/utils/token_section_utils2.c \
@@ -50,10 +50,12 @@ src/lexer/hdr/errors.h \
 src/lexer/hdr/fsm.h \
 src/lexer/hdr/lexer.h \
 src/parcer/hdr/expand.h \
+src/parcer/hdr/expandv2.h \
 src/parcer/hdr/parcer.h \
 src/parcer/hdr/separate.h \
 src/signals/hdr/sigpadloper.h \
 src/tests/tests.h \
 src/utils/hdr/filelst_utils.h \
+src/utils/hdr/line_navigation.h \
 src/utils/hdr/simple_cmd_utils.h \
 src/utils/hdr/token_utils.h \
