@@ -6,7 +6,7 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/18 16:18:33 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/11/02 20:09:44 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/11/03 12:29:26 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,12 +92,12 @@ int	main(int argc, char **argv, char **env)
 		if (head == NULL)
 			continue ;
 		ret = parce(head, &data.padloper_envp, &data);
-		if ((ret->cmd && !ret->cmd[0]) && !ret->infile_list && !ret->outfile_list )
+		reset_metadata(&data, &fd_list, env);
+		if ((ret->cmd && !ret->cmd[0]) && !ret->infile_list && !ret->outfile_list)
 		{
 			simple_cmd_clear(&ret);
 			continue ;
 		}
-		reset_metadata(&data, &fd_list, env);
 		// test_simple_command(ret);
 		executer(&data, ret);
 		// printf("exitstatus: [%d]\n", data.exitstatus);

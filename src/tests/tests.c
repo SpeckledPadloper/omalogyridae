@@ -6,7 +6,7 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/20 15:28:53 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/11/02 14:58:55 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/11/03 12:30:20 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ void	test_filelst(t_file *head, bool is_infile)
 	temp = head;
 	while (temp)
 	{
-		printf("filename: %s\t| filemode: %d\n", temp->filename, temp->mode);
+		printf("filename: [%s]\t| filemode: [%d]\n", temp->filename, temp->mode);
 		temp = temp->next;
 	}	
 }
@@ -103,7 +103,7 @@ void	test_simple_command(t_exec_list_sim	*current)
 		{
 			while (temp->cmd[cnt])
 			{
-				printf("%s\n", temp->cmd[cnt]);
+				printf("[%s]\n", temp->cmd[cnt]);
 				cnt++;
 			}
 		}

@@ -6,7 +6,7 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/18 17:44:02 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/11/02 20:27:55 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/11/03 12:28:59 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ t_exec_list_sim	*parce(t_token *head, char ***env, t_metadata *data)
 		split = split_cmd_rdir(temp);
 		// test_split_cmd_rdir(split);
 		expand_variables(split, env, data);
-		test_split_cmd_rdir(split);
+		// test_split_cmd_rdir(split);
 		stitch(&split);
 		// printf("\tpost stitch\n");
 		// test_split_cmd_rdir(split);
@@ -57,7 +57,7 @@ t_exec_list_sim	*parce(t_token *head, char ***env, t_metadata *data)
 		free(split);
 		temp = temp->next;
 	}
-	printf("\n\n\nTEST SIMPLE COMMAND");
+	printf("\n\n\n");
 	test_simple_command(simple_cmd);
 	printf("\n\n\n");
 	return (simple_cmd);
