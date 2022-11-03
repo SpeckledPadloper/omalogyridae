@@ -6,7 +6,7 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/18 16:18:33 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/11/03 12:29:26 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/11/03 13:54:10 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,6 @@ int	main(int argc, char **argv, char **env)
 		executer(&data, ret);
 		// printf("exitstatus: [%d]\n", data.exitstatus);
 		// system("leaks minishell");
-		// exit(data.exitstatus);
 		simple_cmd_clear(&ret);
 	}
 	free(prompt);
