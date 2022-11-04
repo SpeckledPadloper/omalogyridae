@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/11/04 13:54:34 by lwiedijk      ########   odam.nl         */
+/*   Updated: 2022/11/04 15:09:47 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,7 +114,7 @@ void	executer(t_metadata *meta_data, t_exec_list_sim *cmd_list)
 {
 	int		status;
 	pid_t	wp;
-	
+
 	status = 0;
 	meta_data->cmd_count = ft_sim_lstsize(cmd_list);
 	if (get_all_heredoc(meta_data, cmd_list))
@@ -129,7 +129,7 @@ void	executer(t_metadata *meta_data, t_exec_list_sim *cmd_list)
 	{
 		wp = waitpid(-1, 0, 0);
 		if (wp == -1)
-			break;
+			break ;
 	}
 	if (!WIFSIGNALED(status))
 		meta_data->exitstatus = WEXITSTATUS(status);
