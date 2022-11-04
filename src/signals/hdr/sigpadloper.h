@@ -6,7 +6,7 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/27 13:59:04 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/11/03 14:24:09 by lwiedijk      ########   odam.nl         */
+/*   Updated: 2022/11/04 13:30:41 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,8 @@ typedef enum e_process_state
 {
 	PROC_PARNT = 1,
 	PROC_CHLD = 2,
-	WPID_LOOP = 3,
+	PROC_HDOC = 3,
+	WPID_LOOP = 4,
 }	t_process_state;
 
 void	change_tcattr(int state);

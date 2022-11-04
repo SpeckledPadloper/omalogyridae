@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/10/31 20:22:13 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/11/04 12:56:23 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,5 +72,6 @@ void	reset_metadata(t_metadata *data, t_fd_list *fd_list, char **envp)
 	data->child_count = 0;
 	data->cmd_count = 0;
 	data->lastpid = 0;
+	data->heredocpid = 0;
 	data->exitstatus = 0;
 }

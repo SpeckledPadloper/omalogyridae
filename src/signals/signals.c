@@ -6,7 +6,7 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/26 14:05:26 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/11/03 16:20:02 by lwiedijk      ########   odam.nl         */
+/*   Updated: 2022/11/04 13:52:16 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,11 @@ void	change_tcattr(int state)
 		term.c_lflag |= ISIG;
 		term.c_lflag |= ECHOCTL;
 	}
+	if (state == PROC_HDOC)
+	{
+		term.c_lflag |= ISIG;
+		term.c_lflag &= ~ECHOCTL;
+	}
 	tcsetattr(2, TCSANOW, &term);
 }
 
@@ -92,6 +97,11 @@ void	sig_setup(int state)
 	if (state == PROC_CHLD)
 	{
 		signal(SIGQUIT, &quit_handle);
+		signal(SIGINT, SIG_DFL);
+	}
+	if (state == PROC_HDOC)
+	{
+		signal(SIGQUIT, SIG_IGN);
 		signal(SIGINT, SIG_DFL);
 	}
 }

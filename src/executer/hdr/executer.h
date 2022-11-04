@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/10/27 11:38:31 by lwiedijk      ########   odam.nl         */
+/*   Updated: 2022/11/04 13:40:20 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,6 @@ char	*get_error_string(char *errno_string, int errnocopy);
 
 /*-------------------------heredoc handling-------------------------*/
 
-void	get_all_heredoc(t_metadata *data, t_exec_list_sim *cmd_list);
+int		get_all_heredoc(t_metadata *data, t_exec_list_sim *cmd_list);
 
 #endif
