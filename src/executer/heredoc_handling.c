@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/11/04 14:31:48 by lwiedijk      ########   odam.nl         */
+/*   Updated: 2022/11/04 15:05:09 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,35 +28,39 @@ static char	*get_input(char *str)
 	return (str);
 }
 
-static int	heredoc_handling(t_metadata *data, int *pipe_end, char *limiter)
+static void	do_heredoc(int *pipe_end, char *limiter)
 {
 	char	*str;
 	char	*temp;
-	int		here_status;
 
 	str = NULL;
+	sig_setup(PROC_HDOC);
+	str = get_input(str);
+	while (str && ft_strcmp(limiter, str))
+	{
+		temp = ft_strjoin(str, "\n");
+		if (!temp)
+			print_error_exit("malloc", errno, EXIT_FAILURE);
+		write (pipe_end[1], temp, ft_strlen(temp));
+		free(str);
+		free(temp);
+		str = get_input(str);
+	}
+	if (str)
+		free(str);
+	close(pipe_end[1]);
+	close(pipe_end[0]);
+	exit(0);
+}
+
+static int	heredoc_handling(t_metadata *data, int *pipe_end, char *limiter)
+{
+	int		here_status;
+
 	pipe(pipe_end);
 	data->heredocpid = fork();
 	if (data->heredocpid == 0)
-	{
-		sig_setup(PROC_HDOC);
-		str = get_input(str);
-		while (str && ft_strcmp(limiter, str))
-		{
-			temp = ft_strjoin(str, "\n");
-			if (!temp)
-				print_error_exit("malloc", errno, EXIT_FAILURE);
-			write (pipe_end[1], temp, ft_strlen(temp));
-			free(str);
-			free(temp);
-			str = get_input(str);
-		}
-		if (str)
-			free(str);
-		close(pipe_end[1]);
-		close(pipe_end[0]);
-		exit(0);
-	}
+		do_heredoc(pipe_end, limiter);
 	close(pipe_end[1]);
 	waitpid(data->heredocpid, &here_status, 0);
 	if (WIFSIGNALED(here_status))
@@ -67,34 +71,42 @@ static int	heredoc_handling(t_metadata *data, int *pipe_end, char *limiter)
 	return (0);
 }
 
+int	get_heredocs_this_cmd(t_metadata *data, t_exec_list_sim *cmd_list)
+{
+	t_file	*itter;
+	int		ret;
+
+	ret = 0;
+	cmd_list->heredoc_pipe[0] = 0;
+	itter = cmd_list->infile_list;
+	while (itter)
+	{
+		if (itter->mode == RDIR_DOUBLE)
+			ret = heredoc_handling(data, cmd_list->heredoc_pipe,
+					itter->filename);
+		if (itter->next && cmd_list->heredoc_pipe[0])
+		{
+			close_and_check(cmd_list->heredoc_pipe[0]);
+			cmd_list->heredoc_pipe[0] = 0;
+		}
+		if (ret)
+			return (1);
+		itter = itter->next;
+	}
+	return (0);
+}
+
 int	get_all_heredoc(t_metadata *data, t_exec_list_sim *cmd_list)
 {
 	int		i;
-	int		ret;
-	t_file	*head;
+	t_file	*itter;
 
 	i = 0;
-	ret = 0;
 	while (i < data->cmd_count)
 	{
-		cmd_list->heredoc_pipe[0] = 0;
-		head = cmd_list->infile_list;
-		while (cmd_list->infile_list)
-		{
-			if (cmd_list->infile_list->mode == RDIR_DOUBLE)
-				ret = heredoc_handling
-					(data, cmd_list->heredoc_pipe, cmd_list->infile_list->filename);
-			if (cmd_list->infile_list->next && cmd_list->heredoc_pipe[0])
-			{
-				close_and_check(cmd_list->heredoc_pipe[0]);
-				cmd_list->heredoc_pipe[0] = 0;
-			}
-			if (ret)
-				return (1);
-			cmd_list->infile_list = cmd_list->infile_list->next;
-		}
+		if (get_heredocs_this_cmd(data, cmd_list))
+			return (1);
 		i++;
-		cmd_list->infile_list = head;
 		cmd_list = cmd_list->next;
 	}
 	return (0);
