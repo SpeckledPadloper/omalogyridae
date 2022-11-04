@@ -6,7 +6,7 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/18 16:18:33 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/11/04 14:58:54 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/11/04 16:22:55 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ int	main(int argc, char **argv, char **env)
 			add_history(input);
 		if (g_exitstatus)
 			data.exitstatus = g_exitstatus;
-		head = lex(input, &data);
+		head = lex(input, &data.exitstatus);
 		free(input);
 		if (head == NULL)
 			continue ;

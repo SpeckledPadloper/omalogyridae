@@ -6,7 +6,7 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/01 15:05:14 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/10/01 19:54:35 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/11/04 17:39:19 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,19 +20,34 @@
 #include <stdio.h>
 #include <unistd.h>
 
+static void	rdirlst_split_setstart(int state, int *start_pos)
+{
+	if (state == LESSLESS)
+		*start_pos = -1;
+	if (state == GREATGREAT)
+		*start_pos = -2;
+}
+
+static void	rdirlst_cut(t_token **head, t_token **temp, t_token_section **first)
+{
+	int	state;
+
+	state = (*temp)->next->token_label;
+	add_section_to_list(first, *head);
+	cut_token(head, temp);
+	*temp = *head;
+	rdirlst_split_setstart(state, &(*head)->start_pos);
+}
+
 t_token_section	*rdirlst_split(t_token **head, int f1, int f2)
 {
 	t_token_section	*first;
 	t_token			*temp;
-	int				state;
 
 	if (!head || !(*head))
 		return (NULL);
 	first = NULL;
-	if ((*head)->token_label == LESSLESS)
-		(*head)->next->start_pos = -1;
-	if ((*head)->token_label == GREATGREAT)
-		(*head)->next->start_pos = -2;
+	rdirlst_split_setstart((*head)->token_label, &(*head)->next->start_pos);
 	temp = (*head)->next;
 	(*head)->next = NULL;
 	tokenlst_clear(head);
@@ -40,16 +55,7 @@ t_token_section	*rdirlst_split(t_token **head, int f1, int f2)
 	while (temp && temp->next)
 	{
 		if (temp->next->token_label == f1 || temp->next->token_label == f2)
-		{
-			state = temp->next->token_label;
-			add_section_to_list(&first, *head);
-			cut_token(head, &temp);
-			temp = *head;
-			if (state == LESSLESS)
-				(*head)->start_pos = -1;
-			if (state == GREATGREAT)
-				(*head)->start_pos = -2;
-		}
+			rdirlst_cut(head, &temp, &first);
 		else if (temp)
 			temp = temp->next;
 	}

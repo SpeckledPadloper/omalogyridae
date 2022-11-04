@@ -6,7 +6,7 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/18 17:48:05 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/11/04 14:32:23 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/11/04 17:00:00 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,6 +116,7 @@ typedef struct s_metadata
 	int			child_count;
 	int			cmd_count;
 	pid_t		lastpid;
+	pid_t		heredocpid;
 	int			exitstatus;
 }					t_metadata;
 

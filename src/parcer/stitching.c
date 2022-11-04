@@ -6,7 +6,7 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/29 14:49:02 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/11/03 16:20:12 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/11/04 17:06:21 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,13 @@ bool	is_ambiguous_rdir(t_token *current)
 	return (false);
 }
 
+static void	carryover_lapoi(t_token *source, t_token *dest)
+{
+	dest->token_label = source->token_label;
+	dest->start_pos = source->start_pos;
+	dest->i = source->i;
+}
+
 static void	stitch_tokens(t_token **current)
 {
 	t_token			*temp;
@@ -40,8 +47,7 @@ static void	stitch_tokens(t_token **current)
 	char			*temp_str;
 
 	temp = *current;
-	temp_str = malloc(sizeof(char));
-	temp_str[0] = '\0';
+	temp_str = ft_calloc(1, sizeof(char));
 	if (!temp_str)
 		exit(EXIT_FAILURE);
 	while (temp)
@@ -56,11 +62,7 @@ static void	stitch_tokens(t_token **current)
 	}
 	temp = exp_new_token(stitched_value);
 	if ((*current))
-	{
-		temp->token_label = (*current)->token_label;
-		temp->start_pos = (*current)->start_pos;
-		temp->i = (*current)->i;
-	}
+		carryover_lapoi(*current, temp);
 	tokenlst_clear(current);
 	(*current) = temp;
 }
@@ -91,7 +93,6 @@ void	stitch(t_split_cmd_rdir **current)
 		itter = cmd_split;
 		while (itter)
 		{
-			//test_lex(itter->head);
 			token_add_back(&cmd_new, itter->head);
 			itter = itter->next;
 		}

@@ -6,7 +6,7 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/19 14:24:48 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/11/04 14:57:51 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/11/04 16:47:58 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,12 +80,9 @@ t_token	*expand_tokenlst(t_token *head, char ***env, bool rd, t_metadata *data)
 	expandlst = NULL;
 	while (itter)
 	{
-		//printf("%s\n", itter->token_value);
 		if (itter->token_label == EXPAND)
 		{
-			printf("expand %s to %d\n", expandtoken->token_value, data->exitstatus);
 			expandtoken = expand_token(itter, env, data);
-			printf("expand %s to %d\n", expandtoken->token_value, data->exitstatus);
 			token_add_back(&expandlst, expandtoken);
 			if (rd && expandtoken->token_value == NULL)
 			{
