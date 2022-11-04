@@ -6,7 +6,7 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/18 17:48:05 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/11/03 15:05:09 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/11/04 14:32:23 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@
 # define BUILDIN_AMOUNT 7
 # include <stdbool.h>
 # include <unistd.h>
+
+int	g_exitstatus;
 
 typedef enum e_file_flags
 {

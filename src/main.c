@@ -6,7 +6,7 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/18 16:18:33 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/11/03 14:17:57 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/11/04 14:58:54 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,29 +61,29 @@ static void	leaksatexit(void)
 
 int	main(int argc, char **argv, char **env)
 {
-	t_token		*head;
-	char		*input;
-	t_metadata	data;
-	t_fd_list	fd_list;
+	t_token			*head;
+	char			*input;
+	t_metadata		data;
+	t_fd_list		fd_list;
 	t_exec_list_sim *ret;
-	char		*prompt;
-	int			status;
+	char			*prompt;
+	int				status;
 	struct termios	term;
 
 	status = 0;
 	sig_setup(PROC_PARNT);
 	init_metadata(&data, &fd_list, env);
-	printf("exitstatus: [%d]\n", data.exitstatus);
+	//printf("exitstatus: [%d]\n", data.exitstatus);
 	input = "";
 	while (input != NULL)
 	{
-		if (WTERMSIG(status) == SIGINT)
-			data.exitstatus = 1;
 		input = readline(SHLPROM);
 		if (input == NULL)
 			input = input_eof();
 		if (input[0] != '\n')
 			add_history(input);
+		if (g_exitstatus)
+			data.exitstatus = g_exitstatus;
 		head = lex(input, &data);
 		free(input);
 		if (head == NULL)
@@ -97,8 +97,9 @@ int	main(int argc, char **argv, char **env)
 		}
 		// test_simple_command(ret);
 		executer(&data, ret);
-		printf("exitstatus: [%d]\n", data.exitstatus);
+		printf("exitstatus:\t[%d]\n", data.exitstatus);
 		// system("leaks minishell");
+		//exit(data.exitstatus);
 		simple_cmd_clear(&ret);
 	}
 	return (data.exitstatus);

@@ -6,7 +6,7 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/26 14:05:26 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/11/03 14:27:50 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/11/04 15:02:41 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,10 +39,16 @@ if == 3
 
 static void	empty_sighandle(int sig)
 {
-	write(1, "\n", 1);
+	write(1, "\n", 2);
 	rl_on_new_line();
 	rl_replace_line("", 0);
 	rl_redisplay();
+	g_exitstatus = 1;
+}
+
+static void	heredoc_sighandle(int sig)
+{
+	exit(1);
 }
 
 static void	quit_handle(int sig)
@@ -67,10 +73,7 @@ void	change_tcattr(int state)
 
 	tcgetattr(2, &term);
 	if (state == PROC_PARNT)
-	{
-		term.c_lflag &= ~ISIG;
 		term.c_lflag &= ~ECHOCTL;
-	}
 	if (state == PROC_CHLD)
 	{
 		term.c_lflag |= ISIG;
@@ -93,5 +96,9 @@ void	sig_setup(int state)
 	{
 		signal(SIGQUIT, &quit_handle);
 		signal(SIGINT, SIG_DFL);
+	}
+	if (state == PROC_HEREDOC)
+	{
+		signal(SIGINT, &heredoc_sighandle);
 	}
 }

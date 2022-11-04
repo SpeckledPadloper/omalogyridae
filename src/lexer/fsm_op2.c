@@ -6,7 +6,7 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/16 20:28:42 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/11/03 14:12:00 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/11/04 15:20:14 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,14 +21,14 @@
 
 /*fsm_expand still needs to be normed*/
 
-int	set_state_expand(t_line_nav *lnav, t_token **head, t_metadata *data)
+int	set_state_expand(t_line_nav *lnav, t_token **head, int *exitstatus)
 {
 	lnav->count = 0;
 	if (lnav->ret[lnav->i + 1] == '?')
 	{
 		lnav->i += 2;
 		lnav->count += 2;
-		add_token_to_list(head, allocate_token_value(lnav), lnav, data);
+		add_token_to_list(head, allocate_token_value(lnav), lnav, exitstatus);
 		lnav->count = 0;
 		if (lnav->prev_state == STATE_DQUOTE)
 		{
@@ -40,12 +40,12 @@ int	set_state_expand(t_line_nav *lnav, t_token **head, t_metadata *data)
 	return (STATE_EXPAND);
 }
 
-int	fsm_dquote(t_line_nav *lnav, t_token **head, t_metadata *data)
+int	fsm_dquote(t_line_nav *lnav, t_token **head, int *exitstatus)
 {
 	if (lnav->ret[lnav->i] == '"')
 	{
 		lnav->count--;
-		add_token_to_list(head, allocate_token_value(lnav), lnav, data);
+		add_token_to_list(head, allocate_token_value(lnav), lnav, exitstatus);
 		lnav->count = -1;
 		lnav->prev_state = -1;
 		return (STATE_WS);
@@ -53,44 +53,47 @@ int	fsm_dquote(t_line_nav *lnav, t_token **head, t_metadata *data)
 	else if (lnav->ret[lnav->i] == '$')
 	{
 		lnav->count -= 1;
-		add_token_to_list(head, allocate_token_value(lnav), lnav, data);
+		add_token_to_list(head, allocate_token_value(lnav), lnav, exitstatus);
 		lnav->prev_state = STATE_DQUOTE;
-		return (set_state_expand(lnav, head, data));
+		return (set_state_expand(lnav, head, exitstatus));
 	}
 	else
 		return (STATE_DQUOTE);
 }
 
-int	fsm_expand(t_line_nav *lnav, t_token **head, t_metadata *data)
+static int	fms_exp_to_dq(t_line_nav *lnav, t_token **head, int *exitstatus)
 {
 	char	*token_value;
 
-	add_token_to_list(head, allocate_token_value(lnav), lnav, data);
+	if (lnav->ret[lnav->i] == '"')
+	{
+		lnav->count = 0;
+		token_value = allocate_token_value(lnav);
+		if (token_value == NULL)
+			token_value = ft_strdup("\0");
+		lnav->state = STATE_DQUOTE;
+		add_token_to_list(head, token_value, lnav, exitstatus);
+		lnav->count = -1;
+		lnav->prev_state = -1;
+		return (STATE_WS);
+	}
+	else if (lnav->ret[lnav->i] == '$')
+		return (set_state_expand(lnav, head, exitstatus));
+	else
+	{
+		lnav->count = 1;
+		return (STATE_DQUOTE);
+	}
+}
+
+int	fsm_expand(t_line_nav *lnav, t_token **head, int *exitstatus)
+{
+	add_token_to_list(head, allocate_token_value(lnav), lnav, exitstatus);
 	lnav->count = -1;
 	if (lnav->prev_state == STATE_DQUOTE)
-	{
-		if (lnav->ret[lnav->i] == '"')
-		{
-			lnav->count = 0;
-			token_value = allocate_token_value(lnav);
-			if (token_value == NULL)
-				token_value = ft_strdup("\0");
-			lnav->state = STATE_DQUOTE;
-			add_token_to_list(head, token_value, lnav, data);
-			lnav->count = -1;
-			lnav->prev_state = -1;
-			return (STATE_WS);
-		}
-		else if (lnav->ret[lnav->i] == '$')
-			return (set_state_expand(lnav, head, data));
-		else
-		{
-			lnav->count = 1;
-			return (STATE_DQUOTE);
-		}
-	}
+		return (fms_exp_to_dq(lnav, head, exitstatus));
 	else if (is_special_char(lnav->ret[lnav->i]))
-		return (fsm_special_char(lnav, head, data));
+		return (fsm_special_char(lnav, head, exitstatus));
 	else
 	{
 		if (!ft_isalnum(lnav->ret[lnav->i]))

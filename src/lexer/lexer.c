@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/04/18 11:03:49 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/11/03 16:01:30 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/11/04 15:10:55 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,23 +51,23 @@ char	*do_special_char(t_line_nav *lnav)
 	return (token);
 }
 
-static void	fsm_block(t_line_nav *lnav, t_token **head, t_metadata *data)
+static void	fsm_block(t_line_nav *lnav, t_token **head, int *exitstatus)
 {
 	if (lnav->state == STATE_START)
-		lnav->state = fsm_start(lnav, head, data);
+		lnav->state = fsm_start(lnav, head, exitstatus);
 	else if (lnav->state == STATE_COMMON)
-		lnav->state = fsm_common(lnav, head, data);
+		lnav->state = fsm_common(lnav, head, exitstatus);
 	else if (lnav->state == STATE_WS)
-		lnav->state = fsm_whitespace(lnav, head, data);
+		lnav->state = fsm_whitespace(lnav, head, exitstatus);
 	else if (lnav->state == STATE_SQUOTE)
-		lnav->state = fsm_squote(lnav, head, data);
+		lnav->state = fsm_squote(lnav, head, exitstatus);
 	else if (lnav->state == STATE_DQUOTE)
-		lnav->state = fsm_dquote(lnav, head, data);
+		lnav->state = fsm_dquote(lnav, head, exitstatus);
 	else if (lnav->state == STATE_EXPAND)
-		lnav->state = fsm_expand(lnav, head, data);
+		lnav->state = fsm_expand(lnav, head, exitstatus);
 }
 
-static void	end_of_input(t_token **head, t_line_nav *lnav, t_metadata *data)
+static void	end_of_input(t_token **head, t_line_nav *lnav, int *exitstatus)
 {
 	if (lnav->state == STATE_SQUOTE || lnav->state == STATE_DQUOTE \
 		|| (lnav->state == STATE_EXPAND && lnav->prev_state == STATE_DQUOTE))
@@ -86,24 +86,24 @@ static void	end_of_input(t_token **head, t_line_nav *lnav, t_metadata *data)
 	{
 		lnav->i++;
 		lnav->count++;
-		add_token_to_list(head, allocate_token_value(lnav), lnav, data);
+		add_token_to_list(head, allocate_token_value(lnav), lnav, exitstatus);
 	}
 	else
-		add_token_to_list(head, NULL, lnav, data);
+		add_token_to_list(head, NULL, lnav, exitstatus);
 }
 
-int	determine_lex_action(t_token **head, t_line_nav *lnav, t_metadata *data)
+int	determine_lex_action(t_token **head, t_line_nav *lnav, int *exitstatus)
 {
 	if (lnav->state == STATE_EXPAND && \
 		(!ft_isalnum(lnav->ret[lnav->i]) && !(lnav->ret[lnav->i] == '_')))
-		fsm_block(lnav, head, data);
+		fsm_block(lnav, head, exitstatus);
 	else if (is_token_separator(lnav->ret[lnav->i]))
-		fsm_block(lnav, head, data);
+		fsm_block(lnav, head, exitstatus);
 	else if (lnav->state <= STATE_WS || lnav->state == STATE_COMMON)
 		lnav->state = STATE_COMMON;
 	if (is_end_of_input(lnav->ret[lnav->i + 1]))
 	{
-		end_of_input(head, lnav, data);
+		end_of_input(head, lnav, exitstatus);
 		return (0);
 	}
 	if (lnav->state == STATE_STXERROR)
@@ -114,7 +114,7 @@ int	determine_lex_action(t_token **head, t_line_nav *lnav, t_metadata *data)
 	return (1);
 }
 
-t_token	*lex(char *ret, t_metadata *data)
+t_token	*lex(char *ret, int *exitstatus)
 {
 	t_token		*head;
 	t_line_nav	lnav;
@@ -123,13 +123,13 @@ t_token	*lex(char *ret, t_metadata *data)
 	head = NULL;
 	while (lnav.ret[lnav.i])
 	{
-		if (!determine_lex_action(&head, &lnav, data))
+		if (!determine_lex_action(&head, &lnav, exitstatus))
 			break ;
 		lnav.i++;
 		lnav.count++;
 	}
 	if (head && tokenlst_last(head)->token_label <= PIPE)
-		syntax_error("newline", &head, data);
+		syntax_error("newline", &head, exitstatus);
 	test_lex(head);
 	return (head);
 }

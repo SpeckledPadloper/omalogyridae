@@ -6,7 +6,7 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/18 17:44:02 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/11/03 14:07:32 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/11/04 15:03:08 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,19 +40,13 @@ t_exec_list_sim	*parce(t_token *head, char ***env, t_metadata *data)
 	t_exec_list_sim		*simple_cmd;
 
 	first = tokenlst_split(&head);
-	// test_split(first);
-	//printf("\n");
 	temp = first;
 	simple_cmd = NULL;
 	while (temp)
 	{
 		split = split_cmd_rdir(temp);
-		// test_split_cmd_rdir(split);
 		expand_variables(split, env, data);
-		// test_split_cmd_rdir(split);
 		stitch(&split);
-		// printf("\tpost stitch\n");
-		// test_split_cmd_rdir(split);
 		simple_cmd_add_back(&simple_cmd, set_simple_command(split));
 		free(split);
 		temp = temp->next;

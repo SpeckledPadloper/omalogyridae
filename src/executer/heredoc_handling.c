@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/10/25 15:52:09 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/11/03 19:15:19 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,18 @@
 #include "../../libft/libft.h"
 #include "hdr/executer.h"
 #include "../hdr/structs.h"
+#include <stdio.h>
 
 static char	*get_input(char *str)
 {
+	int ret;
+
+	ret = 0;
 	write (STDOUT_FILENO, "> ", 2);
-	if (get_next_line(STDIN_FILENO, &str) == -1)
+	ret = get_next_line(STDIN_FILENO, &str);
+	if (ret == 0)
+		return (NULL);
+	if (ret == -1)
 		print_error_exit("malloc", errno, EXIT_FAILURE);
 	return (str);
 }
@@ -33,7 +40,7 @@ static void	heredoc_handling(int *pipe_end, char *limiter)
 	str = NULL;
 	pipe(pipe_end);
 	str = get_input(str);
-	while (ft_strcmp(limiter, str))
+	while (str && ft_strcmp(limiter, str))
 	{
 		temp = ft_strjoin(str, "\n");
 		if (!temp)

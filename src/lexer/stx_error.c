@@ -6,7 +6,7 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/18 19:37:01 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/10/25 13:48:28 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/11/04 15:18:48 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,9 @@
 
 #include <stdio.h>
 
-bool	syntax_error(char *token, t_token **head, t_metadata *meta)
+bool	syntax_error(char *token, t_token **head, int *exitstatus)
 {
-	meta->exitstatus = 258;
+	*exitstatus = 258;
 	write(2, SHLNAME, ft_strlen(SHLNAME));
 	write(2, ": syntax error near unexpected token '", 38);
 	ft_putstr_fd(token, 2);

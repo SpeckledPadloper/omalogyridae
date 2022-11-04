@@ -6,7 +6,7 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/19 14:24:48 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/11/03 14:19:21 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/11/04 14:57:51 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,15 +26,17 @@ static t_token	*expand_to_one(char *env_var, t_token *current)
 {
 	t_token		*expanded;
 	t_line_nav	lnav;
+	char		*eq_shift;
 
 	lnav.i = 0;
-	if (env_var)
-	{
-		lnav.ret = ft_strdup(ft_strchr(env_var, '=') + 1);
-		lnav.i = ft_strlen(lnav.ret);
-	}
-	else
+	eq_shift = ft_strchr(env_var, '=');
+	if (!env_var)
 		lnav.ret = NULL;
+	else if (eq_shift)
+		lnav.ret = ft_strdup(eq_shift + 1);
+	else
+		lnav.ret = ft_strdup(env_var);
+	lnav.i = ft_strlen(lnav.ret);
 	lnav.count = lnav.i;
 	lnav.state = DOUBLE_QUOTE;
 	expanded = exp_new_token(lnav.ret);
@@ -51,7 +53,7 @@ static t_token	*expand_token(t_token *current, char ***env, t_metadata *data)
 
 	idx = 0;
 	len = ft_strlen(&current->token_value[1]);
-	if (current->token_value[1] == '\?')
+	if (current->token_value[1] == '?')
 		return (expand_to_one(ft_itoa(data->exitstatus), current));
 	while ((*env)[idx])
 	{
@@ -78,9 +80,12 @@ t_token	*expand_tokenlst(t_token *head, char ***env, bool rd, t_metadata *data)
 	expandlst = NULL;
 	while (itter)
 	{
+		//printf("%s\n", itter->token_value);
 		if (itter->token_label == EXPAND)
 		{
+			printf("expand %s to %d\n", expandtoken->token_value, data->exitstatus);
 			expandtoken = expand_token(itter, env, data);
+			printf("expand %s to %d\n", expandtoken->token_value, data->exitstatus);
 			token_add_back(&expandlst, expandtoken);
 			if (rd && expandtoken->token_value == NULL)
 			{

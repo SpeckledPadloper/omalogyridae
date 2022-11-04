@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/11/03 15:05:45 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/11/04 15:13:35 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,6 @@ bool		is_closing_char(char current, int token_label);
 
 char		*do_special_char(t_line_nav *lnav);
 
-t_token		*lex(char *ret, t_metadata *data);
+t_token		*lex(char *ret, int *exitstatus);
 
 #endif
