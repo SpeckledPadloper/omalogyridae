@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/10/26 12:06:01 by lwiedijk      ########   odam.nl         */
+/*   Updated: 2022/11/04 17:46:43 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 #include "../hdr/structs.h"
 #include "../../libft/libft.h"
 
-void	add_new_var_to_env(t_metadata *data, t_exec_list_sim *cmd_list, int pos)
+void	add_new_var_to_env(t_metadata *data, t_simple_cmd *cmd_list, int pos)
 {
 	char	**temp_env;
 
@@ -37,7 +37,7 @@ void	add_new_var_to_env(t_metadata *data, t_exec_list_sim *cmd_list, int pos)
 	data->padloper_envp[data->envp_size] = NULL;
 }
 
-void	add_var(t_metadata *data, t_exec_list_sim *cmd_list)
+void	add_var(t_metadata *data, t_simple_cmd *cmd_list)
 {
 	int		i;
 	int		pos;
@@ -65,7 +65,7 @@ void	add_var(t_metadata *data, t_exec_list_sim *cmd_list)
 	}
 }
 
-void	padloper_export(t_metadata *data, t_exec_list_sim *cmd_list)
+void	padloper_export(t_metadata *data, t_simple_cmd *cmd_list)
 {
 	int	i;
 

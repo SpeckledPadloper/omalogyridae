@@ -6,7 +6,7 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/18 17:44:02 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/11/04 15:03:08 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/11/04 18:19:42 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,12 +32,12 @@ static void	expand_variables(t_split_cmd_rdir *head, \
 	expand_iolst(&head->out_head, env, data);
 }
 
-t_exec_list_sim	*parce(t_token *head, char ***env, t_metadata *data)
+t_simple_cmd	*parce(t_token *head, char ***env, t_metadata *data)
 {
 	t_token_section		*first;
 	t_token_section		*temp;
 	t_split_cmd_rdir	*split;
-	t_exec_list_sim		*simple_cmd;
+	t_simple_cmd		*simple_cmd;
 
 	first = tokenlst_split(&head);
 	temp = first;

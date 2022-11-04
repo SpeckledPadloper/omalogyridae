@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/10/27 11:27:18 by lwiedijk      ########   odam.nl         */
+/*   Updated: 2022/11/04 17:48:35 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 #include <fcntl.h>
 #include <errno.h>
 
-void	redirect_input(t_metadata *data, t_exec_list_sim *cmd_list)
+void	redirect_input(t_metadata *data, t_simple_cmd *cmd_list)
 {
 	if (data->cmd_count > 1 && data->child_count > 0)
 	{
@@ -40,7 +40,7 @@ void	redirect_input(t_metadata *data, t_exec_list_sim *cmd_list)
 	}
 }
 
-void	redirect_output(t_metadata *data, t_exec_list_sim *cmd_list)
+void	redirect_output(t_metadata *data, t_simple_cmd *cmd_list)
 {
 	if (data->cmd_count > 1 && (data->child_count + 1) != data->cmd_count)
 	{
@@ -54,7 +54,7 @@ void	redirect_output(t_metadata *data, t_exec_list_sim *cmd_list)
 	}
 }
 
-void	close_unused_fd(t_metadata *data, t_exec_list_sim *cmd_list)
+void	close_unused_fd(t_metadata *data, t_simple_cmd *cmd_list)
 {
 	if (cmd_list->heredoc_pipe[0])
 		close_and_check(cmd_list->heredoc_pipe[0]);

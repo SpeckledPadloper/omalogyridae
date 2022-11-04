@@ -6,7 +6,7 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/18 17:48:05 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/11/04 17:00:00 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/11/04 19:29:38 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 # define SHLNAME "SpeckledPadloper"
 # define SHLPROM "SpeckledPadloper> "
 # define SHLERR "SpeckledPadloper: "
-# define BUILDIN_AMOUNT 7
+# define NR_BLDINS 7
 # include <stdbool.h>
 # include <unistd.h>
 
@@ -85,15 +85,15 @@ typedef struct s_file
 	struct s_file	*next;
 }	t_file;
 
-typedef struct s_exec_list_sim
+typedef struct s_simple_cmd
 {
-	char					**cmd;
-	int						index;
-	t_file					*infile_list;
-	t_file					*outfile_list;
-	int						heredoc_pipe[2];
-	struct s_exec_list_sim	*next;
-}	t_exec_list_sim;
+	char				**cmd;
+	int					index;
+	t_file				*infile_list;
+	t_file				*outfile_list;
+	int					heredoc_pipe[2];
+	struct s_simple_cmd	*next;
+}	t_simple_cmd;
 
 typedef struct s_fd_list
 {
@@ -106,8 +106,8 @@ typedef struct s_fd_list
 typedef struct s_metadata
 {
 	t_fd_list	*fd_list;
-	char		*buildins[BUILDIN_AMOUNT];
-	void		(*fn_buildins[BUILDIN_AMOUNT])(struct s_metadata *, t_exec_list_sim *);
+	char		*buildins[NR_BLDINS];
+	void		(*fn_buildins[NR_BLDINS])(struct s_metadata *, t_simple_cmd *);
 	char		**padloper_envp;
 	char		**sorted_print_export;
 	bool		env_updated;
@@ -120,8 +120,8 @@ typedef struct s_metadata
 	int			exitstatus;
 }					t_metadata;
 
-void	reset_metadata(t_metadata *data, t_fd_list *fd_list, char **envp);
+void	reset_metadata(t_metadata *data, t_fd_list *fd_list);
 void	init_metadata(t_metadata *data, t_fd_list *fd_list, char **envp);
-int		ft_sim_lstsize(t_exec_list_sim *lst);
+int		ft_sim_lstsize(t_simple_cmd *lst);
 
 #endif

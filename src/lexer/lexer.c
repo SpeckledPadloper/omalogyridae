@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/04/18 11:03:49 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/11/04 15:10:55 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/11/04 19:36:08 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,6 +130,6 @@ t_token	*lex(char *ret, int *exitstatus)
 	}
 	if (head && tokenlst_last(head)->token_label <= PIPE)
 		syntax_error("newline", &head, exitstatus);
-	test_lex(head);
+	// test_lex(head);
 	return (head);
 }

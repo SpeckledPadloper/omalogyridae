@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/10/27 11:29:10 by lwiedijk      ########   odam.nl         */
+/*   Updated: 2022/11/04 17:48:37 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 #include <fcntl.h>
 #include <errno.h>
 
-void	open_necessary_infiles_bi(t_metadata *data, t_exec_list_sim *cmd_list)
+void	open_necessary_infiles_bi(t_metadata *data, t_simple_cmd *cmd_list)
 
 {	
 	while (cmd_list->infile_list)
@@ -49,7 +49,7 @@ void	open_necessary_infiles_bi(t_metadata *data, t_exec_list_sim *cmd_list)
 	}
 }
 
-void	open_and_check_file_bi(t_metadata *data, t_exec_list_sim *cmd_list)
+void	open_and_check_file_bi(t_metadata *data, t_simple_cmd *cmd_list)
 {
 	if (cmd_list->outfile_list->mode == RDIR_SINGLE)
 	{
@@ -75,7 +75,7 @@ void	open_and_check_file_bi(t_metadata *data, t_exec_list_sim *cmd_list)
 	}
 }
 
-void	open_necessary_outfiles_bi(t_metadata *data, t_exec_list_sim *cmd_list)
+void	open_necessary_outfiles_bi(t_metadata *data, t_simple_cmd *cmd_list)
 {
 	while (cmd_list->outfile_list)
 	{
@@ -92,7 +92,7 @@ void	open_necessary_outfiles_bi(t_metadata *data, t_exec_list_sim *cmd_list)
 	}
 }
 
-void	redirect_output_bi(t_metadata *data, t_exec_list_sim *cmd_list)
+void	redirect_output_bi(t_metadata *data, t_simple_cmd *cmd_list)
 {
 	if (data->fd_list->fd_out)
 	{
@@ -101,7 +101,7 @@ void	redirect_output_bi(t_metadata *data, t_exec_list_sim *cmd_list)
 	}
 }
 
-void	close_unused_fd_bi(t_metadata *data, t_exec_list_sim *cmd_list)
+void	close_unused_fd_bi(t_metadata *data, t_simple_cmd *cmd_list)
 {
 	if (cmd_list->heredoc_pipe[0])
 		close_and_check(cmd_list->heredoc_pipe[0]);

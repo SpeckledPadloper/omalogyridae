@@ -6,7 +6,7 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/18 16:18:33 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/11/04 16:22:55 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/11/04 19:34:36 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,53 +54,61 @@ static void	signal_handler(int sig)
 		return ;
 }
 
-static void	leaksatexit(void)
+static char	*read_input(t_metadata *data)
 {
-	system("leaks minishell");
+	char	*input;
+
+	input = readline(SHLPROM);
+	if (input == NULL)
+		input = input_eof();
+	if (input[0] != '\n')
+		add_history(input);
+	if (g_exitstatus)
+		data->exitstatus = g_exitstatus;
+	return (input);
+}
+
+static void	padloper(t_fd_list *fd_list, t_metadata *data)
+{
+	char			*input;
+	t_token			*head;
+	t_simple_cmd	*sim_cmd;
+	int				status;
+
+	status = 0;
+	while (input != NULL)
+	{
+		input = read_input(data);
+		head = lex(input, &data->exitstatus);
+		free(input);
+		if (head == NULL)
+			continue ;
+		sim_cmd = parce(head, &data->padloper_envp, data);
+		reset_metadata(data, fd_list);
+		if ((sim_cmd->cmd && !sim_cmd->cmd[0]) && \
+			!sim_cmd->infile_list && !sim_cmd->outfile_list)
+		{
+			simple_cmd_clear(&sim_cmd);
+			continue ;
+		}
+		// printf("\n\n\n");
+		// test_simple_command(ret);
+		executer(data, sim_cmd);
+		// printf("exitstatus:\t[%d]\n", data.exitstatus);
+		// system("leaks minishell");
+		//exit(data.exitstatus);
+		simple_cmd_clear(&sim_cmd);
+	}
 }
 
 int	main(int argc, char **argv, char **env)
 {
-	t_token			*head;
-	char			*input;
 	t_metadata		data;
 	t_fd_list		fd_list;
-	t_exec_list_sim *ret;
-	char			*prompt;
-	int				status;
-	struct termios	term;
 
-	status = 0;
 	sig_setup(PROC_PARNT);
 	init_metadata(&data, &fd_list, env);
+	padloper(&fd_list, &data);
 	//printf("exitstatus: [%d]\n", data.exitstatus);
-	input = "";
-	while (input != NULL)
-	{
-		input = readline(SHLPROM);
-		if (input == NULL)
-			input = input_eof();
-		if (input[0] != '\n')
-			add_history(input);
-		if (g_exitstatus)
-			data.exitstatus = g_exitstatus;
-		head = lex(input, &data.exitstatus);
-		free(input);
-		if (head == NULL)
-			continue ;
-		ret = parce(head, &data.padloper_envp, &data);
-		reset_metadata(&data, &fd_list, env);
-		if ((ret->cmd && !ret->cmd[0]) && !ret->infile_list && !ret->outfile_list)
-		{
-			simple_cmd_clear(&ret);
-			continue ;
-		}
-		// test_simple_command(ret);
-		executer(&data, ret);
-		printf("exitstatus:\t[%d]\n", data.exitstatus);
-		// system("leaks minishell");
-		//exit(data.exitstatus);
-		simple_cmd_clear(&ret);
-	}
 	return (data.exitstatus);
 }

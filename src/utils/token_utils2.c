@@ -6,7 +6,7 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/18 16:19:49 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/11/02 17:21:11 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/11/04 18:27:12 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,12 +24,12 @@ void	tokenlst_clear(t_token **head)
 {
 	t_token	*temp;
 
-	if (head == NULL)
+	if (head == NULL || (*head) == NULL)
 		return ;
 	while (*head)
 	{
 		temp = (*head)->next;
-		if (((*head)->token_value))
+		if ((*head)->token_value)
 			free((*head)->token_value);
 		free(*head);
 		*head = temp;

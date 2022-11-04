@@ -6,7 +6,7 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/01 14:33:10 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/11/02 14:28:12 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/11/04 17:48:30 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,14 +89,14 @@ static t_file	*set_redir(t_token_section *head)
 	return (ret);
 }
 
-t_exec_list_sim	*set_simple_command(t_split_cmd_rdir *current)
+t_simple_cmd	*set_simple_command(t_split_cmd_rdir *current)
 {
-	t_exec_list_sim	*simple_cmd;
+	t_simple_cmd	*simple_cmd;
 	static int		index = 0;
 
 	if (current == NULL)
 		return (NULL);
-	simple_cmd = malloc(sizeof(t_exec_list_sim));
+	simple_cmd = malloc(sizeof(t_simple_cmd));
 	if (!simple_cmd)
 		exit(EXIT_FAILURE);
 	simple_cmd->cmd = set_commands(current->cmd_head);

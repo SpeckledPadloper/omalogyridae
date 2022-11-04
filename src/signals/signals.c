@@ -6,7 +6,7 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/26 14:05:26 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/11/04 16:21:51 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/11/04 18:10:06 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,11 +44,6 @@ static void	empty_sighandle(int sig)
 	rl_replace_line("", 0);
 	rl_redisplay();
 	g_exitstatus = 1;
-}
-
-static void	heredoc_sighandle(int sig)
-{
-	exit(1);
 }
 
 static void	quit_handle(int sig)

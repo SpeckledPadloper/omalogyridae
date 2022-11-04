@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/10/27 11:28:35 by lwiedijk      ########   odam.nl         */
+/*   Updated: 2022/11/04 17:48:35 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 #include <fcntl.h>
 #include <errno.h>
 
-void	open_necessary_infiles(t_metadata *data, t_exec_list_sim *cmd_list)
+void	open_necessary_infiles(t_metadata *data, t_simple_cmd *cmd_list)
 
 {	
 	while (cmd_list->infile_list)
@@ -46,7 +46,7 @@ void	open_necessary_infiles(t_metadata *data, t_exec_list_sim *cmd_list)
 	}
 }
 
-void	open_and_check_file(t_metadata *data, t_exec_list_sim *cmd_list)
+void	open_and_check_file(t_metadata *data, t_simple_cmd *cmd_list)
 {
 	if (cmd_list->outfile_list->mode == RDIR_SINGLE)
 	{
@@ -66,7 +66,7 @@ void	open_and_check_file(t_metadata *data, t_exec_list_sim *cmd_list)
 	}
 }
 
-void	open_necessary_outfiles(t_metadata *data, t_exec_list_sim *cmd_list)
+void	open_necessary_outfiles(t_metadata *data, t_simple_cmd *cmd_list)
 {
 	while (cmd_list->outfile_list)
 	{

@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/11/04 16:19:54 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/11/04 18:29:55 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@
 #include <signal.h>
 #include "../signals/hdr/sigpadloper.h"
 
-void	do_parent_redirect(t_metadata *data, t_exec_list_sim *cmd_list)
+void	do_parent_redirect(t_metadata *data, t_simple_cmd *cmd_list)
 {
 	open_necessary_infiles_bi(data, cmd_list);
 	open_necessary_outfiles_bi(data, cmd_list);
@@ -31,7 +31,7 @@ void	do_parent_redirect(t_metadata *data, t_exec_list_sim *cmd_list)
 	close_unused_fd_bi(data, cmd_list);
 }
 
-bool	check_run_buildin(t_metadata *data, t_exec_list_sim *cmd_list)
+bool	check_run_buildin(t_metadata *data, t_simple_cmd *cmd_list)
 {
 	int	i;
 	int	reset_stdout;
@@ -42,7 +42,7 @@ bool	check_run_buildin(t_metadata *data, t_exec_list_sim *cmd_list)
 		print_error_exit("dup", errno, EXIT_FAILURE);
 	if (!(cmd_list->cmd))
 		return (false);
-	while (i < BUILDIN_AMOUNT)
+	while (i < NR_BLDINS)
 	{
 		if (!(ft_strcmp(cmd_list->cmd[0], data->buildins[i])))
 		{
@@ -60,7 +60,7 @@ bool	check_run_buildin(t_metadata *data, t_exec_list_sim *cmd_list)
 	return (false);
 }
 
-void	execute_cmd(t_metadata *data, t_exec_list_sim *cmd_list)
+void	execute_cmd(t_metadata *data, t_simple_cmd *cmd_list)
 {
 	char	*path;
 	int		status;
@@ -82,7 +82,7 @@ void	execute_cmd(t_metadata *data, t_exec_list_sim *cmd_list)
 	print_error_exit("execve", errno, EXIT_FAILURE);
 }
 
-static void	fork_processes(t_metadata *data, t_exec_list_sim *cmd_list)
+static void	fork_processes(t_metadata *data, t_simple_cmd *cmd_list)
 {
 	if (data->cmd_count == 1 && cmd_list->cmd)
 		if (check_run_buildin(data, cmd_list))
@@ -110,7 +110,7 @@ static void	fork_processes(t_metadata *data, t_exec_list_sim *cmd_list)
 	}
 }
 
-void	executer(t_metadata *meta_data, t_exec_list_sim *cmd_list)
+void	executer(t_metadata *meta_data, t_simple_cmd *cmd_list)
 {
 	int		status;
 	pid_t	wp;

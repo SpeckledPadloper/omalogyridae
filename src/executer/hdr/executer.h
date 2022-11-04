@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/11/04 13:40:20 by lwiedijk      ########   odam.nl         */
+/*   Updated: 2022/11/04 17:48:29 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,13 +21,13 @@
 
 /*-------------------------buildins-------------------------*/
 
-void	padloper_echo(t_metadata *data, t_exec_list_sim *cmd_list);
-void	padloper_cd(t_metadata *data, t_exec_list_sim *cmd_list);
-void	padloper_pwd(t_metadata *data, t_exec_list_sim *cmd_list);
-void	padloper_export(t_metadata *data, t_exec_list_sim *cmd_list);
-void	padloper_unset(t_metadata *data, t_exec_list_sim *cmd_list);
-void	padloper_env(t_metadata *data, t_exec_list_sim *cmd_list);
-void	padloper_exit(t_metadata *data, t_exec_list_sim *cmd_list);
+void	padloper_echo(t_metadata *data, t_simple_cmd *cmd_list);
+void	padloper_cd(t_metadata *data, t_simple_cmd *cmd_list);
+void	padloper_pwd(t_metadata *data, t_simple_cmd *cmd_list);
+void	padloper_export(t_metadata *data, t_simple_cmd *cmd_list);
+void	padloper_unset(t_metadata *data, t_simple_cmd *cmd_list);
+void	padloper_env(t_metadata *data, t_simple_cmd *cmd_list);
+void	padloper_exit(t_metadata *data, t_simple_cmd *cmd_list);
 
 char	**allocate_env(char **src, t_metadata *data, int add_var);
 char	**allocate_export(char **src, int *envp_size, int remove, int add);
@@ -48,22 +48,22 @@ void	set_pwd(char **new_padloper_envp, int pos);
 void	create_oldpwd(char *oldpwd, t_metadata *data);
 bool	set_pwd_and_oldpwd(t_metadata *data, char *oldpwd);
 
-void	open_necessary_infiles_bi(t_metadata *data, t_exec_list_sim *cmd_list);
-void	open_necessary_outfiles_bi(t_metadata *data, t_exec_list_sim *cmd_list);
-void	redirect_output_bi(t_metadata *data, t_exec_list_sim *cmd_list);
-void	close_unused_fd_bi(t_metadata *data, t_exec_list_sim *cmd_list);
+void	open_necessary_infiles_bi(t_metadata *data, t_simple_cmd *cmd_list);
+void	open_necessary_outfiles_bi(t_metadata *data, t_simple_cmd *cmd_list);
+void	redirect_output_bi(t_metadata *data, t_simple_cmd *cmd_list);
+void	close_unused_fd_bi(t_metadata *data, t_simple_cmd *cmd_list);
 
 /*-------------------------executer-------------------------*/
 
-void	executer(t_metadata *meta_data, t_exec_list_sim *cmd_list);
+void	executer(t_metadata *meta_data, t_simple_cmd *cmd_list);
 
 /*-------------------------file handling-------------------------*/
 
-void	open_necessary_infiles(t_metadata *data, t_exec_list_sim *cmd_list);
-void	open_necessary_outfiles(t_metadata *data, t_exec_list_sim *cmd_list);
-void	redirect_input(t_metadata *data, t_exec_list_sim *cmd_list);
-void	redirect_output(t_metadata *data, t_exec_list_sim *cmd_list);
-void	close_unused_fd(t_metadata *data, t_exec_list_sim *cmd_list);
+void	open_necessary_infiles(t_metadata *data, t_simple_cmd *cmd_list);
+void	open_necessary_outfiles(t_metadata *data, t_simple_cmd *cmd_list);
+void	redirect_input(t_metadata *data, t_simple_cmd *cmd_list);
+void	redirect_output(t_metadata *data, t_simple_cmd *cmd_list);
+void	close_unused_fd(t_metadata *data, t_simple_cmd *cmd_list);
 
 /*-------------------------path builder-------------------------*/
 
@@ -71,7 +71,7 @@ char	*path_builder(t_metadata *data, char *cmd);
 
 /*-------------------------utils-------------------------*/
 
-int		ft_sim_lstsize(t_exec_list_sim *lst);
+int		ft_sim_lstsize(t_simple_cmd *lst);
 bool	is_path(char *cmd);
 void	close_and_check(int fd);
 
@@ -89,6 +89,6 @@ char	*get_error_string(char *errno_string, int errnocopy);
 
 /*-------------------------heredoc handling-------------------------*/
 
-int		get_all_heredoc(t_metadata *data, t_exec_list_sim *cmd_list);
+int		get_all_heredoc(t_metadata *data, t_simple_cmd *cmd_list);
 
 #endif

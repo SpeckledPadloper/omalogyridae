@@ -6,7 +6,7 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/20 15:28:53 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/11/03 12:30:20 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/11/04 17:48:32 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,9 +88,9 @@ void	test_filelst(t_file *head, bool is_infile)
 	}	
 }
 
-void	test_simple_command(t_exec_list_sim	*current)
+void	test_simple_command(t_simple_cmd	*current)
 {
-	t_exec_list_sim	*temp;
+	t_simple_cmd	*temp;
 	int				cnt;
 
 	temp = current;

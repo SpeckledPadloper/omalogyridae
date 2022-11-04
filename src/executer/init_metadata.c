@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/11/04 16:21:19 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/11/04 19:28:24 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,9 @@
 
 #include <errno.h>
 
-int	ft_sim_lstsize(t_exec_list_sim *lst)
+int	ft_sim_lstsize(t_simple_cmd *lst)
 {
-	t_exec_list_sim	*temp;
+	t_simple_cmd	*temp;
 	int				count;
 
 	temp = lst;
@@ -66,7 +66,7 @@ void	init_metadata(t_metadata *data, t_fd_list *fd_list, char **envp)
 	set_buildin_array(data);
 }
 
-void	reset_metadata(t_metadata *data, t_fd_list *fd_list, char **envp)
+void	reset_metadata(t_metadata *data, t_fd_list *fd_list)
 {
 	ft_bzero(fd_list, sizeof(t_fd_list));
 	data->fd_list = fd_list;
