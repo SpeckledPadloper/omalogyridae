@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/11/08 13:12:09 by lwiedijk      ########   odam.nl         */
+/*   Updated: 2022/11/08 13:24:43 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,11 +82,11 @@ void	execute_cmd(t_metadata *data, t_simple_cmd *cmd_list)
 	print_error_exit("execve", errno, EXIT_FAILURE);
 }
 
-static void	fork_processes(t_metadata *data, t_simple_cmd *cmd_list)
+static bool	fork_processes(t_metadata *data, t_simple_cmd *cmd_list)
 {
 	if (data->cmd_count == 1 && cmd_list->cmd)
 		if (check_run_buildin(data, cmd_list))
-			return ;
+			return (false);
 	while (data->child_count < data->cmd_count)
 	{
 		data->fd_list->pipe_to_read = data->fd_list->pipe[0];
@@ -108,6 +108,7 @@ static void	fork_processes(t_metadata *data, t_simple_cmd *cmd_list)
 		if (cmd_list)
 			cmd_list = cmd_list->next;
 	}
+	return (true);
 }
 
 void	executer(t_metadata *meta_data, t_simple_cmd *cmd_list)
@@ -121,7 +122,8 @@ void	executer(t_metadata *meta_data, t_simple_cmd *cmd_list)
 		return ;
 	if (!meta_data->cmd_count)
 		return ;
-	fork_processes(meta_data, cmd_list);
+	if (!fork_processes(meta_data, cmd_list))
+		return ;
 	signal(SIGINT, SIG_IGN);
 	change_tcattr(PROC_PARNT);
 	waitpid(meta_data->lastpid, &status, 0);

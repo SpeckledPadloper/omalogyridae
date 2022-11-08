@@ -6,7 +6,7 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/18 16:18:33 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/11/08 13:11:07 by lwiedijk      ########   odam.nl         */
+/*   Updated: 2022/11/08 13:58:18 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,19 +44,6 @@ static char	*input_eof(void)
 	if (ret == NULL)
 		exit(EXIT_FAILURE);
 	return (ret);
-}
-
-static void	signal_handler(int sig)
-{
-	if (sig == SIGINT)
-	{
-		ft_putendl_fd("\b\b  ", STDOUT_FILENO);
-		write(1, "speckeldStuff: ", 15);
-	}
-	if (sig == SIGQUIT)
-	{
-		ft_putstr_fd("\b\b  \b\b", STDOUT_FILENO);
-	}
 }
 
 static char	*read_input(t_metadata *data)
@@ -101,7 +88,7 @@ static void	padloper(t_fd_list *fd_list, t_metadata *data)
 		executer(data, sim_cmd);
 		// printf("exitstatus:\t[%d]\n", data.exitstatus);
 		// system("leaks minishell");
-		//exit(data.exitstatus);
+		//exit(data->exitstatus);
 		simple_cmd_clear(&sim_cmd);
 	}
 }

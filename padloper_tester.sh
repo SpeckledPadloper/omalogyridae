@@ -88,8 +88,8 @@ error_fun()
 	else
 		echo
 		printf $RED"nay exit_code\n"$RESET
-		#echo Bash: $RETURN1
-		#echo Mini: $RETURN2
+		echo Bash: $RETURN1
+		echo Mini: $RETURN2
 	fi
 	echo
 }	
