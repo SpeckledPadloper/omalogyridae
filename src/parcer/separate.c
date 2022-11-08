@@ -6,7 +6,7 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/21 18:02:50 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/11/04 18:26:07 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/11/08 15:41:15 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,9 +43,6 @@ int	add_command_list(t_token **cmd, t_token **temp)
 	return (set_state_cio(*temp));
 }
 
-/*
-* tokenlst_clear might still cause segfaults, find if, and how.
-*/
 int	add_redir_list(t_token **rdir, t_token **temp)
 {
 	t_token	*temp2;
@@ -57,22 +54,30 @@ int	add_redir_list(t_token **rdir, t_token **temp)
 		*rdir = *temp;
 	else
 		tokenlst_last(*rdir)->next = *temp;
-	sep = 1;
 	*temp = (*temp)->next;
-	if ((*temp)->next)
-		sep = set_separation_limit(*temp);
 	while ((*temp)->next && \
 		((*temp)->next->token_label >= PIPE && \
 		((*temp)->next->start_pos - (*temp)->end_pos) <= sep))
 	{
-		*temp = (*temp)->next;
 		sep = set_separation_limit(*temp);
+		*temp = (*temp)->next;
 	}
 	temp2 = *temp;
 	*temp = (*temp)->next;
 	temp2->next = NULL;
-	//tokenlst_clear(&temp2);
 	return (set_state_cio(*temp));
+}
+
+static void	construct_rdir_io(t_token_section **rdir_io)
+{
+	add_section_to_list(rdir_io, NULL);
+	add_section_to_list(rdir_io, NULL);
+}
+
+static void	clear_rdir_io(t_token_section **rdir_io)
+{
+	free((*rdir_io)->next);
+	free(*rdir_io);
 }
 
 t_split_cmd_rdir	*split_cmd_rdir(t_token_section *current)
@@ -86,8 +91,7 @@ t_split_cmd_rdir	*split_cmd_rdir(t_token_section *current)
 	if (!split)
 		exit(EXIT_FAILURE);
 	rdir_io = NULL;
-	add_section_to_list(&rdir_io, NULL);
-	add_section_to_list(&rdir_io, NULL);
+	construct_rdir_io(&rdir_io);
 	temp = current->head;
 	state = set_state_cio(temp);
 	while (temp)
@@ -101,5 +105,6 @@ t_split_cmd_rdir	*split_cmd_rdir(t_token_section *current)
 	}
 	split->in_head = rdirlst_split(&rdir_io->head, LESS, LESSLESS);
 	split->out_head = rdirlst_split(&rdir_io->next->head, GREAT, 3);
+	clear_rdir_io(&rdir_io);
 	return (split);
 }

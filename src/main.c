@@ -6,7 +6,7 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/18 16:18:33 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/11/08 11:50:32 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/11/08 15:38:12 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,14 +46,6 @@ static char	*input_eof(void)
 	return (ret);
 }
 
-static void	signal_handler(int sig)
-{
-	if (sig == SIGINT)
-		return ;
-	else if (sig == SIGQUIT)
-		return ;
-}
-
 static char	*read_input(t_metadata *data)
 {
 	char	*input;
@@ -76,6 +68,7 @@ static void	padloper(t_fd_list *fd_list, t_metadata *data)
 	int				status;
 
 	status = 0;
+	input = "";
 	while (input != NULL)
 	{
 		input = read_input(data);
@@ -91,12 +84,8 @@ static void	padloper(t_fd_list *fd_list, t_metadata *data)
 			simple_cmd_clear(&sim_cmd);
 			continue ;
 		}
-		// printf("\n\n\n");
-		test_simple_command(sim_cmd);
+		// test_simple_command(sim_cmd);
 		executer(data, sim_cmd);
-		// printf("exitstatus:\t[%d]\n", data.exitstatus);
-		// system("leaks minishell");
-		//exit(data.exitstatus);
 		simple_cmd_clear(&sim_cmd);
 	}
 }
@@ -109,6 +98,5 @@ int	main(int argc, char **argv, char **env)
 	sig_setup(PROC_PARNT);
 	init_metadata(&data, &fd_list, env);
 	padloper(&fd_list, &data);
-	//printf("exitstatus: [%d]\n", data.exitstatus);
 	return (data.exitstatus);
 }
