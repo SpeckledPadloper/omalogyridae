@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/11/08 16:27:07 by lwiedijk      ########   odam.nl         */
+/*   Updated: 2022/11/08 16:37:37 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,15 +37,15 @@ bool	check_run_buildin(t_metadata *data, t_simple_cmd *cmd_list)
 	int	reset_stdout;
 
 	i = 0;
-	reset_stdout = dup(STDOUT_FILENO);
-	if (reset_stdout == -1)
-		print_error_exit("dup", errno, EXIT_FAILURE);
 	if (!(cmd_list->cmd))
 		return (false);
 	while (i < NR_BLDINS)
 	{
 		if (!(ft_strcmp(cmd_list->cmd[0], data->buildins[i])))
 		{
+			reset_stdout = dup(STDOUT_FILENO);
+			if (reset_stdout == -1)
+				print_error_exit("dup", errno, EXIT_FAILURE);
 			if (data->cmd_count == 1)
 				do_parent_redirect(data, cmd_list);
 			if (data->exitstatus == EXIT_SUCCESS)
@@ -57,7 +57,6 @@ bool	check_run_buildin(t_metadata *data, t_simple_cmd *cmd_list)
 		}
 		i++;
 	}
-	close_and_check(reset_stdout);
 	return (false);
 }
 
