@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/11/04 17:46:43 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/11/08 20:12:43 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,10 @@ void	add_var(t_metadata *data, t_simple_cmd *cmd_list)
 		if (pos)
 		{
 			if (env_has_value(cmd_list->cmd[i]))
+			{
+				free(data->padloper_envp[pos]);
 				add_env(data->padloper_envp, cmd_list->cmd[i], pos);
+			}
 			i++;
 			continue ;
 		}
@@ -78,7 +81,7 @@ void	padloper_export(t_metadata *data, t_simple_cmd *cmd_list)
 	{
 		if (data->sorted_print_export)
 			free_2d_array(data->sorted_print_export);
-		data->sorted_print_export = allocate_env
+		data->sorted_print_export = allocate_env \
 			(data->padloper_envp, data, false);
 		populate_export(data->envp_size, data->padloper_envp,
 			data->sorted_print_export);

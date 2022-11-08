@@ -6,7 +6,7 @@
 #    By: mteerlin <mteerlin@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2021/07/21 12:25:06 by mteerlin      #+#    #+#                  #
-#    Updated: 2022/11/03 16:08:56 by mteerlin      ########   odam.nl          #
+#    Updated: 2022/11/08 17:07:47 by mteerlin      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -40,8 +40,8 @@ src/lexer/fsm_op2.c \
 src/lexer/lexer.c \
 src/lexer/stx_error.c \
 src/main.c \
+src/parcer/expand.c \
 src/parcer/expand2.c \
-src/parcer/expandv2.c \
 src/parcer/parcer.c \
 src/parcer/separate.c \
 src/parcer/separation_utils.c \
@@ -65,11 +65,13 @@ src/lexer/hdr/errors.h \
 src/lexer/hdr/fsm.h \
 src/lexer/hdr/lexer.h \
 src/parcer/hdr/expand.h \
+src/parcer/hdr/expandv2.h \
 src/parcer/hdr/parcer.h \
 src/parcer/hdr/separate.h \
 src/signals/hdr/sigpadloper.h \
 src/tests/tests.h \
 src/utils/hdr/filelst_utils.h \
+src/utils/hdr/line_navigation.h \
 src/utils/hdr/simple_cmd_utils.h \
 src/utils/hdr/token_utils.h
 

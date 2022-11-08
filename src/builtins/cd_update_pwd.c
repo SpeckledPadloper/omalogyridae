@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/10/26 19:50:33 by lwiedijk      ########   odam.nl         */
+/*   Updated: 2022/11/08 20:09:36 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ char	*get_oldpwd(char **swap)
 		pwd_var = ft_strjoin("OLDPWD=", swap[1]);
 		if (!pwd_var)
 			print_error_exit("ft_strjoin", ENOMEM, EXIT_FAILURE);
+		free_2d_array(swap);
 	}
 	else
 	{

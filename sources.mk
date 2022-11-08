@@ -25,8 +25,8 @@ src/lexer/fsm_op2.c \
 src/lexer/lexer.c \
 src/lexer/stx_error.c \
 src/main.c \
+src/parcer/expand.c \
 src/parcer/expand2.c \
-src/parcer/expandv2.c \
 src/parcer/parcer.c \
 src/parcer/separate.c \
 src/parcer/separation_utils.c \

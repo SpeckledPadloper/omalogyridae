@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/11/04 17:46:49 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/11/08 20:10:16 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,5 +43,6 @@ void	padloper_cd(t_metadata *data, t_simple_cmd *cmd_list)
 		create_oldpwd(oldpwd, data);
 	else
 		prev_pwd_uset = set_pwd_and_oldpwd(data, oldpwd);
+	free(oldpwd);
 	return ;
 }
