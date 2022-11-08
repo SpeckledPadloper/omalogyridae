@@ -6,7 +6,7 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/21 18:02:50 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/11/08 15:41:15 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/11/08 16:18:45 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,11 +22,13 @@
 #include "../../libft/libft.h"
 
 #include "../tests/tests.h"
+#include <stdio.h>
 
 int	add_command_list(t_token **cmd, t_token **temp)
 {
 	t_token	*temp2;
 
+	printf("add_command_list\n");
 	if (!cmd || !temp)
 		return (-1);
 	if (!(*cmd))
@@ -54,6 +56,7 @@ int	add_redir_list(t_token **rdir, t_token **temp)
 		*rdir = *temp;
 	else
 		tokenlst_last(*rdir)->next = *temp;
+	sep = 1;
 	*temp = (*temp)->next;
 	while ((*temp)->next && \
 		((*temp)->next->token_label >= PIPE && \

@@ -6,7 +6,7 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/18 17:44:02 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/11/08 15:27:03 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/11/08 15:50:13 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ t_simple_cmd	*parce(t_token *head, char ***env, t_metadata *data)
 	{
 		temp = first;
 		split = split_cmd_rdir(first);
+		// test_split_cmd_rdir(split);
 		first = first->next;
 		free(temp);
 		expand_variables(split, env, data);
