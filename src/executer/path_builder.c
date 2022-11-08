@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/10/25 11:32:43 by lwiedijk      ########   odam.nl         */
+/*   Updated: 2022/11/08 12:13:16 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,6 +99,8 @@ static char	*check_absolute_path(t_metadata *data, char *path)
 	int			file_does_not_exist;
 	struct stat	check_dir;
 
+	if (!ft_strcmp(path, ""))
+		print_error_exit(path, CNF, CMD_NOT_FOUND);
 	if (!is_path(path))
 		return (NULL);
 	stat(path, &check_dir);

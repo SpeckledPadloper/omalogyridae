@@ -6,7 +6,7 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/29 13:29:52 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/10/17 14:23:36 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/11/08 12:22:26 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,41 +14,64 @@
 #include "../utils/hdr/token_utils.h"
 #include <stdbool.h>
 #include <stdlib.h>
+
 #include <stdio.h>
+#include "../tests/tests.h"
+
+static void	swap_head(t_token **head, t_token **expand)
+{
+	t_token	*temp_head;
+	t_token	*temp_exp;
+
+	if ((*expand)->token_value == NULL)
+	{
+		(*head) = (*head)->next;
+	}
+	else
+	{
+		temp_head = (*head)->next;
+		temp_exp = (*expand)->next;
+		if ((*head)->token_value)
+			free((*head)->token_value);
+		free(*head);
+		(*head) = (*expand);
+		(*head)->next = temp_head;
+		(*expand) = temp_exp;
+	}
+}
+
+static void	swap_lst(t_token **itterhead, t_token **itterexp)
+{
+	t_token	*temp_head;
+	t_token	*temp_exp;
+
+	temp_head = (*itterhead)->next->next;
+	if ((*itterhead)->next->token_value)
+		free((*itterhead)->next->token_value);
+	free((*itterhead)->next);
+	(*itterhead)->next = *itterexp;
+	if (!itterexp)
+		return ;
+	temp_exp = (*itterexp)->next;
+	(*itterhead)->next->next = temp_head;
+	*itterexp = temp_exp;
+}
 
 void	link_expand_tokens(t_token **head, t_token **expand)
 {
 	t_token	*itterhead;
 	t_token	*itterexp;
-	t_token	*temp;
 
-	if (!head || !expand)
+	if (!head || !expand || !(*expand))
 		return ;
+	if ((*head) && (*head)->token_label == EXPAND)
+		swap_head(head, expand);
 	itterhead = *head;
 	itterexp = *expand;
-	if ((*head) && (*head)->token_label == EXPAND)
-	{
-		temp = (*head)->next;
-		free(*head);
-		if ((*expand)->token_value == NULL)
-			(*head) = temp;
-		else
-		{
-			(*head) = *expand;
-			*expand = (*expand)->next;
-		}
-	}
-	while (itterhead->next)
+	while (itterhead && itterhead->next)
 	{
 		if (itterhead->next->token_label == EXPAND)
-		{
-			temp = itterhead->next->next;
-			free(itterhead->next);
-			itterhead->next = NULL;
-			exp_token_add_back(&itterexp, temp);
-			exp_token_add_back(head, itterexp);
-			itterexp = itterexp->next;
-		}
+			swap_lst(&itterhead, &itterexp);
 		if (itterhead)
 			itterhead = itterhead->next;
 	}

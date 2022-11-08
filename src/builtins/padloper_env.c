@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/10/27 11:46:10 by lwiedijk      ########   odam.nl         */
+/*   Updated: 2022/11/04 17:46:45 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 #include "../executer/hdr/executer.h"
 #include "../hdr/structs.h"
 
-void	padloper_env(t_metadata *data, t_exec_list_sim *cmd_list)
+void	padloper_env(t_metadata *data, t_simple_cmd *cmd_list)
 {
 	int	i;
 

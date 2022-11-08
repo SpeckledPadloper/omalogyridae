@@ -6,7 +6,7 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/20 15:28:53 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/10/17 14:53:05 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/11/04 17:48:32 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,13 +18,21 @@
 void	test_lex(t_token *head)
 {
 	t_token		*itter;
+	size_t		len;
 
+	printf("\ttest_lext\n");
 	if (!head)
+	{
+		printf("(null)\n");
 		return ;
+	}
 	itter = head;
+	len = 0;
 	while (itter != NULL)
 	{
-		printf("token = %s\t| token_label = %d\t| token_index = %d\t| token_start = %d\t| token_end = %d\t| token_len = %zu\n", itter->token_value, itter->token_label, itter->i, itter->start_pos, itter->end_pos, ft_strlen(itter->token_value));
+		if (itter->token_value)
+			len = ft_strlen(itter->token_value);
+		printf("token = %s\t| token_label = %d\t| token_index = %d\t| token_start = %d\t| token_end = %d\t| token_len = %zu\n", itter->token_value, itter->token_label, itter->i, itter->start_pos, itter->end_pos, len);
 		itter = itter->next;
 	}
 	printf("\ttest_lex completed\n");
@@ -53,7 +61,7 @@ void	test_split(t_token_section *first)
 void	test_split_cmd_rdir(t_split_cmd_rdir *split)
 {
 	printf("\tCOMMAND LIST:\n");
-	test_split(split->cmd_head);
+	test_lex(split->cmd_head);
 	printf("\n\n\tREDIRECT IN LIST:\n");
 	test_split(split->in_head);
 	printf("\n\n\tREDIRECT OUT LIST:\n");
@@ -75,14 +83,14 @@ void	test_filelst(t_file *head, bool is_infile)
 	temp = head;
 	while (temp)
 	{
-		printf("filename: %s\t| filemode: %d\n", temp->filename, temp->mode);
+		printf("filename: [%s]\t| filemode: [%d]\n", temp->filename, temp->mode);
 		temp = temp->next;
 	}	
 }
 
-void	test_simple_command(t_exec_list_sim	*current)
+void	test_simple_command(t_simple_cmd	*current)
 {
-	t_exec_list_sim	*temp;
+	t_simple_cmd	*temp;
 	int				cnt;
 
 	temp = current;
@@ -95,7 +103,7 @@ void	test_simple_command(t_exec_list_sim	*current)
 		{
 			while (temp->cmd[cnt])
 			{
-				printf("%s\n", temp->cmd[cnt]);
+				printf("[%s]\n", temp->cmd[cnt]);
 				cnt++;
 			}
 		}

@@ -6,7 +6,7 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/14 12:31:24 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/10/25 13:46:01 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/11/04 15:14:25 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ t_token			*new_node(int index, char *value, t_line_nav *lnav);
 t_token			*tokenlst_last(t_token *lst);
 char			*allocate_token_value(t_line_nav *lnav);
 bool			add_token_to_list(t_token **head, char *val, \
-									t_line_nav *lnav, t_metadata *data);
+									t_line_nav *lnav, int *exitstatus);
 void			tokenlst_clear(t_token **head);
 void			tokenlst_cut_one(t_token **head, t_token **target);
 int				add_token_label(char current, char next_char);
@@ -33,6 +33,6 @@ void			clear_section(t_token_section	**head);
 t_token_section	*cmdlst_split(t_token **head);
 t_token_section	*rdirlst_split(t_token **head, int f1, int f2);
 t_token			*exp_new_token(char *value);
-void			exp_token_add_back(t_token **head, t_token *new);
+void			token_add_back(t_token **head, t_token *new);
 
 #endif

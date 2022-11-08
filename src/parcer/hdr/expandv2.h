@@ -1,20 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   simple_cmd_utils.h                                 :+:    :+:            */
+/*   expandv2.h                                         :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2022/10/01 15:58:47 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/11/04 17:45:23 by mteerlin      ########   odam.nl         */
+/*   Created: 2022/11/02 12:35:12 by mteerlin      #+#    #+#                 */
+/*   Updated: 2022/11/02 13:14:42 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef SIMPLE_CMD_UTILS_H
-# define SIMPLE_CMD_UTILS_H
+#ifndef EXPANDV2_H
+# define EXPANDV2_H
+# include "../../hdr/structs.h"
+# include <stdbool.h>
 
-t_simple_cmd	*simple_cmdlst_last(t_simple_cmd	**head);
-void			simple_cmd_add_back(t_simple_cmd **head, t_simple_cmd *new);
-void			simple_cmd_clear(t_simple_cmd **head);
+void	expand_iolst(t_token_section **head, char ***env, t_metadata *data);
+t_token	*expand_tokenlst(t_token *head, char ***env, bool rd, t_metadata *data);
+void	link_expand_tokens(t_token **head, t_token **expand);
 
 #endif

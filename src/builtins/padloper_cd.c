@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/10/27 11:43:56 by lwiedijk      ########   odam.nl         */
+/*   Updated: 2022/11/04 17:46:49 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 #include "../hdr/structs.h"
 #include "../../libft/libft.h"
 
-void	padloper_cd(t_metadata *data, t_exec_list_sim *cmd_list)
+void	padloper_cd(t_metadata *data, t_simple_cmd *cmd_list)
 {
 	char		*oldpwd;
 	int			cur_pwd_unset;

@@ -1,20 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   simple_cmd_utils.h                                 :+:    :+:            */
+/*   line_navigation.c                                  :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2022/10/01 15:58:47 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/11/04 17:45:23 by mteerlin      ########   odam.nl         */
+/*   Created: 2022/11/03 15:04:13 by mteerlin      #+#    #+#                 */
+/*   Updated: 2022/11/03 16:09:23 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef SIMPLE_CMD_UTILS_H
-# define SIMPLE_CMD_UTILS_H
+#include "../hdr/structs.h"
+#include "../lexer/hdr/lexer.h"
 
-t_simple_cmd	*simple_cmdlst_last(t_simple_cmd	**head);
-void			simple_cmd_add_back(t_simple_cmd **head, t_simple_cmd *new);
-void			simple_cmd_clear(t_simple_cmd **head);
-
-#endif
+void	init_lnav(t_line_nav *lnav, char *val)
+{
+	lnav->ret = val;
+	lnav->i = 0;
+	lnav->count = 0;
+	lnav->state = STATE_START;
+	lnav->prev_state = -1;
+}

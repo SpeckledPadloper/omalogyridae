@@ -1,20 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   simple_cmd_utils.h                                 :+:    :+:            */
+/*   sigpadloper.h                                      :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2022/10/01 15:58:47 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/11/04 17:45:23 by mteerlin      ########   odam.nl         */
+/*   Created: 2022/10/27 13:59:04 by mteerlin      #+#    #+#                 */
+/*   Updated: 2022/11/04 16:22:11 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef SIMPLE_CMD_UTILS_H
-# define SIMPLE_CMD_UTILS_H
+#ifndef SIGPADLOPER_H
+# define SIGPADLOPER_H
+# include "../../hdr/structs.h"
 
-t_simple_cmd	*simple_cmdlst_last(t_simple_cmd	**head);
-void			simple_cmd_add_back(t_simple_cmd **head, t_simple_cmd *new);
-void			simple_cmd_clear(t_simple_cmd **head);
+typedef enum e_process_state
+{
+	PROC_PARNT = 1,
+	PROC_CHLD = 2,
+	PROC_HDOC = 3,
+	WPID_LOOP = 4,
+}	t_process_state;
+
+void	change_tcattr(int state);
+void	sig_setup(int state);
+int		sig_exit(int status);
 
 #endif

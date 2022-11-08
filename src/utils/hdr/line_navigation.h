@@ -1,20 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   simple_cmd_utils.h                                 :+:    :+:            */
+/*   line_navigation.h                                  :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2022/10/01 15:58:47 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/11/04 17:45:23 by mteerlin      ########   odam.nl         */
+/*   Created: 2022/11/03 15:11:50 by mteerlin      #+#    #+#                 */
+/*   Updated: 2022/11/03 16:02:04 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef SIMPLE_CMD_UTILS_H
-# define SIMPLE_CMD_UTILS_H
+#ifndef LINE_NAVIGATION_H
+# define LINE_NAVIGATION_H
+# include "../../hdr/structs.h"
 
-t_simple_cmd	*simple_cmdlst_last(t_simple_cmd	**head);
-void			simple_cmd_add_back(t_simple_cmd **head, t_simple_cmd *new);
-void			simple_cmd_clear(t_simple_cmd **head);
+void	init_lnav(t_line_nav *lnav, char *val);
 
 #endif

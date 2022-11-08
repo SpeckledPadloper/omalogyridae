@@ -6,7 +6,7 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/01 14:56:49 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/10/06 15:46:31 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/11/04 17:48:30 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,9 @@
 
 #include <stdio.h>
 
-t_exec_list_sim	*simple_cmdlst_last(t_exec_list_sim	**head)
+t_simple_cmd	*simple_cmdlst_last(t_simple_cmd	**head)
 {
-	t_exec_list_sim	*temp;
+	t_simple_cmd	*temp;
 
 	temp = *head;
 	while (temp->next)
@@ -28,7 +28,7 @@ t_exec_list_sim	*simple_cmdlst_last(t_exec_list_sim	**head)
 	return (temp);
 }
 
-void	simple_cmd_add_back(t_exec_list_sim **head, t_exec_list_sim *new)
+void	simple_cmd_add_back(t_simple_cmd **head, t_simple_cmd *new)
 {
 	if (head == NULL)
 		return ;
@@ -38,9 +38,9 @@ void	simple_cmd_add_back(t_exec_list_sim **head, t_exec_list_sim *new)
 		simple_cmdlst_last(head)->next = new;
 }
 
-void	simple_cmd_clear(t_exec_list_sim **head)
+void	simple_cmd_clear(t_simple_cmd **head)
 {
-	t_exec_list_sim	*itter;
+	t_simple_cmd	*itter;
 
 	if (!head)
 		return ;

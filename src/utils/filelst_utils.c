@@ -6,7 +6,7 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/26 13:12:30 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/10/01 16:39:01 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/11/04 19:39:22 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,8 @@ void	filelst_clear(t_file *head)
 	while (head)
 	{
 		temp = head->next;
+		if (head->filename)
+			free(head->filename);
 		free(head);
 		head = temp;
 	}

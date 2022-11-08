@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/10/25 14:14:15 by lwiedijk      ########   odam.nl         */
+/*   Updated: 2022/11/04 17:46:43 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ bool	var_not_numeric(char *var)
 	return (false);
 }
 
-void	padloper_exit(t_metadata *data, t_exec_list_sim *cmd_list)
+void	padloper_exit(t_metadata *data, t_simple_cmd *cmd_list)
 {
 	int	exitcode;
 

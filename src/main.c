@@ -6,7 +6,7 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/18 16:18:33 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/10/27 14:13:29 by lwiedijk      ########   odam.nl         */
+/*   Updated: 2022/11/08 13:11:07 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,8 @@
 #include <sys/wait.h>
 #include <signal.h>
 #include <term.h>
+#include <termios.h>
+#include "signals/hdr/sigpadloper.h"
 
 static char	*input_eof(void)
 {
@@ -44,17 +46,7 @@ static char	*input_eof(void)
 	return (ret);
 }
 
-//static void	signal_handler(int sig)
-//{
-//	char	*prompt;
-//
-//	if (sig == SIGINT)
-//		return ;
-//	else if (sig == SIGQUIT)
-//		return ;
-//}
-
-void	signal_handler(int sig)
+static void	signal_handler(int sig)
 {
 	if (sig == SIGINT)
 	{
@@ -67,45 +59,61 @@ void	signal_handler(int sig)
 	}
 }
 
-static void	leaksatexit(void)
+static char	*read_input(t_metadata *data)
 {
-	system("leaks minishell");
+	char	*input;
+
+	input = readline(SHLPROM);
+	if (input == NULL)
+		input = input_eof();
+	if (input[0] != '\n')
+		add_history(input);
+	if (g_exitstatus)
+		data->exitstatus = g_exitstatus;
+	return (input);
+}
+
+static void	padloper(t_fd_list *fd_list, t_metadata *data)
+{
+	char			*input;
+	t_token			*head;
+	t_simple_cmd	*sim_cmd;
+	int				status;
+
+	status = 0;
+	while (input != NULL)
+	{
+		input = read_input(data);
+		head = lex(input, &data->exitstatus);
+		free(input);
+		if (head == NULL)
+			continue ;
+		sim_cmd = parce(head, &data->padloper_envp, data);
+		reset_metadata(data, fd_list);
+		if ((sim_cmd->cmd && !sim_cmd->cmd[0]) && \
+			!sim_cmd->infile_list && !sim_cmd->outfile_list)
+		{
+			simple_cmd_clear(&sim_cmd);
+			continue ;
+		}
+		// printf("\n\n\n");
+		//test_simple_command(sim_cmd);
+		executer(data, sim_cmd);
+		// printf("exitstatus:\t[%d]\n", data.exitstatus);
+		// system("leaks minishell");
+		//exit(data.exitstatus);
+		simple_cmd_clear(&sim_cmd);
+	}
 }
 
 int	main(int argc, char **argv, char **env)
 {
-	t_token		*head;
-	char		*input;
-	t_base_args	*b_args;
-	t_metadata	data;
-	t_fd_list	fd_list;
-	t_exec_list_sim *ret;
+	t_metadata		data;
+	t_fd_list		fd_list;
 
-	// atexit(&leaksatexit);
+	sig_setup(PROC_PARNT);
 	init_metadata(&data, &fd_list, env);
-	input = "";
-	signal(SIGINT, &signal_handler);
-	signal(SIGQUIT, &signal_handler);
-	kill(data.lastpid, SIGQUIT);
-	// kill(data.lastpid, SIGINT);
-	while (input != NULL)
-	{
-		input = readline(SHLPROM);
-		if (input == NULL)
-			input = input_eof();
-		add_history(input);
-		head = lex(input, &data);
-		if (head == NULL)
-			continue ;
-		free(input);
-		reset_metadata(&data, &fd_list, env);
-		ret = parce(head, &b_args->env);
-		//test_simple_command(ret);
-		executer(&data, ret);
-		// printf("exitstatus: [%d]\n", data.exitstatus);
-		//system("leaks minishell");
-		// exit(data.exitstatus);
-		simple_cmd_clear(&ret);
-	}
+	padloper(&fd_list, &data);
+	//printf("exitstatus: [%d]\n", data.exitstatus);
 	return (data.exitstatus);
 }
