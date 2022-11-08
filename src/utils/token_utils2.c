@@ -6,7 +6,7 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/18 16:19:49 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/11/04 18:27:12 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/11/08 12:05:29 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,8 @@ void	tokenlst_cut_one(t_token **head, t_token **target)
 void	cut_token(t_token **head, t_token **tail)
 {
 	*head = (*tail)->next->next;
-	free((*tail)->next->token_value);
+	if ((*tail)->next->token_value)
+		free((*tail)->next->token_value);
 	free((*tail)->next);
 	(*tail)->next = NULL;
 }

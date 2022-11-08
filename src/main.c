@@ -6,7 +6,7 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/18 16:18:33 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/11/04 19:34:36 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/11/08 11:50:32 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ static void	padloper(t_fd_list *fd_list, t_metadata *data)
 			continue ;
 		}
 		// printf("\n\n\n");
-		// test_simple_command(ret);
+		test_simple_command(sim_cmd);
 		executer(data, sim_cmd);
 		// printf("exitstatus:\t[%d]\n", data.exitstatus);
 		// system("leaks minishell");
