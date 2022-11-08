@@ -6,7 +6,7 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/01 14:33:10 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/11/04 17:48:30 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/11/08 13:30:42 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ static char	**set_commands(t_token *head)
 		cnt++;
 		temp = temp->next;
 	}
+	tokenlst_clear(&head);
 	ret[cnt] = NULL;
 	return (ret);
 }
@@ -84,8 +85,10 @@ static t_file	*set_redir(t_token_section *head)
 	{
 		flag = determine_file_flag(temp->head);
 		filelst_add_back(&ret, filelst_new(temp->head->token_value, flag));
+		temp->head->token_value = NULL;
 		temp = temp->next;
 	}
+	tokenlst_clear(&head->head);
 	return (ret);
 }
 
@@ -101,7 +104,9 @@ t_simple_cmd	*set_simple_command(t_split_cmd_rdir *current)
 		exit(EXIT_FAILURE);
 	simple_cmd->cmd = set_commands(current->cmd_head);
 	simple_cmd->infile_list = set_redir(current->in_head);
+	clear_section(&current->in_head);
 	simple_cmd->outfile_list = set_redir(current->out_head);
+	clear_section(&current->out_head);
 	simple_cmd->next = NULL;
 	simple_cmd->index = index;
 	simple_cmd->heredoc_pipe[0] = 0;

@@ -6,7 +6,7 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/29 14:49:02 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/11/04 17:06:21 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/11/08 15:32:54 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,8 +95,9 @@ void	stitch(t_split_cmd_rdir **current)
 		{
 			token_add_back(&cmd_new, itter->head);
 			itter = itter->next;
+			free(cmd_split);
+			cmd_split = itter;
 		}
-		free(cmd_split);
 		(*current)->cmd_head = cmd_new;
 	}
 	if ((*current)->in_head)
