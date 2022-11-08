@@ -6,7 +6,7 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/18 17:48:05 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/11/08 16:38:45 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/11/08 21:01:47 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,6 +118,7 @@ typedef struct s_metadata
 	pid_t		lastpid;
 	pid_t		heredocpid;
 	int			exitstatus;
+	int			exitprev;
 }					t_metadata;
 
 void	reset_metadata(t_metadata *data, t_fd_list *fd_list);

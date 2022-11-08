@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/11/04 19:28:24 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/11/08 21:02:21 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ void	init_metadata(t_metadata *data, t_fd_list *fd_list, char **envp)
 	data->padloper_envp = new_padloper_envp(envp, data, &(data->envp_size));
 	data->sorted_print_export = NULL;
 	data->env_updated = true;
+	data->exitprev = 0;
 	data->exitstatus = 0;
 	g_exitstatus = 0;
 	set_buildin_array(data);
@@ -74,6 +75,7 @@ void	reset_metadata(t_metadata *data, t_fd_list *fd_list)
 	data->cmd_count = 0;
 	data->lastpid = 0;
 	data->heredocpid = 0;
+	data->exitprev = data->exitstatus;
 	data->exitstatus = 0;
 	g_exitstatus = 0;
 }
