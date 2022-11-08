@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/11/04 17:48:34 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/11/08 15:12:15 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,10 @@ int	get_heredocs_this_cmd(t_metadata *data, t_simple_cmd *cmd_list)
 			cmd_list->heredoc_pipe[0] = 0;
 		}
 		if (ret)
+		{
+			close_and_check(cmd_list->heredoc_pipe[0]);
 			return (1);
+		}
 		itter = itter->next;
 	}
 	return (0);

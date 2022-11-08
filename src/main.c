@@ -6,7 +6,7 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/18 16:18:33 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/11/08 13:58:18 by lwiedijk      ########   odam.nl         */
+/*   Updated: 2022/11/08 16:25:48 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,7 @@ static void	padloper(t_fd_list *fd_list, t_metadata *data)
 		// printf("exitstatus:\t[%d]\n", data.exitstatus);
 		// system("leaks minishell");
 		//exit(data->exitstatus);
+		//system("lsof -c minishell");
 		simple_cmd_clear(&sim_cmd);
 	}
 }

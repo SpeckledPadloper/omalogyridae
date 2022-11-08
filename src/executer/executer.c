@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/11/08 13:24:43 by lwiedijk      ########   odam.nl         */
+/*   Updated: 2022/11/08 16:27:07 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ bool	check_run_buildin(t_metadata *data, t_simple_cmd *cmd_list)
 		}
 		i++;
 	}
+	close_and_check(reset_stdout);
 	return (false);
 }
 
@@ -104,6 +105,8 @@ static bool	fork_processes(t_metadata *data, t_simple_cmd *cmd_list)
 			close_and_check(data->fd_list->pipe[1]);
 		if (data->fd_list->pipe_to_read != 0)
 			close_and_check(data->fd_list->pipe_to_read);
+		if (cmd_list->heredoc_pipe[0])
+			close_and_check(cmd_list->heredoc_pipe[0]);
 		data->child_count++;
 		if (cmd_list)
 			cmd_list = cmd_list->next;
@@ -118,9 +121,9 @@ void	executer(t_metadata *meta_data, t_simple_cmd *cmd_list)
 
 	status = 0;
 	meta_data->cmd_count = ft_sim_lstsize(cmd_list);
-	if (get_all_heredoc(meta_data, cmd_list))
-		return ;
 	if (!meta_data->cmd_count)
+		return ;
+	if (get_all_heredoc(meta_data, cmd_list))
 		return ;
 	if (!fork_processes(meta_data, cmd_list))
 		return ;

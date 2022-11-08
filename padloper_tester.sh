@@ -63,7 +63,7 @@ error_fun()
 	RETURN2=$?
 
 	RES1=$(echo $@ | bash 2>&1 | cut -c 15-)
-	RES2=$(echo $@ | ./minishell 2>&1 | tail -n 1 | cut -c 12-)
+	RES2=$(echo $@ | ./minishell 2>&1 | tail -n 1 | cut -c 18-)
 	
 	if [[ "$RES1" == "$RES2" ]]
 	then
