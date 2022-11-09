@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/11/08 20:12:43 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/11/09 14:12:50 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,16 @@ void	add_new_var_to_env(t_metadata *data, t_simple_cmd *cmd_list, int pos)
 	data->padloper_envp[data->envp_size] = NULL;
 }
 
+static void	add_value_existing_key(t_metadata *data,
+			t_simple_cmd *cmd_list, int pos, int i)
+{
+	if (env_has_value(cmd_list->cmd[i]))
+	{
+		free(data->padloper_envp[pos]);
+		add_env(data->padloper_envp, cmd_list->cmd[i], pos);
+	}
+}
+
 void	add_var(t_metadata *data, t_simple_cmd *cmd_list)
 {
 	int		i;
@@ -55,11 +65,7 @@ void	add_var(t_metadata *data, t_simple_cmd *cmd_list)
 		pos = has_var(data->padloper_envp, cmd_list->cmd[i]);
 		if (pos)
 		{
-			if (env_has_value(cmd_list->cmd[i]))
-			{
-				free(data->padloper_envp[pos]);
-				add_env(data->padloper_envp, cmd_list->cmd[i], pos);
-			}
+			add_value_existing_key(data, cmd_list, pos, i);
 			i++;
 			continue ;
 		}

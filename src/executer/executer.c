@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/11/08 20:11:00 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/11/09 09:22:54 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,15 +37,15 @@ bool	check_run_buildin(t_metadata *data, t_simple_cmd *cmd_list)
 	int	reset_stdout;
 
 	i = 0;
-	reset_stdout = dup(STDOUT_FILENO);
-	if (reset_stdout == -1)
-		print_error_exit("dup", errno, EXIT_FAILURE);
 	if (!(cmd_list->cmd))
 		return (false);
 	while (i < NR_BLDINS)
 	{
 		if (!(ft_strcmp(cmd_list->cmd[0], data->buildins[i])))
 		{
+			reset_stdout = dup(STDOUT_FILENO);
+			if (reset_stdout == -1)
+				print_error_exit("dup", errno, EXIT_FAILURE);
 			if (data->cmd_count == 1)
 				do_parent_redirect(data, cmd_list);
 			if (data->exitstatus == EXIT_SUCCESS)
@@ -57,7 +57,6 @@ bool	check_run_buildin(t_metadata *data, t_simple_cmd *cmd_list)
 		}
 		i++;
 	}
-	close_and_check(reset_stdout);
 	return (false);
 }
 
@@ -73,7 +72,7 @@ void	execute_cmd(t_metadata *data, t_simple_cmd *cmd_list)
 	open_necessary_outfiles(data, cmd_list);
 	redirect_input(data, cmd_list);
 	redirect_output(data, cmd_list);
-	close_unused_fd(data, cmd_list);
+	close_unused_fd_child(data, cmd_list);
 	if (!(cmd_list->cmd))
 		exit(EXIT_SUCCESS);
 	if (check_run_buildin(data, cmd_list))
@@ -101,12 +100,7 @@ static bool	fork_processes(t_metadata *data, t_simple_cmd *cmd_list)
 			print_error_exit("fork", errno, EXIT_FAILURE);
 		else if (data->lastpid == 0)
 			execute_cmd(data, cmd_list);
-		if ((data->child_count + 1) != data->cmd_count)
-			close_and_check(data->fd_list->pipe[1]);
-		if (data->fd_list->pipe_to_read != 0)
-			close_and_check(data->fd_list->pipe_to_read);
-		if (cmd_list->heredoc_pipe[0])
-			close_and_check(cmd_list->heredoc_pipe[0]);
+		close_unused_fd_parent(data, cmd_list);
 		data->child_count++;
 		if (cmd_list)
 			cmd_list = cmd_list->next;

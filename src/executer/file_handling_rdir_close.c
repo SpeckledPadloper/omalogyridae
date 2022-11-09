@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   file_handling_rdir.c                               :+:    :+:            */
+/*   file_handling_rdir_close.c                         :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/11/08 15:48:19 by lwiedijk      ########   odam.nl         */
+/*   Updated: 2022/11/09 09:19:10 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ void	redirect_output(t_metadata *data, t_simple_cmd *cmd_list)
 	}
 }
 
-void	close_unused_fd(t_metadata *data, t_simple_cmd *cmd_list)
+void	close_unused_fd_child(t_metadata *data, t_simple_cmd *cmd_list)
 {
 	if (cmd_list->heredoc_pipe[0])
 		close_and_check(cmd_list->heredoc_pipe[0]);
@@ -68,4 +68,14 @@ void	close_unused_fd(t_metadata *data, t_simple_cmd *cmd_list)
 		close_and_check(data->fd_list->fd_in);
 	if (data->fd_list->fd_out)
 		close_and_check(data->fd_list->fd_out);
+}
+
+void	close_unused_fd_parent(t_metadata *data, t_simple_cmd *cmd_list)
+{
+	if ((data->child_count + 1) != data->cmd_count)
+		close_and_check(data->fd_list->pipe[1]);
+	if (data->fd_list->pipe_to_read != 0)
+		close_and_check(data->fd_list->pipe_to_read);
+	if (cmd_list->heredoc_pipe[0])
+		close_and_check(cmd_list->heredoc_pipe[0]);
 }

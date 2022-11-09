@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/11/04 17:48:29 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/11/09 09:45:33 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ void	sort_env(t_metadata *data);
 void	set_pwd(char **new_padloper_envp, int pos);
 
 void	create_oldpwd(char *oldpwd, t_metadata *data);
-bool	set_pwd_and_oldpwd(t_metadata *data, char *oldpwd);
+bool	set_pwd_and_oldpwd(t_metadata *data);
 
 void	open_necessary_infiles_bi(t_metadata *data, t_simple_cmd *cmd_list);
 void	open_necessary_outfiles_bi(t_metadata *data, t_simple_cmd *cmd_list);
@@ -63,7 +63,8 @@ void	open_necessary_infiles(t_metadata *data, t_simple_cmd *cmd_list);
 void	open_necessary_outfiles(t_metadata *data, t_simple_cmd *cmd_list);
 void	redirect_input(t_metadata *data, t_simple_cmd *cmd_list);
 void	redirect_output(t_metadata *data, t_simple_cmd *cmd_list);
-void	close_unused_fd(t_metadata *data, t_simple_cmd *cmd_list);
+void	close_unused_fd_child(t_metadata *data, t_simple_cmd *cmd_list);
+void	close_unused_fd_parent(t_metadata *data, t_simple_cmd *cmd_list);
 
 /*-------------------------path builder-------------------------*/
 

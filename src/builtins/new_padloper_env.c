@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/10/26 12:36:18 by lwiedijk      ########   odam.nl         */
+/*   Updated: 2022/11/09 14:05:12 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,8 @@ void	increment_shlvl(char **new_padloper_envp)
 	free(res_str);
 }
 
-void	reset_oldpwd(char **new_padloper_envp, int pos)
+void	reset_oldpwd(char **new_padloper_envp,
+			int pos, t_metadata *data)
 {
 	int	i;
 
@@ -73,6 +74,7 @@ void	reset_oldpwd(char **new_padloper_envp, int pos)
 	i = has_var(new_padloper_envp, "OLDPWD=");
 	if (i && env_has_value(new_padloper_envp[i]))
 	{
+		data->envp_size--;
 		free(new_padloper_envp[i]);
 		add_env(new_padloper_envp, "OLDPWD", i);
 	}
@@ -101,18 +103,16 @@ char	**new_padloper_envp(char **original_envp,
 	char	**new_padloper_envp;
 	int		missing_var;
 
-	missing_var = 0;
+	missing_var = 1;
 	if (!has_var(original_envp, "SHLVL="))
 		missing_var++;
 	if (!has_var(original_envp, "PWD="))
-		missing_var++;
-	if (!has_var(original_envp, "OLDPWD="))
 		missing_var++;
 	new_padloper_envp = allocate_env
 		(original_envp, data, missing_var);
 	populate_env(*envp_size - missing_var, original_envp,
 		new_padloper_envp, envp_size);
-	reset_oldpwd(new_padloper_envp, (*envp_size - missing_var));
+	reset_oldpwd(new_padloper_envp, (*envp_size - missing_var), data);
 	if (!has_var(new_padloper_envp, "PWD="))
 		set_pwd(new_padloper_envp,
 			((*envp_size) - (missing_var - (missing_var == 3))));
