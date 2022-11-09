@@ -6,31 +6,21 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/18 16:18:33 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/11/09 19:12:35 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/11/09 20:27:58 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <limits.h> //path max
-#include <unistd.h> //getcwd 
-
-#include <stdio.h>
+/*stdio.h required for readline.h*/
+#include <stdio.h> 
 #include <stdlib.h>
 
 #include <readline/readline.h>
 #include <readline/history.h>
 
-#include <stdbool.h>
+#include "hdr/minishell.h"
 #include "../libft/libft.h"
-#include "lexer/hdr/lexer.h"
-#include "hdr/structs.h"
-#include "parcer/hdr/parcer.h"
-#include "executer/hdr/executer.h"
 #include "utils/hdr/simple_cmd_utils.h"
-#include "utils/hdr/token_utils.h"
 
-#include <sys/wait.h>
-#include <signal.h>
-#include <termios.h>
 #include "signals/hdr/sigpadloper.h"
 
 static char	*input_eof(void)

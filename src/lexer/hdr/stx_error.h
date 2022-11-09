@@ -1,23 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   expandv2.h                                         :+:    :+:            */
+/*   stx_error.h                                        :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2022/11/02 12:35:12 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/11/09 17:26:16 by mteerlin      ########   odam.nl         */
+/*   Created: 2022/09/18 19:39:40 by mteerlin      #+#    #+#                 */
+/*   Updated: 2022/11/09 20:39:02 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef EXPANDV2_H
-# define EXPANDV2_H
+#ifndef STX_ERRORS_H
+# define STX_ERRORS_H
 # include "../../hdr/structs.h"
 # include <stdbool.h>
 
-void	expand_iolst(t_token_section **head, char ***env, t_metadata *data);
-t_token	*expand_tokenlst(t_token *head, char ***env, bool rd, t_metadata *data);
-void	link_expand_tokens(t_token **head, t_token **expand);
-t_token	*expand_to_null(t_token *current);
+bool	syntax_error(char *token, t_token **head, int *exitstatus);
+bool	found_syntax_start(char *val, t_token **head, int *exitstatus);
+bool	found_syntax_middle(char *val, t_token *node, \
+							t_token **head, int *exitstatus);
 
 #endif

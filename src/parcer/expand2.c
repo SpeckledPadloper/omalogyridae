@@ -6,13 +6,13 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/29 13:29:52 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/11/09 19:14:36 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/11/09 20:58:31 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../hdr/structs.h"
+#include "../hdr/ms_enums.h"
 #include "../utils/hdr/token_utils.h"
-#include <stdbool.h>
 #include <stdlib.h>
 
 static void	swap_head(t_token **head, t_token **expand)

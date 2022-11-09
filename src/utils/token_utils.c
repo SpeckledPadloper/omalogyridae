@@ -6,21 +6,17 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/14 12:29:38 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/11/09 19:38:40 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/11/09 21:04:43 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
-#include <unistd.h>
-
-#include "../lexer/hdr/lexer.h"
 #include "hdr/token_utils.h"
 #include "../../libft/libft.h"
 #include "../hdr/structs.h"
-#include "../lexer/hdr/errors.h"
+#include "../hdr/ms_enums.h"
+#include "../lexer/hdr/stx_error.h"
 #include "../lexer/hdr/charchecks.h"
-
-#include <stdio.h>
 
 t_token	*new_node(int index, char *value, t_line_nav *lnav)
 {

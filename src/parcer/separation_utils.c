@@ -6,17 +6,12 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/26 19:38:46 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/11/02 20:05:44 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/11/09 21:00:12 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
-#include <unistd.h>
-#include <stdio.h>
-
-#include "../hdr/structs.h"
 #include "hdr/parcer.h"
-#include "../lexer/hdr/lexer.h"
 #include "../utils/hdr/token_utils.h"
 
 int	set_state_cio(t_token *temp)

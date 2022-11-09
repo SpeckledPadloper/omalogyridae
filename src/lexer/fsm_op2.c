@@ -6,11 +6,9 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/16 20:28:42 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/11/09 15:20:43 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/11/09 20:48:58 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
-
-#include <stdio.h>
 
 #include "hdr/lexer.h"
 #include "hdr/charchecks.h"

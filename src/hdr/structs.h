@@ -6,7 +6,7 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/18 17:48:05 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/11/08 21:01:47 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/11/09 20:35:03 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,33 +18,6 @@
 # define NR_BLDINS 7
 # include <stdbool.h>
 # include <unistd.h>
-
-int	g_exitstatus;
-
-typedef enum e_file_flags
-{
-	RDIR_AMBIGUOUS = -3,
-	RDIR_SINGLE = -2,
-	RDIR_DOUBLE = -1
-}	t_file_flags;
-
-typedef enum e_exit_error_code
-{
-	CNF = -1,
-	AR = -2,
-	IS_DIR = -3,
-	NOT_VALID = -4,
-	NOT_SUPPORTED = -5,
-	NOT_SUPPORTED_BOTH = -6,
-	NOT_NUMERIC = -7,
-	NOT_DIR = -8,
-	TOO_MANY = -9,
-	NO_PATH = -10,
-	EMPTY = 0,
-	ERRNO_NO_SUCH_FILE = 2,
-	CMD_CANT_EXE = 126,
-	CMD_NOT_FOUND = 127,
-}				t_exit_error_code;
 
 typedef struct s_line_nav
 {

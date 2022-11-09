@@ -6,12 +6,12 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/03 15:04:13 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/11/03 16:09:23 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/11/09 21:02:28 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../hdr/structs.h"
-#include "../lexer/hdr/lexer.h"
+#include "../hdr/ms_enums.h"
 
 void	init_lnav(t_line_nav *lnav, char *val)
 {

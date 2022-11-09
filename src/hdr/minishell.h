@@ -1,23 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   errors.h                                           :+:    :+:            */
+/*   minishell.h                                        :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2022/09/18 19:39:40 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/11/09 19:38:09 by mteerlin      ########   odam.nl         */
+/*   Created: 2022/11/09 20:12:56 by mteerlin      #+#    #+#                 */
+/*   Updated: 2022/11/09 20:20:48 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef ERRORS_H
-# define ERRORS_H
-# include "../../hdr/structs.h"
-# include <stdbool.h>
+#ifndef MINISHELL_H
+# define MINISHELL_H
+# include "structs.h"
 
-bool	syntax_error(char *token, t_token **head, int *exitstatus);
-bool	found_syntax_start(char *val, t_token **head, int *exitstatus);
-bool	found_syntax_middle(char *val, t_token *node, \
-							t_token **head, int *exitstatus);
+int	g_exitstatus;
+
+t_token			*lex(char *ret, int *exitstatus);
+t_simple_cmd	*parce(t_token *head, char ***env, t_metadata *data);
+void			executer(t_metadata *meta_data, t_simple_cmd *cmd_list);
 
 #endif

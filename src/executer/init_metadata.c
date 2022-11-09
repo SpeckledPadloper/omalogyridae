@@ -6,12 +6,12 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/11/08 21:02:21 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/11/09 20:17:54 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "hdr/executer.h"
-#include "../hdr/structs.h"
+#include "../hdr/minishell.h"
 #include "../../libft/libft.h"
 #include <stdio.h>
 #include <stdbool.h>

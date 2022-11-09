@@ -6,22 +6,16 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/19 14:51:11 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/11/04 17:48:34 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/11/09 21:06:28 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PARCER_H
 # define PARCER_H
 # include "../../hdr/structs.h"
+# include "../../hdr/ms_enums.h"
+# include "../../utils/hdr/token_utils.h"
 
-typedef enum e_pxstates
-{
-	STATE_CMD,
-	STATE_RDIRIN,
-	STATE_RDIROUT
-}	t_pxstates;
-
-t_simple_cmd		*parce(t_token *head, char ***env, t_metadata *data);
 t_split_cmd_rdir	*split_cmd_rdir(t_token_section *current);
 int					set_separation_limit(t_token *temp);
 void				stitch(t_split_cmd_rdir **current);

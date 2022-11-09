@@ -6,17 +6,16 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/18 17:44:02 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/11/09 19:38:32 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/11/09 20:55:56 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "hdr/parcer.h"
-#include "../utils/hdr/token_utils.h"
 #include "../lexer/hdr/charchecks.h"
 #include "../../libft/libft.h"
 #include "hdr/separate.h"
 #include <stdbool.h>
-#include "hdr/expandv2.h"
+#include "hdr/expand.h"
 #include "../utils/hdr/simple_cmd_utils.h"
 #include <stdlib.h>
 

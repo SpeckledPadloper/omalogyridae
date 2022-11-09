@@ -6,18 +6,12 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/21 18:02:50 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/11/09 14:41:45 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/11/09 20:59:44 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
-#include <unistd.h>
-#include <stdio.h>
-
-#include "../hdr/structs.h"
 #include "hdr/parcer.h"
-#include "../lexer/hdr/lexer.h"
-#include "../utils/hdr/token_utils.h"
 #include "hdr/separate.h"
 #include "../../libft/libft.h"
 

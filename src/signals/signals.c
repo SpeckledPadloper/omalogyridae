@@ -6,36 +6,20 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/26 14:05:26 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/11/08 16:39:06 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/11/09 21:07:30 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
-#include <sys/wait.h>
 #include "hdr/sigpadloper.h"
 #include <signal.h>
 #include "../../libft/libft.h"
+#include <stdio.h>
 #include <readline/readline.h>
 #include <readline/history.h>
 #include <unistd.h>
-#include "../hdr/structs.h"
+#include "../hdr/minishell.h"
 #include <termios.h>
 #include <stdlib.h>
-
-/*
-
-set_signal(1)
-
-set_signal(3);
-
-if == 1
-	signal(sigint, main_minishell)
-if == 2
-	exit (123) // heredoc break
-if == 3
-	signal(sigint, SIGDFL);
-
-*/
 
 static void	empty_sighandle(int sig)
 {

@@ -6,17 +6,14 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/01 14:56:49 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/11/04 17:48:30 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/11/09 21:02:43 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../hdr/structs.h"
-#include <unistd.h>
 #include "../../libft/libft.h"
 #include "../utils/hdr/filelst_utils.h"
 #include <stdlib.h>
-
-#include <stdio.h>
 
 t_simple_cmd	*simple_cmdlst_last(t_simple_cmd	**head)
 {

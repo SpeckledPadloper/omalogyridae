@@ -6,7 +6,7 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/18 19:37:01 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/11/09 19:38:03 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/11/09 20:48:30 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,6 @@
 #include "../utils/hdr/token_utils.h"
 #include <stdbool.h>
 #include <stdlib.h>
-
-#include <stdio.h>
 
 bool	syntax_error(char *token, t_token **head, int *exitstatus)
 {

@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/11/09 09:45:33 by lwiedijk      ########   odam.nl         */
+/*   Updated: 2022/11/09 20:37:34 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include <stdbool.h>
 # include <unistd.h>
 # include "../../hdr/structs.h"
+# include "../../hdr/ms_enums.h"
 
 # define MODE_RW_R_R 0644
 
@@ -52,10 +53,6 @@ void	open_necessary_infiles_bi(t_metadata *data, t_simple_cmd *cmd_list);
 void	open_necessary_outfiles_bi(t_metadata *data, t_simple_cmd *cmd_list);
 void	redirect_output_bi(t_metadata *data, t_simple_cmd *cmd_list);
 void	close_unused_fd_bi(t_metadata *data, t_simple_cmd *cmd_list);
-
-/*-------------------------executer-------------------------*/
-
-void	executer(t_metadata *meta_data, t_simple_cmd *cmd_list);
 
 /*-------------------------file handling-------------------------*/
 

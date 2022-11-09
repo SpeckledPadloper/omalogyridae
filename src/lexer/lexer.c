@@ -6,30 +6,16 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/04/18 11:03:49 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/11/09 17:03:19 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/11/09 20:50:57 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <limits.h> //path max
-#include <unistd.h> //getcwd 
-
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-
-#include <readline/readline.h>
-#include <readline/history.h>
-
-#include <string.h>
-#include <stdbool.h>
 #include "../../libft/libft.h"
 #include "hdr/lexer.h"
 #include "hdr/fsm.h"
-#include "../utils/hdr/token_utils.h"
 #include "hdr/charchecks.h"
-#include "../hdr/structs.h"
-#include "hdr/errors.h"
 #include "../utils/hdr/line_navigation.h"
+#include "hdr/stx_error.h"
 
 char	*do_special_char(t_line_nav *lnav)
 {

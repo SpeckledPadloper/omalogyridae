@@ -6,19 +6,15 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/01 15:05:14 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/11/08 13:02:45 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/11/09 21:03:49 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../lexer/hdr/lexer.h"
 #include <stdlib.h>
 #include "../hdr/structs.h"
-#include "../error/error.h"
+#include "../hdr/ms_enums.h"
 #include "hdr/token_utils.h"
 #include "../parcer/hdr/separate.h"
-
-#include <stdio.h>
-#include <unistd.h>
 
 static void	rdirlst_split_setstart(int state, int *start_pos)
 {

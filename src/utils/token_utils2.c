@@ -6,19 +6,15 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/18 16:19:49 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/11/08 12:05:29 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/11/09 21:05:06 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../lexer/hdr/lexer.h"
 #include <stdlib.h>
 #include "../hdr/structs.h"
-#include "../error/error.h"
+#include "../hdr/ms_enums.h"
 #include "hdr/token_utils.h"
 #include "../../libft/libft.h"
-
-#include <stdio.h>
-#include <unistd.h>
 
 void	tokenlst_clear(t_token **head)
 {

@@ -6,7 +6,7 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/28 13:38:32 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/11/09 16:00:08 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/11/09 20:54:59 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,14 +21,9 @@ typedef struct e_expflag
 	bool	isredir;
 }	t_expflag;
 
-t_token	*exp_to_lst(t_token *current, char *env_var, bool isredir);
-t_token	*expand_token(t_token *current, char ***env, \
-						t_expflag *exflag, t_metadata *data);
-void	expand_tokenlst(t_token_section **head, char ***env, \
-						bool isredir, t_metadata *data);
-void	expand_section(t_token_section **head, char ***env, \
-						bool isredir, t_metadata *data);
+void	expand_iolst(t_token_section **head, char ***env, t_metadata *data);
+t_token	*expand_tokenlst(t_token *head, char ***env, bool rd, t_metadata *data);
 void	link_expand_tokens(t_token **head, t_token **expand);
-bool	is_ambiguous_rdir(t_token *current);
+t_token	*expand_to_null(t_token *current);
 
 #endif

@@ -6,19 +6,15 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/26 19:45:39 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/10/01 15:19:36 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/11/09 21:03:15 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../lexer/hdr/lexer.h"
 #include <stdlib.h>
 #include "../hdr/structs.h"
-#include "../error/error.h"
+#include "../hdr/ms_enums.h"
 #include "hdr/token_utils.h"
 #include "../parcer/hdr/separate.h"
-
-#include <stdio.h>
-#include <unistd.h>
 
 t_token_section	*new_token_section(t_token *head)
 {

@@ -6,18 +6,16 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/19 14:24:48 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/11/09 19:38:24 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/11/09 20:57:35 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../hdr/structs.h"
 #include <stdbool.h>
 #include "../../libft/libft.h"
 #include "hdr/separate.h"
-#include "../lexer/hdr/lexer.h"
+#include "../hdr/ms_enums.h"
 #include "../utils/hdr/token_utils.h"
-#include "hdr/expandv2.h"
-#include "../error/error.h"
+#include "hdr/expand.h"
 #include "../executer/hdr/executer.h"
 #include <stdlib.h>
 

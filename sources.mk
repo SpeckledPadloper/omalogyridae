@@ -43,13 +43,14 @@ src/utils/token_utils2.c \
 
 HDR		:= src/error/error.h \
 src/executer/hdr/executer.h \
+src/hdr/minishell.h \
+src/hdr/ms_enums.h \
 src/hdr/structs.h \
 src/lexer/hdr/charchecks.h \
-src/lexer/hdr/errors.h \
 src/lexer/hdr/fsm.h \
 src/lexer/hdr/lexer.h \
+src/lexer/hdr/stx_error.h \
 src/parcer/hdr/expand.h \
-src/parcer/hdr/expandv2.h \
 src/parcer/hdr/parcer.h \
 src/parcer/hdr/separate.h \
 src/signals/hdr/sigpadloper.h \

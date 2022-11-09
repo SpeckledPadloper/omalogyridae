@@ -6,7 +6,7 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/14 12:48:41 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/11/04 15:12:46 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/11/09 20:49:42 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,6 @@
 
 #include "hdr/lexer.h"
 #include "hdr/charchecks.h"
-#include "../utils/hdr/token_utils.h"
-#include "../hdr/structs.h"
 #include "hdr/fsm.h"
 
 int	fsm_special_char(t_line_nav *lnav, t_token **head, int *exitstatus)
