@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/11/04 17:48:29 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/11/09 09:12:34 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,8 @@ void	open_necessary_infiles(t_metadata *data, t_simple_cmd *cmd_list);
 void	open_necessary_outfiles(t_metadata *data, t_simple_cmd *cmd_list);
 void	redirect_input(t_metadata *data, t_simple_cmd *cmd_list);
 void	redirect_output(t_metadata *data, t_simple_cmd *cmd_list);
-void	close_unused_fd(t_metadata *data, t_simple_cmd *cmd_list);
+void	close_unused_fd_child(t_metadata *data, t_simple_cmd *cmd_list);
+void	close_unused_fd_parent(t_metadata *data, t_simple_cmd *cmd_list);
 
 /*-------------------------path builder-------------------------*/
 

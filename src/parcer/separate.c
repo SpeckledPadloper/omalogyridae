@@ -6,7 +6,7 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/21 18:02:50 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/11/08 16:18:45 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/11/09 08:49:29 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ int	add_command_list(t_token **cmd, t_token **temp)
 {
 	t_token	*temp2;
 
-	printf("add_command_list\n");
 	if (!cmd || !temp)
 		return (-1);
 	if (!(*cmd))
