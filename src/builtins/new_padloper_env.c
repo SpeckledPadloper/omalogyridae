@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/10/26 12:36:18 by lwiedijk      ########   odam.nl         */
+/*   Updated: 2022/11/09 12:38:36 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,12 +101,10 @@ char	**new_padloper_envp(char **original_envp,
 	char	**new_padloper_envp;
 	int		missing_var;
 
-	missing_var = 0;
+	missing_var = 1;
 	if (!has_var(original_envp, "SHLVL="))
 		missing_var++;
 	if (!has_var(original_envp, "PWD="))
-		missing_var++;
-	if (!has_var(original_envp, "OLDPWD="))
 		missing_var++;
 	new_padloper_envp = allocate_env
 		(original_envp, data, missing_var);

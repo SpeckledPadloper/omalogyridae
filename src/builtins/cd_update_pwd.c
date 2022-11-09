@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/11/08 20:09:36 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/11/09 09:44:53 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ char	*get_oldpwd(char **swap)
 	{
 		pwd_var = ft_strdup("OLDPWD=");
 		if (!pwd_var)
-			print_error_exit("ft_strjoin", ENOMEM, EXIT_FAILURE);
+			print_error_exit("ft_strdup", ENOMEM, EXIT_FAILURE);
 	}
 	return (pwd_var);
 }
@@ -69,7 +69,7 @@ void	set_oldpwd(t_metadata *data, char *pwd_var)
 	}
 }
 
-bool	set_pwd_and_oldpwd(t_metadata *data, char *oldpwd)
+bool	set_pwd_and_oldpwd(t_metadata *data)
 {
 	int		pos;
 	char	*pwd_var;
