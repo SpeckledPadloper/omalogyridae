@@ -6,13 +6,12 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/29 13:29:52 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/11/09 16:03:23 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/11/09 19:14:36 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../hdr/structs.h"
 #include "../utils/hdr/token_utils.h"
-#include "../../libft/libft.h"
 #include <stdbool.h>
 #include <stdlib.h>
 
@@ -23,7 +22,14 @@ static void	swap_head(t_token **head, t_token **expand)
 
 	if ((*expand)->token_value == NULL)
 	{
-		(*head) = (*head)->next;
+		temp_exp = *expand;
+		*expand = (*expand)->next;
+		free(temp_exp);
+		temp_head = (*head);
+		*head = (*head)->next;
+		if (temp_head->token_value)
+			free(temp_head->token_value);
+		free(temp_head);
 	}
 	else
 	{
@@ -75,12 +81,17 @@ void	link_expand_tokens(t_token **head, t_token **expand)
 	}
 }
 
-t_token	*expand_to_null(void)
+t_token	*expand_to_null(t_token *current)
 {
 	t_token	*nulltoken;
 
-	nulltoken = ft_calloc(1, sizeof(t_token));
+	nulltoken = malloc(sizeof(t_token));
 	if (!nulltoken)
 		exit(EXIT_FAILURE);
+	nulltoken->i = current->i;
+	nulltoken->token_label = current->token_label;
+	nulltoken->start_pos = current->start_pos;
+	nulltoken->end_pos = current->end_pos;
+	nulltoken->token_value = NULL;
 	return (nulltoken);
 }

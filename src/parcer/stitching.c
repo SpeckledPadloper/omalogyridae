@@ -6,7 +6,7 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/29 14:49:02 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/11/09 14:41:52 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/11/09 19:12:00 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,8 @@ static void	stitch_tokens(t_token **current)
 		if (temp->token_value)
 		{
 			stitched_value = ft_strjoin(temp_str, temp->token_value);
+			if (!stitched_value)
+				exit(EXIT_FAILURE);
 			free(temp_str);
 			temp_str = stitched_value;
 		}

@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/04/18 11:03:49 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/11/09 14:41:09 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/11/09 17:03:19 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,12 +71,8 @@ static void	end_of_input(t_token **head, t_line_nav *lnav, int *exitstatus)
 		|| (lnav->state == STATE_EXPAND && lnav->prev_state == STATE_DQUOTE))
 	{
 		write(2, SHLNAME, ft_strlen(SHLNAME));
-		if (lnav->state == STATE_SQUOTE)
-			write(2, "'", 1);
-		else if (lnav->state == STATE_DQUOTE \
-				|| lnav->prev_state == STATE_DQUOTE)
-			write(2, "\"", 1);
-		write(2, "'\n", 2);
+		ft_putstr_fd(": unclosed quotes: ", 2);
+		ft_putstr_fd("handeling not supported\n", 2);
 		if (*head != NULL)
 			tokenlst_clear(head);
 	}

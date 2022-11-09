@@ -6,7 +6,7 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/19 14:24:48 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/11/09 16:06:37 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/11/09 19:38:24 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,6 @@
 #include "../executer/hdr/executer.h"
 #include <stdlib.h>
 
-#include <stdio.h>
-
 static t_token	*expand_to_one(char *env_var, t_token *current)
 {
 	t_token		*expanded;
@@ -31,12 +29,7 @@ static t_token	*expand_to_one(char *env_var, t_token *current)
 
 	lnav.i = 0;
 	eq_shift = ft_strchr(env_var, '=');
-	if (!env_var)
-		lnav.ret = NULL;
-	else if (eq_shift)
-		lnav.ret = ft_strdup(eq_shift + 1);
-	else
-		lnav.ret = ft_strdup(env_var);
+	lnav.ret = ft_strdup(eq_shift + 1);
 	if (lnav.ret == NULL)
 		exit(EXIT_FAILURE);
 	lnav.i = ft_strlen(lnav.ret);
@@ -71,7 +64,6 @@ static t_token	*expand_token(t_token *current, char ***env, t_metadata *data)
 {
 	int		len;
 	int		idx;
-	t_token	*ret;
 
 	idx = 0;
 	len = ft_strlen(&current->token_value[1]);
@@ -86,9 +78,7 @@ static t_token	*expand_token(t_token *current, char ***env, t_metadata *data)
 		}
 		idx++;
 	}
-	if ((*env)[idx] == NULL)
-		ret = expand_to_null();
-	return (ret);
+	return (expand_to_null(current));
 }
 
 t_token	*expand_tokenlst(t_token *head, char ***env, bool rd, t_metadata *data)

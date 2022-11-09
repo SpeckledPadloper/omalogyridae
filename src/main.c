@@ -6,7 +6,7 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/18 16:18:33 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/11/09 16:11:24 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/11/09 19:12:35 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@
 #include "parcer/hdr/parcer.h"
 #include "executer/hdr/executer.h"
 #include "utils/hdr/simple_cmd_utils.h"
+#include "utils/hdr/token_utils.h"
 
 #include <sys/wait.h>
 #include <signal.h>
@@ -74,7 +75,6 @@ static void	padloper(t_fd_list *fd_list, t_metadata *data)
 			continue ;
 		sim_cmd = parce(head, &data->padloper_envp, data);
 		reset_metadata(data, fd_list);
-		system("leaks -q minishell");
 		if ((sim_cmd->cmd && !sim_cmd->cmd[0]) && \
 			!sim_cmd->infile_list && !sim_cmd->outfile_list)
 		{

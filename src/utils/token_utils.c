@@ -6,7 +6,7 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/14 12:29:38 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/11/09 16:11:39 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/11/09 19:38:40 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,21 +81,19 @@ bool	add_token_to_list(t_token **head, char *val, \
 {
 	static unsigned int	token_index = 0;
 	t_token				*node;
+	bool				ret;
 
 	if (!val || !head)
 		return (true);
 	if (*head == NULL && !ft_strncmp(val, "|", 2) \
 		&& lnav->state != STATE_DQUOTE)
-		return (syntax_error(val, head, exitstatus));
+		return (found_syntax_start(val, head, exitstatus));
 	node = new_node(token_index, val, lnav);
 	if (*head && ((tokenlst_last(*head)->token_label < PIPE \
 			&& node->token_label <= PIPE) \
 			|| (tokenlst_last(*head)->token_label == PIPE \
 			&& node->token_label == PIPE)))
-	{
-		tokenlst_clear(&node);
-		return (syntax_error(val, head, exitstatus));
-	}
+		return (found_syntax_middle(val, node, head, exitstatus));
 	token_index = token_index + 1;
 	if (!*head)
 		*head = node;
