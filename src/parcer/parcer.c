@@ -6,7 +6,7 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/18 17:44:02 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/11/08 15:50:13 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/11/09 15:29:50 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,6 @@
 #include "hdr/expandv2.h"
 #include "../utils/hdr/simple_cmd_utils.h"
 #include <stdlib.h>
-
-#include "../tests/tests.h" //for testing, remove before handin
-#include <stdio.h>
-#include <unistd.h>
 
 static void	expand_variables(t_split_cmd_rdir *head, \
 							char ***env, t_metadata *data)
@@ -45,7 +41,6 @@ t_simple_cmd	*parce(t_token *head, char ***env, t_metadata *data)
 	{
 		temp = first;
 		split = split_cmd_rdir(first);
-		// test_split_cmd_rdir(split);
 		first = first->next;
 		free(temp);
 		expand_variables(split, env, data);

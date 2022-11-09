@@ -6,11 +6,10 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/18 16:18:33 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/11/08 16:37:43 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/11/09 15:47:50 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <unistd.h>
 #include <limits.h> //path max
 #include <unistd.h> //getcwd 
 
@@ -20,7 +19,6 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 
-#include <string.h>
 #include <stdbool.h>
 #include "../libft/libft.h"
 #include "lexer/hdr/lexer.h"
@@ -28,11 +26,9 @@
 #include "parcer/hdr/parcer.h"
 #include "executer/hdr/executer.h"
 #include "utils/hdr/simple_cmd_utils.h"
-#include "tests/tests.h"
 
 #include <sys/wait.h>
 #include <signal.h>
-#include <term.h>
 #include <termios.h>
 #include "signals/hdr/sigpadloper.h"
 
@@ -53,7 +49,7 @@ static char	*read_input(t_metadata *data)
 	input = readline(SHLPROM);
 	if (input == NULL)
 		input = input_eof();
-	if (input[0] != '\n')
+	if (input[0] != '\0')
 		add_history(input);
 	if (g_exitstatus)
 		data->exitstatus = g_exitstatus;
@@ -78,13 +74,13 @@ static void	padloper(t_fd_list *fd_list, t_metadata *data)
 			continue ;
 		sim_cmd = parce(head, &data->padloper_envp, data);
 		reset_metadata(data, fd_list);
+		system("leaks -q minishell");
 		if ((sim_cmd->cmd && !sim_cmd->cmd[0]) && \
 			!sim_cmd->infile_list && !sim_cmd->outfile_list)
 		{
 			simple_cmd_clear(&sim_cmd);
 			continue ;
 		}
-		// test_simple_command(sim_cmd);
 		executer(data, sim_cmd);
 		simple_cmd_clear(&sim_cmd);
 	}

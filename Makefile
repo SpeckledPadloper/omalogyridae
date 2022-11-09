@@ -6,7 +6,7 @@
 #    By: mteerlin <mteerlin@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2021/07/21 12:25:06 by mteerlin      #+#    #+#                  #
-#    Updated: 2022/11/09 09:06:48 by lwiedijk      ########   odam.nl          #
+#    Updated: 2022/11/09 14:39:20 by mteerlin      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -48,7 +48,6 @@ src/parcer/separation_utils.c \
 src/parcer/simple_cmd.c \
 src/parcer/stitching.c \
 src/signals/signals.c \
-src/tests/tests.c \
 src/utils/filelst_utils.c \
 src/utils/line_navigation.c \
 src/utils/simple_cmd_utils.c \
@@ -69,7 +68,6 @@ src/parcer/hdr/expandv2.h \
 src/parcer/hdr/parcer.h \
 src/parcer/hdr/separate.h \
 src/signals/hdr/sigpadloper.h \
-src/tests/tests.h \
 src/utils/hdr/filelst_utils.h \
 src/utils/hdr/line_navigation.h \
 src/utils/hdr/simple_cmd_utils.h \

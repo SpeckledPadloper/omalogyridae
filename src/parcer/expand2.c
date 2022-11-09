@@ -6,17 +6,15 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/29 13:29:52 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/11/08 12:22:26 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/11/09 16:03:23 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../hdr/structs.h"
 #include "../utils/hdr/token_utils.h"
+#include "../../libft/libft.h"
 #include <stdbool.h>
 #include <stdlib.h>
-
-#include <stdio.h>
-#include "../tests/tests.h"
 
 static void	swap_head(t_token **head, t_token **expand)
 {
@@ -75,4 +73,14 @@ void	link_expand_tokens(t_token **head, t_token **expand)
 		if (itterhead)
 			itterhead = itterhead->next;
 	}
+}
+
+t_token	*expand_to_null(void)
+{
+	t_token	*nulltoken;
+
+	nulltoken = ft_calloc(1, sizeof(t_token));
+	if (!nulltoken)
+		exit(EXIT_FAILURE);
+	return (nulltoken);
 }

@@ -6,7 +6,7 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/29 14:49:02 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/11/08 15:32:54 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/11/09 14:41:52 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,6 @@
 #include "../../libft/libft.h"
 #include <stdlib.h>
 #include "../utils/hdr/token_utils.h"
-
-#include <stdio.h>
-#include "../tests/tests.h"
 
 bool	is_ambiguous_rdir(t_token *current)
 {

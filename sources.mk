@@ -15,7 +15,7 @@ src/executer/executer.c \
 src/executer/executer_utils.c \
 src/executer/file_handling_builtin.c \
 src/executer/file_handling_open.c \
-src/executer/file_handling_rdir.c \
+src/executer/file_handling_rdir_close.c \
 src/executer/heredoc_handling.c \
 src/executer/init_metadata.c \
 src/executer/path_builder.c \
@@ -33,7 +33,6 @@ src/parcer/separation_utils.c \
 src/parcer/simple_cmd.c \
 src/parcer/stitching.c \
 src/signals/signals.c \
-src/tests/tests.c \
 src/utils/filelst_utils.c \
 src/utils/line_navigation.c \
 src/utils/simple_cmd_utils.c \
@@ -54,7 +53,6 @@ src/parcer/hdr/expandv2.h \
 src/parcer/hdr/parcer.h \
 src/parcer/hdr/separate.h \
 src/signals/hdr/sigpadloper.h \
-src/tests/tests.h \
 src/utils/hdr/filelst_utils.h \
 src/utils/hdr/line_navigation.h \
 src/utils/hdr/simple_cmd_utils.h \

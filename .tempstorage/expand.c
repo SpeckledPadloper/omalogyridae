@@ -6,7 +6,7 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/28 13:38:24 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/11/03 13:07:48 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/11/09 14:40:17 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,6 @@
 #include "hdr/expand.h"
 
 #include <stdio.h>
-#include "../tests/tests.h"
 
 t_token	*exp_to_one(char *env_var, int index)
 {

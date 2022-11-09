@@ -6,7 +6,7 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/21 18:02:50 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/11/09 14:21:33 by lwiedijk      ########   odam.nl         */
+/*   Updated: 2022/11/09 14:41:45 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,6 @@
 #include "../utils/hdr/token_utils.h"
 #include "hdr/separate.h"
 #include "../../libft/libft.h"
-
-#include "../tests/tests.h"
-#include <stdio.h>
 
 int	add_command_list(t_token **cmd, t_token **temp)
 {

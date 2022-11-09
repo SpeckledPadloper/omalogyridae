@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   expandv2.c                                         :+:    :+:            */
+/*   expand.c                                           :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/19 14:24:48 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/11/08 12:19:36 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/11/09 16:06:37 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,11 @@
 #include "../lexer/hdr/lexer.h"
 #include "../utils/hdr/token_utils.h"
 #include "hdr/expandv2.h"
-#include <stdbool.h>
 #include "../error/error.h"
 #include "../executer/hdr/executer.h"
+#include <stdlib.h>
 
 #include <stdio.h>
-#include "../tests/tests.h"
 
 static t_token	*expand_to_one(char *env_var, t_token *current)
 {
@@ -38,6 +37,8 @@ static t_token	*expand_to_one(char *env_var, t_token *current)
 		lnav.ret = ft_strdup(eq_shift + 1);
 	else
 		lnav.ret = ft_strdup(env_var);
+	if (lnav.ret == NULL)
+		exit(EXIT_FAILURE);
 	lnav.i = ft_strlen(lnav.ret);
 	lnav.count = lnav.i;
 	lnav.state = DOUBLE_QUOTE;
@@ -47,14 +48,23 @@ static t_token	*expand_to_one(char *env_var, t_token *current)
 	return (expanded);
 }
 
-static t_token	*expand_to_null(void)
+static t_token	*expand_exitstatus(int exitstatus, t_token *current)
 {
-	t_token	*nulltoken;
+	t_token		*expanded;
+	char		*exitstr;
+	t_line_nav	lnav;
 
-	nulltoken = ft_calloc(1, sizeof(t_token));
-	if (!nulltoken)
-		mem_all_error();
-	return (nulltoken);
+	lnav.i = 0;
+	lnav.ret = ft_itoa(exitstatus);
+	if (lnav.ret == NULL)
+		exit(EXIT_FAILURE);
+	lnav.i = ft_strlen(lnav.ret);
+	lnav.count = lnav.i;
+	lnav.state = DOUBLE_QUOTE;
+	expanded = exp_new_token(lnav.ret);
+	expanded->start_pos = current->start_pos;
+	expanded->end_pos = current->end_pos;
+	return (expanded);
 }
 
 static t_token	*expand_token(t_token *current, char ***env, t_metadata *data)
@@ -66,13 +76,13 @@ static t_token	*expand_token(t_token *current, char ***env, t_metadata *data)
 	idx = 0;
 	len = ft_strlen(&current->token_value[1]);
 	if (current->token_value[1] == '?')
-		return (expand_to_one(ft_itoa(data->exitstatus), current));
+		return (expand_exitstatus(data->exitstatus, current));
 	while ((*env)[idx])
 	{
 		if (!envcmp((*env)[idx], &current->token_value[1]))
 		{
-			ret = expand_to_one((*env)[idx], current);
-			return (ret);
+			if (env_has_value((*env)[idx]))
+				return (expand_to_one((*env)[idx], current));
 		}
 		idx++;
 	}

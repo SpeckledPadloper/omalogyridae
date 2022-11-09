@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/04/18 11:03:49 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/11/08 15:38:25 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/11/09 14:41:09 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,6 @@
 #include "../hdr/structs.h"
 #include "hdr/errors.h"
 #include "../utils/hdr/line_navigation.h"
-
-#include "../tests/tests.h" //for testing, remove before handin.
 
 char	*do_special_char(t_line_nav *lnav)
 {

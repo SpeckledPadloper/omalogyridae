@@ -6,7 +6,7 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/28 13:38:32 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/10/31 20:06:27 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/11/09 16:00:08 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ typedef struct e_expflag
 	bool	isredir;
 }	t_expflag;
 
-t_token	*exp_to_one(char *env_var, int index);
 t_token	*exp_to_lst(t_token *current, char *env_var, bool isredir);
 t_token	*expand_token(t_token *current, char ***env, \
 						t_expflag *exflag, t_metadata *data);

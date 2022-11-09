@@ -6,7 +6,7 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/14 12:29:38 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/11/04 15:19:10 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/11/09 15:13:48 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,8 @@ t_token	*new_node(int index, char *value, t_line_nav *lnav)
 	t_token	*new;
 
 	new = (t_token *)malloc(sizeof(t_token));
+	if (!new)
+		exit(EXIT_FAILURE);
 	new->i = index;
 	if (lnav->state == STATE_SQUOTE)
 		new->token_label = SINGLE_QUOTE;
@@ -90,7 +92,10 @@ bool	add_token_to_list(t_token **head, char *val, \
 			&& node->token_label <= PIPE) \
 			|| (tokenlst_last(*head)->token_label == PIPE \
 			&& node->token_label == PIPE)))
+	{
+		tokenlst_clear(&node);
 		return (syntax_error(val, head, exitstatus));
+	}
 	token_index = token_index + 1;
 	if (!*head)
 		*head = node;

@@ -6,7 +6,7 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/01 14:33:10 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/11/08 13:30:42 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/11/09 15:19:32 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,6 @@
 #include <stdlib.h>
 #include "../utils/hdr/filelst_utils.h"
 #include "../../libft/libft.h"
-
-#include <stdio.h>
-#include "../tests/tests.h"
 
 static int	tokenlst_len(t_token *head)
 {
@@ -52,6 +49,8 @@ static char	**set_commands(t_token *head)
 	while (temp && cnt < len)
 	{
 		ret[cnt] = ft_strdup(temp->token_value);
+		if (ret[cnt] == NULL)
+			exit(EXIT_FAILURE);
 		cnt++;
 		temp = temp->next;
 	}

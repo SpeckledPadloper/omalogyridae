@@ -6,7 +6,7 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/16 20:28:42 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/11/04 15:20:14 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/11/09 15:20:43 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 #include "../hdr/structs.h"
 #include "hdr/fsm.h"
 #include "../../libft/libft.h"
+#include <stdlib.h>
 
 /*fsm_expand still needs to be normed*/
 
@@ -71,6 +72,8 @@ static int	fms_exp_to_dq(t_line_nav *lnav, t_token **head, int *exitstatus)
 		token_value = allocate_token_value(lnav);
 		if (token_value == NULL)
 			token_value = ft_strdup("\0");
+		if (token_value == NULL)
+			exit(EXIT_FAILURE);
 		lnav->state = STATE_DQUOTE;
 		add_token_to_list(head, token_value, lnav, exitstatus);
 		lnav->count = -1;
