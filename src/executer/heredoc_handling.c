@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/11/08 15:12:15 by lwiedijk      ########   odam.nl         */
+/*   Updated: 2022/11/09 13:43:09 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,8 @@ static int	heredoc_handling(t_metadata *data, int *pipe_end, char *limiter)
 	data->heredocpid = fork();
 	if (data->heredocpid == 0)
 		do_heredoc(pipe_end, limiter);
+	signal(SIGINT, SIG_IGN);
+	change_tcattr(PROC_PARNT);
 	close(pipe_end[1]);
 	waitpid(data->heredocpid, &here_status, 0);
 	if (WIFSIGNALED(here_status))
@@ -84,15 +86,15 @@ int	get_heredocs_this_cmd(t_metadata *data, t_simple_cmd *cmd_list)
 		if (itter->mode == RDIR_DOUBLE)
 			ret = heredoc_handling(data, cmd_list->heredoc_pipe,
 					itter->filename);
-		if (itter->next && cmd_list->heredoc_pipe[0])
-		{
-			close_and_check(cmd_list->heredoc_pipe[0]);
-			cmd_list->heredoc_pipe[0] = 0;
-		}
 		if (ret)
 		{
 			close_and_check(cmd_list->heredoc_pipe[0]);
 			return (1);
+		}
+		if (itter->next && cmd_list->heredoc_pipe[0])
+		{
+			close_and_check(cmd_list->heredoc_pipe[0]);
+			cmd_list->heredoc_pipe[0] = 0;
 		}
 		itter = itter->next;
 	}
