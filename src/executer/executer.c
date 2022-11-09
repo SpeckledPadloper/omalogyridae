@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/11/09 09:22:54 by lwiedijk      ########   odam.nl         */
+/*   Updated: 2022/11/09 14:38:57 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,10 @@ static bool	fork_processes(t_metadata *data, t_simple_cmd *cmd_list)
 		}
 		data->lastpid = fork();
 		if (data->lastpid == -1)
-			print_error_exit("fork", errno, EXIT_FAILURE);
+		{
+			builtin_error("", "fork", errno, data);
+			return (true);
+		}
 		else if (data->lastpid == 0)
 			execute_cmd(data, cmd_list);
 		close_unused_fd_parent(data, cmd_list);
