@@ -6,7 +6,7 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/19 14:24:48 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/11/09 20:57:35 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/11/10 11:32:50 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@
 #include "hdr/expand.h"
 #include "../executer/hdr/executer.h"
 #include <stdlib.h>
+
+#include <stdio.h>
 
 static t_token	*expand_to_one(char *env_var, t_token *current)
 {
@@ -62,6 +64,7 @@ static t_token	*expand_token(t_token *current, char ***env, t_metadata *data)
 {
 	int		len;
 	int		idx;
+	char	*emptycheck;
 
 	idx = 0;
 	len = ft_strlen(&current->token_value[1]);
@@ -72,7 +75,11 @@ static t_token	*expand_token(t_token *current, char ***env, t_metadata *data)
 		if (!envcmp((*env)[idx], &current->token_value[1]))
 		{
 			if (env_has_value((*env)[idx]))
-				return (expand_to_one((*env)[idx], current));
+			{
+				emptycheck = ft_strchr((*env)[idx], '=');
+				if (emptycheck[1] != '\0')
+					return (expand_to_one((*env)[idx], current));
+			}
 		}
 		idx++;
 	}
