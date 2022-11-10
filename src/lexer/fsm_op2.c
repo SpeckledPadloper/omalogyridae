@@ -6,7 +6,7 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/16 20:28:42 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/11/10 16:47:06 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/11/10 19:10:59 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,6 @@
 #include "hdr/fsm.h"
 #include "../../libft/libft.h"
 #include <stdlib.h>
-
-#include <stdio.h>
-
-/*fsm_expand still needs to be normed*/
 
 int	set_state_expand(t_line_nav *lnav, t_token **head, int *exitstatus)
 {

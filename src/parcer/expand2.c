@@ -6,7 +6,7 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/29 13:29:52 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/11/10 16:00:37 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/11/10 19:11:31 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,6 @@
 #include "../hdr/ms_enums.h"
 #include "../utils/hdr/token_utils.h"
 #include <stdlib.h>
-
-#include <stdio.h>
 
 static void	swap_head(t_token **head, t_token **expand)
 {
