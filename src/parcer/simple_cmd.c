@@ -6,7 +6,7 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/01 14:33:10 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/11/10 13:22:46 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/11/10 14:01:32 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,20 +14,15 @@
 #include "../utils/hdr/token_utils.h"
 #include <stdlib.h>
 #include "../utils/hdr/filelst_utils.h"
+#include "../utils/hdr/simple_cmd_utils.h"
 #include "../../libft/libft.h"
 
-static int	tokenlst_len(t_token *head)
+static void	set_tokval_to_array(char **ret, int *idx, char *value)
 {
-	t_token	*itter;
-	int		len;
-
-	itter = head;
-	while (itter)
-	{
-		len++;
-		itter = itter->next;
-	}
-	return (len);
+	ret[*idx] = ft_strdup(value);
+	if (ret[*idx] == NULL)
+		exit(EXIT_FAILURE);
+	(*idx)++;
 }
 
 static char	**set_commands(t_token *head)
@@ -47,12 +42,7 @@ static char	**set_commands(t_token *head)
 	while (temp)
 	{
 		if (temp->token_value)
-		{
-			ret[idx] = ft_strdup(temp->token_value);
-			if (ret[idx] == NULL)
-				exit(EXIT_FAILURE);
-			idx++;
-		}
+			set_tokval_to_array(ret, &idx, temp->token_value);
 		temp = temp->next;
 	}
 	tokenlst_clear(&head);

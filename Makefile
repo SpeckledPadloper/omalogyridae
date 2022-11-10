@@ -6,7 +6,7 @@
 #    By: mteerlin <mteerlin@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2021/07/21 12:25:06 by mteerlin      #+#    #+#                  #
-#    Updated: 2022/11/10 13:24:39 by mteerlin      ########   odam.nl          #
+#    Updated: 2022/11/10 14:18:18 by mteerlin      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -104,7 +104,7 @@ $(LIBFT):
 $(OBJ_DIR)%.o:	%.c $(HDR)
 			@echo creating object files.
 			@mkdir -p $(dir $@)
-			@$(CC) $(READFLAGS) -c $< -o $@
+			@$(CC) $(CFLAGS) $(READFLAGS) -c $< -o $@
 
 test:		
 			@echo $(VPATH)

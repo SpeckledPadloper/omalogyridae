@@ -6,7 +6,7 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/29 13:29:52 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/11/10 13:48:01 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/11/10 14:11:14 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,13 +23,13 @@ static void	swap_head(t_token **head, t_token **expand)
 	if ((*expand)->token_value == NULL)
 	{
 		temp_exp = *expand;
+		temp_head = (*head);
+		*head = *expand;
 		*expand = (*expand)->next;
-		free(temp_exp);
-		// temp_head = (*head);
-		// *head = (*head)->next;
-		// if (temp_head->token_value)
-		// 	free(temp_head->token_value);
-		// free(temp_head);
+		(*head)->next = temp_head->next;
+		if (temp_head->token_value)
+			free(temp_head->token_value);
+		free(temp_head);
 	}
 	else
 	{

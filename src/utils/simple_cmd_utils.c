@@ -6,7 +6,7 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/01 14:56:49 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/11/09 21:02:43 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/11/10 13:55:36 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,20 @@
 #include "../../libft/libft.h"
 #include "../utils/hdr/filelst_utils.h"
 #include <stdlib.h>
+
+int	tokenlst_len(t_token *head)
+{
+	t_token	*itter;
+	int		len;
+
+	itter = head;
+	while (itter)
+	{
+		len++;
+		itter = itter->next;
+	}
+	return (len);
+}
 
 t_simple_cmd	*simple_cmdlst_last(t_simple_cmd	**head)
 {
