@@ -6,7 +6,7 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/14 12:29:38 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/11/10 19:09:16 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/11/10 21:51:56 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,7 +116,7 @@ int	add_token_label(char current, char next_char)
 		token_label = SINGLE_QUOTE;
 	else if (current == '"')
 		token_label = DOUBLE_QUOTE;
-	else if (current == '$' && is_whitespace(next_char))
+	else if (current == '$' && !is_end_of_input(next_char))
 		token_label = EXPAND;
 	else
 		token_label = NO_LABEL;
