@@ -6,7 +6,7 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/29 14:49:02 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/11/10 12:49:32 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/11/10 13:38:15 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,8 @@ bool	is_ambiguous_rdir(t_token *current)
 
 static void	carryover_lapoi(t_token *source, t_token *dest)
 {
+	if (!source || !dest)
+		return ;
 	dest->token_label = source->token_label;
 	dest->start_pos = source->start_pos;
 	dest->i = source->i;
@@ -43,8 +45,8 @@ static void	stitch_tokens(t_token **current)
 	char			*temp_str;
 
 	temp = *current;
-	temp_str = ft_calloc(1, sizeof(char));
 	stitched_value = NULL;
+	temp_str = ft_calloc(1, sizeof(char));
 	if (!temp_str)
 		exit(EXIT_FAILURE);
 	while (temp)
@@ -60,8 +62,9 @@ static void	stitch_tokens(t_token **current)
 		temp = temp->next;
 	}
 	temp = exp_new_token(stitched_value);
-	if ((*current))
-		carryover_lapoi(*current, temp);
+	if (temp_str[0] == '\0')
+		free(temp_str);
+	carryover_lapoi(*current, temp);
 	tokenlst_clear(current);
 	(*current) = temp;
 }

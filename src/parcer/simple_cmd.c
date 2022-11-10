@@ -6,7 +6,7 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/01 14:33:10 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/11/10 12:21:09 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/11/10 13:22:46 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,31 +33,30 @@ static int	tokenlst_len(t_token *head)
 static char	**set_commands(t_token *head)
 {
 	char			**ret;
-	int				len;
+	int				idx;
 	t_token			*temp;
-	int				cnt;
 
 	if (head == NULL)
 		return (NULL);
-	len = tokenlst_len(head);
-	ret = malloc(sizeof(char *) * (len + 1));
+	idx = tokenlst_len(head);
+	ret = malloc(sizeof(char *) * (idx + 1));
 	if (!ret)
 		exit(EXIT_FAILURE);
 	temp = head;
-	cnt = 0;
-	while (temp && cnt < len)
+	idx = 0;
+	while (temp)
 	{
 		if (temp->token_value)
 		{
-			ret[cnt] = ft_strdup(temp->token_value);
-			if (ret[cnt] == NULL)
+			ret[idx] = ft_strdup(temp->token_value);
+			if (ret[idx] == NULL)
 				exit(EXIT_FAILURE);
-			cnt++;
+			idx++;
 		}
 		temp = temp->next;
 	}
 	tokenlst_clear(&head);
-	ret[cnt] = NULL;
+	ret[idx] = NULL;
 	return (ret);
 }
 
