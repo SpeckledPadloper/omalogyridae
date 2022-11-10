@@ -6,7 +6,7 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/01 14:33:10 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/11/09 21:00:42 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/11/10 12:21:09 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,10 +47,13 @@ static char	**set_commands(t_token *head)
 	cnt = 0;
 	while (temp && cnt < len)
 	{
-		ret[cnt] = ft_strdup(temp->token_value);
-		if (ret[cnt] == NULL)
-			exit(EXIT_FAILURE);
-		cnt++;
+		if (temp->token_value)
+		{
+			ret[cnt] = ft_strdup(temp->token_value);
+			if (ret[cnt] == NULL)
+				exit(EXIT_FAILURE);
+			cnt++;
+		}
 		temp = temp->next;
 	}
 	tokenlst_clear(&head);

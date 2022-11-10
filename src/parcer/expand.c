@@ -6,7 +6,7 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/19 14:24:48 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/11/10 11:32:50 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/11/10 12:49:23 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,6 @@
 #include "hdr/expand.h"
 #include "../executer/hdr/executer.h"
 #include <stdlib.h>
-
-#include <stdio.h>
 
 static t_token	*expand_to_one(char *env_var, t_token *current)
 {
@@ -101,9 +99,11 @@ t_token	*expand_tokenlst(t_token *head, char ***env, bool rd, t_metadata *data)
 		{
 			expandtoken = expand_token(itter, env, data);
 			token_add_back(&expandlst, expandtoken);
+			printf("%p\n", expandlst);
 			if (rd && expandtoken->token_value == NULL)
 			{
 				head->token_label = RDIR_AMBIGUOUS;
+				tokenlst_clear(&expandlst);
 				return (head);
 			}
 		}

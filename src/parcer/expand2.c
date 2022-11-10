@@ -6,7 +6,7 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/29 13:29:52 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/11/09 20:58:31 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/11/10 11:55:27 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,5 +93,6 @@ t_token	*expand_to_null(t_token *current)
 	nulltoken->start_pos = current->start_pos;
 	nulltoken->end_pos = current->end_pos;
 	nulltoken->token_value = NULL;
+	nulltoken->next = NULL;
 	return (nulltoken);
 }

@@ -33,6 +33,7 @@ src/parcer/separation_utils.c \
 src/parcer/simple_cmd.c \
 src/parcer/stitching.c \
 src/signals/signals.c \
+src/tests/tests.c \
 src/utils/filelst_utils.c \
 src/utils/line_navigation.c \
 src/utils/simple_cmd_utils.c \
@@ -54,6 +55,7 @@ src/parcer/hdr/expand.h \
 src/parcer/hdr/parcer.h \
 src/parcer/hdr/separate.h \
 src/signals/hdr/sigpadloper.h \
+src/tests/tests.h \
 src/utils/hdr/filelst_utils.h \
 src/utils/hdr/line_navigation.h \
 src/utils/hdr/simple_cmd_utils.h \
