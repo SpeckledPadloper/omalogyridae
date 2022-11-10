@@ -6,9 +6,10 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/18 16:18:33 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/11/10 13:39:32 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/11/10 13:53:37 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 /*stdio.h required for readline.h*/
 #include <stdio.h> 
@@ -73,7 +74,6 @@ static void	padloper(t_fd_list *fd_list, t_metadata *data)
 		}
 		executer(data, sim_cmd);
 		simple_cmd_clear(&sim_cmd);
-		system("leaks -q minishell");
 	}
 }
 

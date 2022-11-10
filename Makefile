@@ -6,7 +6,7 @@
 #    By: mteerlin <mteerlin@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2021/07/21 12:25:06 by mteerlin      #+#    #+#                  #
-#    Updated: 2022/11/10 14:18:18 by mteerlin      ########   odam.nl          #
+#    Updated: 2022/11/10 14:21:38 by mteerlin      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -54,7 +54,7 @@ src/utils/simple_cmd_utils.c \
 src/utils/token_section_utils.c \
 src/utils/token_section_utils2.c \
 src/utils/token_utils.c \
-src/utils/token_utils2.c
+src/utils/token_utils2.c 
 
 HDR		:= src/error/error.h \
 src/executer/hdr/executer.h \
@@ -69,10 +69,12 @@ src/parcer/hdr/expand.h \
 src/parcer/hdr/parcer.h \
 src/parcer/hdr/separate.h \
 src/signals/hdr/sigpadloper.h \
+src/tests/tests.h \
 src/utils/hdr/filelst_utils.h \
 src/utils/hdr/line_navigation.h \
 src/utils/hdr/simple_cmd_utils.h \
-src/utils/hdr/token_utils.h
+src/utils/hdr/token_utils.h 
+
 
 OBJ_DIR := 	obj/
 OBJ		= 	$(addprefix $(OBJ_DIR), $(SRC:src/%.c=%.o))
@@ -92,8 +94,8 @@ all: 		$(NAME)
 $(NAME):	$(LIBFT) $(OBJ)
 			@echo $(HDR)
 			@echo "Compiling minishell."
-			@$(CC) $(CFLAGS) $(READLIB) $(READFLAGS) $(LIBFT) $(OBJ) -o $(NAME)
-#			@$(CC) $(CFLAGS) $(SANFLAGS) $(READLIB) $(READFLAGS) $(LIBFT) $(OBJ) -o $(NAME)
+#			@$(CC) $(CFLAGS) $(READLIB) $(READFLAGS) $(LIBFT) $(OBJ) -o $(NAME)
+			@$(CC) $(CFLAGS) $(SANFLAGS) $(READLIB) $(READFLAGS) $(LIBFT) $(OBJ) -o $(NAME)
 #			@$(CC) $(CFLAGS) -L$(LIBFT_DIR) $(OBJ) -lft -o $(NAME)
 			@echo "Compilation finished."
 
