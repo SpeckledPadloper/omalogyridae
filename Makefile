@@ -6,7 +6,7 @@
 #    By: mteerlin <mteerlin@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2021/07/21 12:25:06 by mteerlin      #+#    #+#                  #
-#    Updated: 2022/11/10 13:17:47 by lwiedijk      ########   odam.nl          #
+#    Updated: 2022/11/10 13:55:46 by lwiedijk      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -69,6 +69,7 @@ src/parcer/hdr/expand.h \
 src/parcer/hdr/parcer.h \
 src/parcer/hdr/separate.h \
 src/signals/hdr/sigpadloper.h \
+src/tests/tests.h \
 src/utils/hdr/filelst_utils.h \
 src/utils/hdr/line_navigation.h \
 src/utils/hdr/simple_cmd_utils.h \
@@ -93,8 +94,8 @@ all: 		$(NAME)
 $(NAME):	$(LIBFT) $(OBJ)
 			@echo $(HDR)
 			@echo "Compiling minishell."
-			@$(CC) $(CFLAGS) $(READLIB) $(READFLAGS) $(LIBFT) $(OBJ) -o $(NAME)
-#			@$(CC) $(CFLAGS) $(SANFLAGS) $(READLIB) $(READFLAGS) $(LIBFT) $(OBJ) -o $(NAME)
+#			@$(CC) $(CFLAGS) $(READLIB) $(READFLAGS) $(LIBFT) $(OBJ) -o $(NAME)
+			@$(CC) $(CFLAGS) $(SANFLAGS) $(READLIB) $(READFLAGS) $(LIBFT) $(OBJ) -o $(NAME)
 #			@$(CC) $(CFLAGS) -L$(LIBFT_DIR) $(OBJ) -lft -o $(NAME)
 			@echo "Compilation finished."
 
