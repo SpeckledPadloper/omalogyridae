@@ -6,7 +6,7 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/16 20:28:42 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/11/10 15:47:20 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/11/10 16:47:06 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@
 #include "../../libft/libft.h"
 #include <stdlib.h>
 
+#include <stdio.h>
+
 /*fsm_expand still needs to be normed*/
 
 int	set_state_expand(t_line_nav *lnav, t_token **head, int *exitstatus)
@@ -28,12 +30,15 @@ int	set_state_expand(t_line_nav *lnav, t_token **head, int *exitstatus)
 		lnav->i += 2;
 		lnav->count += 2;
 		add_token_to_list(head, allocate_token_value(lnav), lnav, exitstatus);
-		lnav->count = 0;
 		if (lnav->prev_state == STATE_DQUOTE)
 		{
-			lnav->count++;
+			lnav->count = 1;
 			return (STATE_DQUOTE);
 		}
+		if (is_whitespace(lnav->ret[lnav->i]))
+			lnav->count = -1;
+		else
+			lnav->count = 0;
 		return (STATE_START);
 	}
 	return (STATE_EXPAND);

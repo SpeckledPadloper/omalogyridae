@@ -6,7 +6,7 @@
 #    By: mteerlin <mteerlin@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2021/07/21 12:25:06 by mteerlin      #+#    #+#                  #
-#    Updated: 2022/11/10 15:39:55 by mteerlin      ########   odam.nl          #
+#    Updated: 2022/11/10 16:48:59 by mteerlin      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -54,7 +54,7 @@ src/utils/simple_cmd_utils.c \
 src/utils/token_section_utils.c \
 src/utils/token_section_utils2.c \
 src/utils/token_utils.c \
-src/utils/token_utils2.c 
+src/utils/token_utils2.c
 
 HDR		:= src/error/error.h \
 src/executer/hdr/executer.h \
