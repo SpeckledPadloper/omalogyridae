@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/11/09 09:44:53 by lwiedijk      ########   odam.nl         */
+/*   Updated: 2022/11/10 09:55:37 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,5 +113,4 @@ void	create_oldpwd(char *oldpwd, t_metadata *data)
 		add_env(data->padloper_envp, oldpwd_var, pos);
 		free(oldpwd_var);
 	}
-	free(oldpwd);
 }
