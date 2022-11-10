@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/11/08 13:11:49 by lwiedijk      ########   odam.nl         */
+/*   Updated: 2022/11/10 14:29:43 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,7 @@ void	builtin_error(char *program, char *object, int errnum, t_metadata *data)
 	char	*message;
 
 	data->exitstatus = EXIT_FAILURE;
+	message = NULL;
 	message = get_error_string(message, errnum);
 	print = NULL;
 	print = ft_strjoin(SHLERR, program);
@@ -96,6 +97,7 @@ void	print_error_exit(char *errorobject, int errnocopy, int exitcode)
 	char	*errno_string;
 
 	print = NULL;
+	errno_string = NULL;
 	errno_string = get_error_string(errno_string, errnocopy);
 	print = ft_strjoin(SHLERR, errorobject);
 	if (!print)

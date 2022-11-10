@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/11/08 21:02:48 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/11/10 14:27:44 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,7 @@
 #include "../hdr/structs.h"
 #include "../../libft/libft.h"
 
-bool	check_overflow(int plu_min, long long int result,
-			const char *str, int i)
+static bool	check_overflow(int plu_min, const char *str, int i)
 {
 	if (ft_strlen(str) > 19 + (plu_min == -1))
 		return (true);
@@ -51,7 +50,7 @@ int	exit_atoi(const char *str, bool *overflow)
 	while (str[i] >= '0' && str[i] <= '9')
 	{
 		if (result >= 922337203685477580)
-			*overflow = (check_overflow(plu_min, result, str, i));
+			*overflow = (check_overflow(plu_min, str, i));
 		result = (result * 10) + (str[i] - '0');
 		i++;
 	}

@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/11/04 17:48:37 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/11/10 14:31:25 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ void	open_necessary_outfiles_bi(t_metadata *data, t_simple_cmd *cmd_list)
 	}
 }
 
-void	redirect_output_bi(t_metadata *data, t_simple_cmd *cmd_list)
+void	redirect_output_bi(t_metadata *data)
 {
 	if (data->fd_list->fd_out)
 	{

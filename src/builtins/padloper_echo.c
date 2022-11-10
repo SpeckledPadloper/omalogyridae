@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/11/04 17:46:48 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/11/10 14:25:59 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,10 +39,10 @@ bool	check_option(t_simple_cmd *cmd_list, int *i)
 void	padloper_echo(t_metadata *data, t_simple_cmd *cmd_list)
 {
 	int		i;
-	int		j;
 	bool	no_newline_flag;
 
 	i = 1;
+	(void)data;
 	no_newline_flag = false;
 	if (!cmd_list->cmd[1])
 		printf("\n");

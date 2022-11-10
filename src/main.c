@@ -6,10 +6,9 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/18 16:18:33 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/11/10 13:53:37 by lwiedijk      ########   odam.nl         */
+/*   Updated: 2022/11/10 14:44:41 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 /*stdio.h required for readline.h*/
 #include <stdio.h> 
@@ -82,6 +81,8 @@ int	main(int argc, char **argv, char **env)
 	t_metadata		data;
 	t_fd_list		fd_list;
 
+	(void)argc;
+	(void)argv;
 	sig_setup(PROC_PARNT);
 	init_metadata(&data, &fd_list, env);
 	padloper(&fd_list, &data);

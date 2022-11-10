@@ -6,7 +6,7 @@
 #    By: mteerlin <mteerlin@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2021/07/21 12:25:06 by mteerlin      #+#    #+#                  #
-#    Updated: 2022/11/10 14:21:38 by mteerlin      ########   odam.nl          #
+#    Updated: 2022/11/10 14:24:21 by lwiedijk      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -69,7 +69,6 @@ src/parcer/hdr/expand.h \
 src/parcer/hdr/parcer.h \
 src/parcer/hdr/separate.h \
 src/signals/hdr/sigpadloper.h \
-src/tests/tests.h \
 src/utils/hdr/filelst_utils.h \
 src/utils/hdr/line_navigation.h \
 src/utils/hdr/simple_cmd_utils.h \

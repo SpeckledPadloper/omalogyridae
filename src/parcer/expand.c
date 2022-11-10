@@ -6,10 +6,9 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/19 14:24:48 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/11/10 13:54:11 by lwiedijk      ########   odam.nl         */
+/*   Updated: 2022/11/10 14:45:01 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #include <stdbool.h>
 #include "../../libft/libft.h"
@@ -43,7 +42,6 @@ static t_token	*expand_to_one(char *env_var, t_token *current)
 static t_token	*expand_exitstatus(int exitstatus, t_token *current)
 {
 	t_token		*expanded;
-	char		*exitstr;
 	t_line_nav	lnav;
 
 	lnav.i = 0;
@@ -90,7 +88,6 @@ t_token	*expand_tokenlst(t_token *head, char ***env, bool rd, t_metadata *data)
 	t_token	*expandtoken;
 	t_token	*expandlst;
 	t_token	*itter;
-	int		sep;
 
 	itter = head;
 	expandlst = NULL;
@@ -100,7 +97,6 @@ t_token	*expand_tokenlst(t_token *head, char ***env, bool rd, t_metadata *data)
 		{
 			expandtoken = expand_token(itter, env, data);
 			token_add_back(&expandlst, expandtoken);
-			printf("%p\n", expandlst);
 			if (rd && expandtoken->token_value == NULL)
 			{
 				head->token_label = RDIR_AMBIGUOUS;
@@ -118,7 +114,6 @@ t_token	*expand_tokenlst(t_token *head, char ***env, bool rd, t_metadata *data)
 void	expand_iolst(t_token_section **head, char ***env, t_metadata *data)
 {
 	t_token_section	*itter;
-	t_token			*expanded;
 
 	if (!head)
 		return ;

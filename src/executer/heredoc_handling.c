@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/11/09 13:49:29 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/11/10 14:36:09 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,6 @@ int	get_heredocs_this_cmd(t_metadata *data, t_simple_cmd *cmd_list)
 int	get_all_heredoc(t_metadata *data, t_simple_cmd *cmd_list)
 {
 	int		i;
-	t_file	*itter;
 
 	i = 0;
 	while (i < data->cmd_count)

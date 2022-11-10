@@ -6,7 +6,7 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/26 14:05:26 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/11/09 21:07:30 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/11/10 14:42:29 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@
 
 static void	empty_sighandle(int sig)
 {
+	(void)sig;
 	write(1, "\n", 2);
 	rl_on_new_line();
 	rl_replace_line("", 0);
@@ -68,8 +69,6 @@ void	change_tcattr(int state)
 
 void	sig_setup(int state)
 {
-	struct termios	term;
-
 	change_tcattr(state);
 	if (state == PROC_PARNT)
 	{

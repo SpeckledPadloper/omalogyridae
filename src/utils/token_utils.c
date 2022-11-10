@@ -6,7 +6,7 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/14 12:29:38 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/11/09 21:04:43 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/11/10 14:43:45 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,6 @@ bool	add_token_to_list(t_token **head, char *val, \
 {
 	static unsigned int	token_index = 0;
 	t_token				*node;
-	bool				ret;
 
 	if (!val || !head)
 		return (true);

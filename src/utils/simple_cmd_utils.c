@@ -6,7 +6,7 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/01 14:56:49 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/11/10 13:55:36 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/11/10 14:43:05 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ int	tokenlst_len(t_token *head)
 	t_token	*itter;
 	int		len;
 
+	len = 0;
 	itter = head;
 	while (itter)
 	{

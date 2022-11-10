@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/11/09 20:37:34 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/11/10 14:34:45 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ bool	set_pwd_and_oldpwd(t_metadata *data);
 
 void	open_necessary_infiles_bi(t_metadata *data, t_simple_cmd *cmd_list);
 void	open_necessary_outfiles_bi(t_metadata *data, t_simple_cmd *cmd_list);
-void	redirect_output_bi(t_metadata *data, t_simple_cmd *cmd_list);
+void	redirect_output_bi(t_metadata *data);
 void	close_unused_fd_bi(t_metadata *data, t_simple_cmd *cmd_list);
 
 /*-------------------------file handling-------------------------*/
@@ -59,7 +59,7 @@ void	close_unused_fd_bi(t_metadata *data, t_simple_cmd *cmd_list);
 void	open_necessary_infiles(t_metadata *data, t_simple_cmd *cmd_list);
 void	open_necessary_outfiles(t_metadata *data, t_simple_cmd *cmd_list);
 void	redirect_input(t_metadata *data, t_simple_cmd *cmd_list);
-void	redirect_output(t_metadata *data, t_simple_cmd *cmd_list);
+void	redirect_output(t_metadata *data);
 void	close_unused_fd_child(t_metadata *data, t_simple_cmd *cmd_list);
 void	close_unused_fd_parent(t_metadata *data, t_simple_cmd *cmd_list);
 

@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/11/09 14:38:57 by lwiedijk      ########   odam.nl         */
+/*   Updated: 2022/11/10 14:34:58 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void	do_parent_redirect(t_metadata *data, t_simple_cmd *cmd_list)
 {
 	open_necessary_infiles_bi(data, cmd_list);
 	open_necessary_outfiles_bi(data, cmd_list);
-	redirect_output_bi(data, cmd_list);
+	redirect_output_bi(data);
 	close_unused_fd_bi(data, cmd_list);
 }
 
@@ -71,7 +71,7 @@ void	execute_cmd(t_metadata *data, t_simple_cmd *cmd_list)
 	open_necessary_infiles(data, cmd_list);
 	open_necessary_outfiles(data, cmd_list);
 	redirect_input(data, cmd_list);
-	redirect_output(data, cmd_list);
+	redirect_output(data);
 	close_unused_fd_child(data, cmd_list);
 	if (!(cmd_list->cmd))
 		exit(EXIT_SUCCESS);
