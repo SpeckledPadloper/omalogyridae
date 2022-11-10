@@ -6,7 +6,7 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/26 19:45:39 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/11/09 21:03:15 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/11/10 15:53:59 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,6 @@ t_token_section	*cmdlst_split(t_token **head)
 	if (!head || !*head)
 		return (NULL);
 	first = NULL;
-	sep = 1;
 	temp = *head;
 	while (temp && temp->next)
 	{

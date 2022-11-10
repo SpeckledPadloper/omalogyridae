@@ -6,7 +6,7 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/29 14:49:02 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/11/10 13:38:15 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/11/10 16:17:06 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,19 +15,7 @@
 #include <stdlib.h>
 #include "../utils/hdr/token_utils.h"
 
-bool	is_ambiguous_rdir(t_token *current)
-{
-	t_token	*temp;
-
-	temp = current;
-	while (temp)
-	{
-		if (temp->token_label == RDIR_AMBIGUOUS)
-			return (true);
-		temp = temp->next;
-	}
-	return (false);
-}
+#include <stdio.h>
 
 static void	carryover_lapoi(t_token *source, t_token *dest)
 {
@@ -38,32 +26,52 @@ static void	carryover_lapoi(t_token *source, t_token *dest)
 	dest->i = source->i;
 }
 
+static void	stitch_token_value(char **stitched, char **temp, char *catval)
+{
+	if (temp)
+		(*stitched) = ft_strjoin(*temp, catval);
+	else
+		(*stitched) = ft_strjoin("\0", catval);
+	if (!(*stitched))
+		exit(EXIT_FAILURE);
+	if (*temp)
+		free(*temp);
+	*temp = *stitched;
+}
+
 static void	stitch_tokens(t_token **current)
 {
 	t_token			*temp;
 	char			*stitched_value;
 	char			*temp_str;
 
-	temp = *current;
-	stitched_value = NULL;
-	temp_str = ft_calloc(1, sizeof(char));
-	if (!temp_str)
-		exit(EXIT_FAILURE);
+	temp_str = NULL;
+	if ((*current)->token_value)
+	{
+		stitched_value = ft_strdup((*current)->token_value);
+		temp_str = stitched_value;
+		if (!stitched_value)
+			exit(EXIT_FAILURE);
+		temp = (*current)->next;
+	}
+	else
+	{
+		stitched_value = ft_calloc(1, sizeof(char));
+		temp_str = stitched_value;
+		if (!stitched_value)
+			exit(EXIT_FAILURE);
+		temp = *current;
+	}
 	while (temp)
 	{
 		if (temp->token_value)
 		{
-			stitched_value = ft_strjoin(temp_str, temp->token_value);
-			if (!stitched_value)
-				exit(EXIT_FAILURE);
-			free(temp_str);
-			temp_str = stitched_value;
+			printf("stitch_tokens: %s\n", temp->token_value);
+			stitch_token_value(&stitched_value, &temp_str, temp->token_value);
 		}
 		temp = temp->next;
 	}
 	temp = exp_new_token(stitched_value);
-	if (temp_str[0] == '\0')
-		free(temp_str);
 	carryover_lapoi(*current, temp);
 	tokenlst_clear(current);
 	(*current) = temp;
