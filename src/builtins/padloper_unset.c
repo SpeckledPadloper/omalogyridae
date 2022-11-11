@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/11/04 17:46:42 by mteerlin      ########   odam.nl         */
+/*   Updated: 2022/11/11 09:53:28 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,13 +17,6 @@
 #include "../hdr/structs.h"
 #include "../../libft/libft.h"
 
-/*  
-
-	We could inplemet a buffer of env var locations, like vectors do in cpp,
-	if export then always 10 or 5 or so, keep a variable in meta to know how 
-	many places are in use.
-
-*/
 bool	unset_var_not_valid(char *var)
 {
 	int	i;
@@ -33,7 +26,7 @@ bool	unset_var_not_valid(char *var)
 		return (true);
 	while (var[i])
 	{
-		if (!ft_isalnum(var[i]))
+		if (!(ft_isalnum(var[i]) || var[i] == '_'))
 			return (true);
 		i++;
 	}

@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/10/26 12:07:12 by lwiedijk      ########   odam.nl         */
+/*   Updated: 2022/11/11 09:55:53 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ bool	export_var_not_valid(char *var)
 		return (true);
 	while (var[i] && var[i] != '=')
 	{
-		if (!(ft_isalnum(var[i]) || var[i] == '='))
+		if (!(ft_isalnum(var[i]) || var[i] == '=' || var[i] == '_'))
 			return (true);
 		i++;
 	}

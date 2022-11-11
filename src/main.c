@@ -6,7 +6,7 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/18 16:18:33 by mteerlin      #+#    #+#                 */
-/*   Updated: 2022/11/10 14:44:41 by lwiedijk      ########   odam.nl         */
+/*   Updated: 2022/11/11 10:18:49 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,7 @@ static void	padloper(t_fd_list *fd_list, t_metadata *data)
 		}
 		executer(data, sim_cmd);
 		simple_cmd_clear(&sim_cmd);
+		system("leaks -q minishell");
 	}
 }
 
