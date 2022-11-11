@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/11/10 14:36:09 by lwiedijk      ########   odam.nl         */
+/*   Updated: 2022/11/11 11:27:30 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,8 @@ static int	heredoc_handling(t_metadata *data, int *pipe_end, char *limiter)
 
 	pipe(pipe_end);
 	data->heredocpid = fork();
+	if (data->heredocpid == -1)
+		print_error_exit("fork", errno, EXIT_FAILURE);
 	if (data->heredocpid == 0)
 		do_heredoc(pipe_end, limiter);
 	signal(SIGINT, SIG_IGN);
