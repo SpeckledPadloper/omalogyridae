@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/11/10 14:34:28 by lwiedijk      ########   odam.nl         */
+/*   Updated: 2022/11/11 11:07:15 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,4 +78,14 @@ void	close_unused_fd_parent(t_metadata *data, t_simple_cmd *cmd_list)
 		close_and_check(data->fd_list->pipe_to_read);
 	if (cmd_list->heredoc_pipe[0])
 		close_and_check(cmd_list->heredoc_pipe[0]);
+}
+
+void	close_unused_fd_bi(t_metadata *data, t_simple_cmd *cmd_list)
+{
+	if (cmd_list->heredoc_pipe[0])
+		close_and_check(cmd_list->heredoc_pipe[0]);
+	if (data->fd_list->fd_in)
+		close_and_check(data->fd_list->fd_in);
+	if (data->fd_list->fd_out)
+		close_and_check(data->fd_list->fd_out);
 }

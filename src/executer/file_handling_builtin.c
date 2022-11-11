@@ -6,7 +6,7 @@
 /*   By: lwiedijk <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/13 10:01:06 by lwiedijk      #+#    #+#                 */
-/*   Updated: 2022/11/10 14:31:25 by lwiedijk      ########   odam.nl         */
+/*   Updated: 2022/11/11 11:15:44 by lwiedijk      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,35 +21,44 @@
 #include <fcntl.h>
 #include <errno.h>
 
+static void	open_and_check_infile_bi(t_metadata *data, t_simple_cmd *cmd_list)
+{
+	if (cmd_list->infile_list->mode == RDIR_SINGLE)
+	{
+		data->fd_list->fd_in = open
+			(cmd_list->infile_list->filename, O_RDONLY);
+		if (data->fd_list->fd_in < 0)
+		{
+			builtin_error
+				("", cmd_list->infile_list->filename, errno, data);
+			data->fd_list->fd_in = 0;
+		}
+	}
+	if (cmd_list->infile_list->next && data->fd_list->fd_in)
+	{
+		close_and_check(data->fd_list->fd_in);
+		data->fd_list->fd_in = 0;
+	}
+}
+
 void	open_necessary_infiles_bi(t_metadata *data, t_simple_cmd *cmd_list)
 
 {	
+	t_file	*temp;
+
+	temp = cmd_list->infile_list;
 	while (cmd_list->infile_list)
 	{
 		if (cmd_list->infile_list->mode == RDIR_AMBIGUOUS)
 			builtin_error
 				("", cmd_list->infile_list->filename, AR, data);
-		if (cmd_list->infile_list->mode == RDIR_SINGLE)
-		{
-			data->fd_list->fd_in = open
-				(cmd_list->infile_list->filename, O_RDONLY);
-			if (data->fd_list->fd_in < 0)
-			{
-				builtin_error
-					("", cmd_list->infile_list->filename, errno, data);
-				data->fd_list->fd_in = 0;
-			}
-		}
-		if (cmd_list->infile_list->next && data->fd_list->fd_in)
-		{
-			close_and_check(data->fd_list->fd_in);
-			data->fd_list->fd_in = 0;
-		}
+		open_and_check_infile_bi(data, cmd_list);
 		cmd_list->infile_list = cmd_list->infile_list->next;
 	}
+	cmd_list->infile_list = temp;
 }
 
-void	open_and_check_file_bi(t_metadata *data, t_simple_cmd *cmd_list)
+static void	open_and_check_outfile_bi(t_metadata *data, t_simple_cmd *cmd_list)
 {
 	if (cmd_list->outfile_list->mode == RDIR_SINGLE)
 	{
@@ -77,12 +86,15 @@ void	open_and_check_file_bi(t_metadata *data, t_simple_cmd *cmd_list)
 
 void	open_necessary_outfiles_bi(t_metadata *data, t_simple_cmd *cmd_list)
 {
+	t_file	*temp;
+
+	temp = cmd_list->outfile_list;
 	while (cmd_list->outfile_list)
 	{
 		if (cmd_list->outfile_list->mode == RDIR_AMBIGUOUS)
 			builtin_error
 				("", cmd_list->outfile_list->filename, AR, data);
-		open_and_check_file_bi(data, cmd_list);
+		open_and_check_outfile_bi(data, cmd_list);
 		if (cmd_list->outfile_list->next && data->fd_list->fd_out)
 		{
 			close_and_check(data->fd_list->fd_out);
@@ -90,6 +102,7 @@ void	open_necessary_outfiles_bi(t_metadata *data, t_simple_cmd *cmd_list)
 		}
 		cmd_list->outfile_list = cmd_list->outfile_list->next;
 	}
+	cmd_list->outfile_list = temp;
 }
 
 void	redirect_output_bi(t_metadata *data)
@@ -99,14 +112,4 @@ void	redirect_output_bi(t_metadata *data)
 		if (dup2(data->fd_list->fd_out, STDOUT_FILENO) == -1)
 			print_error_exit("dup2", errno, EXIT_FAILURE);
 	}
-}
-
-void	close_unused_fd_bi(t_metadata *data, t_simple_cmd *cmd_list)
-{
-	if (cmd_list->heredoc_pipe[0])
-		close_and_check(cmd_list->heredoc_pipe[0]);
-	if (data->fd_list->fd_in)
-		close_and_check(data->fd_list->fd_in);
-	if (data->fd_list->fd_out)
-		close_and_check(data->fd_list->fd_out);
 }
