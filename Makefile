@@ -6,7 +6,7 @@
 #    By: mteerlin <mteerlin@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2021/07/21 12:25:06 by mteerlin      #+#    #+#                  #
-#    Updated: 2022/11/10 16:48:59 by mteerlin      ########   odam.nl          #
+#    Updated: 2022/11/11 11:44:30 by lwiedijk      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -94,8 +94,6 @@ $(NAME):	$(LIBFT) $(OBJ)
 			@echo $(HDR)
 			@echo "Compiling minishell."
 			@$(CC) $(CFLAGS) $(READLIB) $(READFLAGS) $(LIBFT) $(OBJ) -o $(NAME)
-#			@$(CC) $(CFLAGS) $(SANFLAGS) $(READLIB) $(READFLAGS) $(LIBFT) $(OBJ) -o $(NAME)
-#			@$(CC) $(CFLAGS) -L$(LIBFT_DIR) $(OBJ) -lft -o $(NAME)
 			@echo "Compilation finished."
 
 $(LIBFT):
